@@ -6,6 +6,7 @@
     <title>Demo Walkthrough :: CDC Monolith Demo (Dev Mode)</title>
     <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/02-walkthrough.html">
     <link rel="prev" href="01-setup.html">
+    <link rel="next" href="03-appendix.html#querysql">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -91,6 +92,18 @@
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#03-appendix">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#querysql">Querying SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#kafkatopicdebug">Debugging Kafka Topics</a>
+  </li>
+</ul>
+  </li>
 </ul>
   </li>
 </ul>
@@ -138,13 +151,14 @@
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">LEGACY_URL=http://$(oc get route my-apache-php-app -o jsonpath='{.spec.host}')</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">LEGACY_URL=http://$(oc get route www -o jsonpath='{.spec.host}' -n ${PROJECT_PREFIX}-dev)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="01-setup.html" class="query-params-link">1. Setup</a></span>
+  <span class="next"><a href="03-appendix.html#querysql" class="query-params-link">Querying SQL Database</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
