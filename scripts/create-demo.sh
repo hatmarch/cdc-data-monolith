@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -Eeuo pipefail
+set -Eeuxo pipefail
 
 declare -r SCRIPT_DIR=$(cd -P $(dirname $0) && pwd)
 declare PROJECT_PREFIX="cdc-demo"
@@ -14,6 +14,7 @@ $0: Create CDC Monolith Demo --
   
     -p <TEXT>  [optional] Project prefix to use.  Defaults to "cdc-demo"
     -v         [optional] Run ansible playbooks in verbose mode
+    -i         [optional] Install pre-requisites
 
 EOF
 }
@@ -31,10 +32,11 @@ get_and_validate_options() {
 
   
   # parse options
-  while getopts ':vp:h' option; do
+  while getopts ':vip:h' option; do
       case "${option}" in
           p  ) p_flag=true; PROJECT_PREFIX="${OPTARG}";;
           v  ) ANSIBLE_VERBOSE="-vvvvv";;
+          i  ) ANSIBLE_INSTALL_PRE="-e install_prereqs=true";;
           h  ) display_usage; exit;;
           \? ) printf "%s\n\n" "  Invalid option: -${OPTARG}" >&2; display_usage >&2; exit 1;;
           :  ) printf "%s\n\n%s\n\n\n" "  Option -${OPTARG} requires an argument." >&2; display_usage >&2; exit 1;;
@@ -69,7 +71,8 @@ main() {
     echo "Attempting to run the ansible playbook for demo"
     ansible-playbook -i ${ANSIBLE_DEMO_PLAYBOOK_DIR}/inventory ${ANSIBLE_DEMO_PLAYBOOK_DIR}/main.yaml \
       -e "ACTION=create" \
-      -e "dev_project=${dev_prj}" $(echo ${ANSIBLE_VERBOSE:-""})
+      -e "dev_project=${dev_prj}" \
+      $(echo ${ANSIBLE_VERBOSE:-""}) $(echo "${ANSIBLE_INSTALL_PRE:-""""}")
 
     echo "Demo installation completed without error."
 }
