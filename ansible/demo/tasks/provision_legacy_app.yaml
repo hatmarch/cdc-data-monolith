@@ -19,7 +19,7 @@
     resource_definition: "{{ lookup('template', 'mssql-server-linux.yaml.j2') }}"
 
 - name: Wait for Database to Start
-  k8s_facts:
+  k8_info:
     kind: Deployment
     name: mssql-server-linux
     namespace: '{{ db_project }}'
@@ -44,7 +44,7 @@
   shell: "oc adm policy add-scc-to-user anyuid -z default -n {{ legacy_app_project }}"
 
 - name: Check if App has been deployed
-  k8s_facts:
+  k8_info:
     kind: Deployment
     name: my-apache-php-app
     namespace: '{{ legacy_app_project }}'
