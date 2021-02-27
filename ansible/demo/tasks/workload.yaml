@@ -8,6 +8,22 @@
   vars:
     db_project: "{{ dev_project }}"
     legacy_app_project: "{{ dev_project }}"
+#  Use this when testing to skip this step
+#  when: false|bool
+
+- name: Provision Kafka Cluster
+  include_tasks: provision_kafka.yaml
+  vars:
+    kafka_project: "{{ dev_project }}"
+#  Use this when testing to skip this step
+#  when: false|bool 
+
+- name: Provision Connect and Connector
+  include_tasks: provision_debezium.yaml
+  vars:
+    db_project: "{{ dev_project }}"
+    kafka_project: "{{ dev_project }}"
+  when: provision_walkthrough_step_1|bool
 
 # - name: Provision Operator Snapshot
 #   include_tasks: provision_snapshotoperator.yaml

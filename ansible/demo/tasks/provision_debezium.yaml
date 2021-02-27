@@ -1,0 +1,14 @@
+- name: Deploy Debezium Kafka Connect
+  k8s:
+    state: present
+    namespace: '{{ kafka_project }}'
+    resource_definition: "{{ lookup('template', 'kafka-connect.yaml.j2') }}"
+  vars:
+    kc_name: debezium
+    connectors_image: '{{ debezium_connectors_image }}'
+
+- name: Deploy MSSQL Server Connector
+  k8s:
+    state: present
+    namespace: '{{ db_project }}'
+    resource_definition: "{{ lookup('template', 'kafka-connector-mssql.yaml.j2') }}"
