@@ -9,5 +9,5 @@ You can get the URL to the legacy application by running the following command i
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
-LEGACY_URL=http://$(oc get route my-apache-php-app -o jsonpath='{.spec.host}')
+LEGACY_URL=http://$(oc get route www -o jsonpath='{.spec.host}' -n ${PROJECT_PREFIX}-dev)
 ----
