@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setup :: CDC Monolith Demo (Dev Mode)</title>
+    <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/01-setup.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="02-walkthrough.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo (Dev Mode)</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="cdc-monolith-demo" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">CDC Monolith Demo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-setup.html">1. Setup</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#prerequisite">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#install">Install Demo</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-walkthrough.html">2. Walkthrough</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-walkthrough.html#legacy">Intro to Legacy App</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">CDC Monolith Demo</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">CDC Monolith Demo</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">CDC Monolith Demo</a></li>
+    <li><a href="01-setup.html">1. Setup</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/01-setup.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Setup</h1>
+<div class="sect1">
+<h2 id="prerequisite"><a class="anchor" href="#prerequisite"></a>Prerequisite CLI tools</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_visual_studio_code_remote_development_containers"><a class="anchor" href="#_visual_studio_code_remote_development_containers"></a>Visual Studio Code Remote Development (Containers)</h3>
+<div class="paragraph">
+<p>To limit the amount of incompatibility in setting up the demo, all the commands that are listed are expected to be run in an appropriately setup container.  You will find this as part of the instructions below and it&#8217;s important not to skip this step</p>
+</div>
+<div class="paragraph">
+<p>This demo also supports the <a href="https://code.visualstudio.com/docs/remote/containers">VS Code Remote Development (Containers)</a> as can be seen in the .devcontainer directory.  If you use the terminal in VSCode and run this repo in a container, then you don&#8217;t need to follow the commands to run docker in the shell as your terminal will already be running in a container that has all the necessary runtime components</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_openshift_cluster"><a class="anchor" href="#_openshift_cluster"></a>Openshift Cluster</h3>
+<div class="paragraph">
+<p>The demo setup assumes you have an OpenShift cluster of version &gt;=4.6.3 and that you are logged in as <code>cluster-admin</code></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="install"><a class="anchor" href="#install"></a>Install Demo</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fork or clone <a href="https://github.com/hatmarch/cdc-data-monolith">this repo</a> onto your local machine</p>
+</li>
+<li>
+<p><code>cd</code> to the root of the folder</p>
+</li>
+<li>
+<p>Run the following command:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>NOTE: If you are not using <code>zsh</code> locally, you can omit the <code>-v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh</code> part of the <code>docker run</code> command below</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run -it -v ~/.kube:/home/jboss/.kube -v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh -v $(pwd):/workspaces/cdc-data-monolith -w /workspaces/cdc-data-monolith quay.io/mhildenb/cdc-demo-shell /bin/zsh</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Be sure to log into your OpenShift cluster with cluster-admin permissions</p>
+</li>
+<li>
+<p>OPTIONALLY override <code>PROJECT_PREFIX</code> to the name prefix name you&#8217;d like the projects associated with this demo to have (default:`cdc-demo`)</p>
+</li>
+<li>
+<p>Run the following command to setup the demo:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>-i</code> flag sets up all pre-requisites</p>
+</li>
+<li>
+<p><code>-p</code> is not necessary if you don&#8217;t want to change the default <code>PROJECT_PREFIX</code></p>
+</li>
+<li>
+<p><code>-v</code> [optional] Run ansible playbooks in verbose mode</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$DEMO_HOME/scripts/create-demo.sh -p $PROJECT_PREFIX</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If the installation was successful, you should see the following:</p>
+<div class="listingblock">
+<div class="content">
+<pre>Demo installation completed without error.
+Finishing with return value of 0</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Once completed, you can now follow the instructions <a href="02-walkthrough.html" class="page">in this walkthrough</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html" class="query-params-link">CDC Monolith Demo</a></span>
+  <span class="next"><a href="02-walkthrough.html" class="query-params-link">2. Walkthrough</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
