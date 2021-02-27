@@ -4,3 +4,7 @@
 
 * xref:02-walkthrough.adoc[2. Walkthrough]
 ** xref:02-walkthrough.adoc#legacy[Intro to Legacy App]
+
+* xref:03-appendix[Appendix]
+** xref:03-appendix.adoc#querysql[Querying SQL Database]
+** xref:03-appendix.adoc#kafkatopicdebug[Debugging Kafka Topics]

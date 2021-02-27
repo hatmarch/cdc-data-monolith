@@ -1,0 +1,32 @@
+= Appendix
+include::_attributes.adoc[]
+
+[#querysql]
+== Querying the SQL database
+
+In a pinch you can query the sql database like this (NOTE: assumes this is run from the project where the DB server is)
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc exec deployment/mssql-server-linux -- /opt/mssql-tools/bin/sqlcmd -S mssql-server-linux -U sa -P 'Password!' -q 'SELECT * FROM InternationalDB.dbo.Orders'
+----
+
+Alternatively (originally from lab)
+
+----
+oc exec deployment/mssql-server-linux -- /opt/mssql-tools/bin/sqlcmd -S mssql-server-linux -U sa -P Password! -d InternationalDB -Q "select top 5 * from dbo.Orders where OrderUser='admin'"
+----
+
+[#kafkatopicdebug]
+== Debugging Kafka Topics
+
+You can run a consumer to see all that's been posted to a kafka topic by running the following command (NOTE: This assumes that command is run in the context of the current kafka project)
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning
+----
+
+

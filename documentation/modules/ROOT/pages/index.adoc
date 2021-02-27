@@ -12,9 +12,14 @@ A demo walkthrough to show how Change Data Capture can be used to get around a l
 
 [.tile]
 .xref:01-setup.adoc[Setup Demo]
-** xref:01-setup.adoc#prerequisite[Prerequisites]
-** xref:01-setup.adoc#install[Install Demo]
+* xref:01-setup.adoc#prerequisite[Prerequisites]
+* xref:01-setup.adoc#install[Install Demo]
 
 [.tile]
 .xref:02-walkthrough.adoc[Walkthrough]
 * xref:02-walkthrough.adoc#legacy[Introduction to Legacy App]
+
+[.tile]
+.xref:03-appendix[Appendix]
+* xref:03-appendix.adoc#querysql[Querying SQL Database]
+* xref:03-appendix.adoc#kafkatopicdebug[Debugging Kafka Topics]
