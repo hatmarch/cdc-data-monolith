@@ -14,7 +14,10 @@ RUN --mount=type=secret,id=myuser --mount=type=secret,id=mypass \
 
 RUN subscription-manager repos --enable ansible-2.9-for-rhel-8-x86_64-rpms
 
-RUN dnf install -y ansible python3 
+# Add support for Ansible (with python modules)
+# With npm and gulp: add support for local antora based documentation building
+RUN dnf install -y ansible python3 npm && npm i -g @antora/cli@2.3 @antora/site-generator-default@2.3 \
+    && npm rm --global npx && npm install --global npx && npm install --global gulp
 
 RUN chown -R jboss /home/jboss
 
@@ -22,6 +25,7 @@ RUN subscription-manager unregister
 
 USER jboss
 
+# install in userspace, unclear how to install these python packages globally in the best way
 RUN pip3 install openshift --user jboss
 
 # Default DEMO_HOME directory
