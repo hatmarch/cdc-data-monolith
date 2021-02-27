@@ -1,10 +1,14 @@
 ---
+- name: Install AMQStreams Operator
+  include_tasks: provision_amqstreams.yaml
+  when: install_prereqs|bool
 
 - name: Provision Legacy App
   include_tasks: provision_legacy_app.yaml
   vars:
     db_project: "{{ dev_project }}"
     legacy_app_project: "{{ dev_project }}"
+
 # - name: Provision Operator Snapshot
 #   include_tasks: provision_snapshotoperator.yaml
 #   vars:
