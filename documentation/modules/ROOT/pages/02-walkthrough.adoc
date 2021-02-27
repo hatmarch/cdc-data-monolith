@@ -1,0 +1,13 @@
+= Demo Walkthrough
+include::_attributes.adoc[]
+
+[#legacy]
+== Introduction to Legacy Application
+
+You can get the URL to the legacy application by running the following command in the demo shell
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+LEGACY_URL=http://$(oc get route my-apache-php-app -o jsonpath='{.spec.host}')
+----

@@ -4,26 +4,48 @@ include::_attributes.adoc[]
 [#prerequisite]
 == Prerequisite CLI tools
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/prerequisites-kubernetes.adoc[]
-|===
+=== Visual Studio Code Remote Development (Containers)
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/optional-requisites.adoc[]
-|===
+To limit the amount of incompatibility in setting up the demo, all the commands that are listed are expected to be run in an appropriately setup container.  You will find this as part of the instructions below and it's important not to skip this step
 
-[#minikube]
-== Setup Kubernetes
+This demo also supports the link:https://code.visualstudio.com/docs/remote/containers[VS Code Remote Development (Containers)] as can be seen in the .devcontainer directory.  If you use the terminal in VSCode and run this repo in a container, then you don't need to follow the commands to run docker in the shell as your terminal will already be running in a container that has all the necessary runtime components
 
-:profile: my_profile
+=== Openshift Cluster
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/kubernetes-setup.adoc[]
+The demo setup assumes you have an OpenShift cluster of version >=4.6.3 and that you are logged in as `cluster-admin`
 
-And then you are ready for start using Kubernetes:
+[#install]
+== Install Demo
 
-image::kubelogo.png[]
-
-[#downloadtutorial]
-== Get tutorial sources
-
-:tutorial-url: https://github.com/redhat-developer-demos/rhd-tutorial-common.git
-:folder: my_folder
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/download-sources.adoc[]
+. Fork or clone link:{git_repo}[this repo] onto your local machine
+. `cd` to the root of the folder
+. Run the following command:
+** NOTE: If you are not using `zsh` locally, you can omit the `-v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh` part of the `docker run` command below
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+docker run -it -v ~/.kube:/home/jboss/.kube -v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh -v $(pwd):/workspaces/cdc-data-monolith -w /workspaces/cdc-data-monolith quay.io/mhildenb/cdc-demo-shell /bin/zsh
+----
++
+. Be sure to log into your OpenShift cluster with cluster-admin permissions
+. OPTIONALLY override `PROJECT_PREFIX` to the name prefix name you'd like the projects associated with this demo to have (default:`cdc-demo`)
+. Run the following command to setup the demo:
+** `-i` flag sets up all pre-requisites
+** `-p` is not necessary if you don't want to change the default `PROJECT_PREFIX`
+** `-v` [optional] Run ansible playbooks in verbose mode
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+$DEMO_HOME/scripts/create-demo.sh -p $PROJECT_PREFIX 
+----
++
+. If the installation was successful, you should see the following:
++
+----
+Demo installation completed without error.
+Finishing with return value of 0
+----
++
+. Once completed, you can now follow the instructions xref:02-walkthrough.adoc[in this walkthrough]

@@ -1,20 +1,20 @@
-= Welcome to Template Tutorial
+= Welcome to CDC Data Monolith Demo
 :page-layout: home
 :!sectids:
 
 [.text-center.strong]
-== Publish Services to Kubernetes
+== CDC Data Monolith Demo
 
-A Kubernetes tutorial to show how you can deploy a Java service to a Kubernetes cluster as it was a child game.
+A demo walkthrough to show how Change Data Capture can be used to get around a legacy app data monolith
 
 [.tiles.browse]
 == Browse modules
 
 [.tile]
-.xref:01-setup.adoc[Get Started]
-* xref:01-setup.adoc#minikube[Minikube]
+.xref:01-setup.adoc[Setup Demo]
+** xref:01-setup.adoc#prerequisite[Prerequisites]
+** xref:01-setup.adoc#install[Install Demo]
 
 [.tile]
-.xref:02-deploy.adoc[Deploying]
-* xref:02-deploy.adoc#package[Package the Application]
-* xref:02-deploy.adoc#deploy[Deploy the Application]
+.xref:02-walkthrough.adoc[Walkthrough]
+* xref:02-walkthrough.adoc#legacy[Introduction to Legacy App]
