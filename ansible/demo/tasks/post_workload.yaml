@@ -1,0 +1,14 @@
+---
+# Implement your Post Workload deployment tasks here
+- name: output_demo info
+  debug:
+    msg: >-
+      CDC Monolith Demo Installed
+      Successfully
+  when: not silent|bool
+
+# Leave this as the last task in the playbook.
+- name: post_workload tasks complete
+  debug:
+    msg: "Post-Workload Tasks completed successfully."
+  when: not silent|bool

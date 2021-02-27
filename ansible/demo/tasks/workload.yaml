@@ -1,0 +1,83 @@
+---
+
+- name: Provision Legacy App
+  include_tasks: provision_legacy_app.yaml
+  vars:
+    db_project: "{{ dev_project }}"
+# - name: Provision Operator Snapshot
+#   include_tasks: provision_snapshotoperator.yaml
+#   vars:
+#     operators_project: "workshop-operators"
+#     snapshot_operator_project: "workshop-operators"
+# - name: Provision AMQ Streams
+#   include_tasks: provision_streams.yaml
+#   vars:
+#     kafka_earth_namespace: "shared-kafka-earth"
+#     operators_project: "workshop-operators"
+#     snapshot_operator_project: "workshop-operators"
+#     csv_version: "1.5.3"
+# - name: Provision Camel K
+#   include_tasks: provision_camelk.yaml
+#   vars:
+#     operators_project: "workshop-operators"
+#     snapshot_operator_project: "workshop-operators"
+#     csv_version: "1.2.0"
+# - name: Provision AMQ Online
+#   include_tasks: provision_online.yaml
+#   vars:
+#     operators_project: "workshop-operators"
+#     snapshot_operator_project: "workshop-operators"
+#     csv_version: "1.6.0"
+# - name: Provision Shared Resources
+#   include_tasks: provision_shared.yaml
+#   vars:
+#     db_earth_namespace: "shared-db-earth"
+#     kafka_earth_namespace: "shared-kafka-earth"
+#     app_earth_namespace: "shared-app-earth"
+# - name: Provision Solution Explorer
+#   include_tasks: provision_webapp.yaml
+#   vars:
+#     webapp_namespace: "webapp"
+#     configmap_name: "extra-services"
+#     snapshot_operator_project: "workshop-operators"
+# - name: Provision User Registration
+#   include_tasks: provision_user_registration.yaml
+#   vars:
+#     registration_namespace: "registration"
+#     snapshot_operator_project: "workshop-operators"
+
+# - name: Provision User Namespaces
+#   include_tasks: user_projects.yaml
+#   loop: "{{ range(1, 1 + num_users | int) | list }}"
+#   loop_control:
+#     loop_var: __user_n
+#   vars:
+#     __user: user{{ __user_n }}
+#     db_earth_namespace: "shared-db-earth"
+#     kafka_earth_namespace: "shared-kafka-earth"
+#     app_earth_namespace: "shared-app-earth"
+#     snapshot_operator_project: "workshop-operators"
+
+# - name: Provision Data Grid
+#   include_tasks: provision_dg.yaml
+#   loop: "{{ range(1, 1 + num_users | int) | list }}"
+#   loop_control:
+#     loop_var: __user_n
+#   vars:
+#     __user: user{{ __user_n }}
+#     csv_version: "8.0.3"
+
+# - name: Provision Fuse Online
+#   include_tasks: provision_fuse.yaml
+#   vars:
+#     fuse_project: "fuse"
+#     csv_version: "7.7.0"
+# - name: Provision Code Ready Workspace
+#   include_tasks: provision_crw.yaml
+#   vars:
+#     che_project: "che"
+#     csv_version: "2.4.0"
+- name: workload tasks complete
+  debug:
+    msg: "Workload tasks completed successfully."
+  when: not silent|bool

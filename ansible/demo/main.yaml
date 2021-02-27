@@ -1,0 +1,38 @@
+---
+
+# Do not modify this file
+- name: Deploy demo
+  hosts: localhost
+  connection: local
+  become: false
+  gather_facts: true
+  tags:
+    - step007
+  tasks:
+  - name: Running Pre Workload Tasks
+    include_tasks:
+      file: ./tasks/pre_workload.yaml
+      apply:
+        become: "{{ become_override | bool }}"
+    when: ACTION == "create" or ACTION == "provision"
+
+  - name: Running Workload Tasks
+    include_tasks:
+      file: ./tasks/workload.yaml
+      apply:
+        become: "{{ become_override | bool }}"
+    when: ACTION == "create" or ACTION == "provision"
+
+  - name: Running Post Workload Tasks
+    include_tasks:
+      file: ./tasks/post_workload.yaml
+      apply:
+        become: "{{ become_override | bool }}"
+    when: ACTION == "create" or ACTION == "provision"
+
+  - name: Running Workload removal Tasks
+    include_tasks:
+      file: ./tasks/remove_workload.yaml
+      apply:
+        become: "{{ become_override | bool }}"
+    when: ACTION == "destroy" or ACTION == "remove"
