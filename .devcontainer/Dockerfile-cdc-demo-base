@@ -1,0 +1,29 @@
+# syntax = docker/dockerfile:1.0-experimental
+
+# NOTE because of the special command line flags (e.g --secret) that need to be passed
+# to the docker build process, we are not able to put these commands in the dockerfile 
+# for the devcontainer
+FROM quay.io/mhildenb/dev-demo-base:1.4
+
+USER root
+
+# install docker for use with kn func
+RUN --mount=type=secret,id=myuser --mount=type=secret,id=mypass \
+    subscription-manager register  --username=$(cat /run/secrets/myuser) \
+    --password=$(cat /run/secrets/mypass) --auto-attach
+
+RUN subscription-manager repos --enable ansible-2.9-for-rhel-8-x86_64-rpms
+
+RUN dnf install -y ansible python3 
+
+RUN chown -R jboss /home/jboss
+
+RUN subscription-manager unregister
+
+USER jboss
+
+RUN pip3 install openshift --user jboss
+
+# Default DEMO_HOME directory
+ENV DEMO_HOME /workspaces/cdc-data-monolith
+
