@@ -4,6 +4,7 @@
   include_tasks: provision_legacy_app.yaml
   vars:
     db_project: "{{ dev_project }}"
+    legacy_app_project: "{{ dev_project }}"
 # - name: Provision Operator Snapshot
 #   include_tasks: provision_snapshotoperator.yaml
 #   vars:
