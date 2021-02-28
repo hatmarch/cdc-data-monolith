@@ -19,6 +19,15 @@ RUN subscription-manager repos --enable ansible-2.9-for-rhel-8-x86_64-rpms
 RUN dnf install -y ansible python3 npm && npm i -g @antora/cli@2.3 @antora/site-generator-default@2.3 \
     && npm rm --global npx && npm install --global npx && npm install --global gulp
 
+# This whole RUN block is to support for docker for kn func and buildpacks
+RUN microdnf -y install yum && yum install -y yum-utils && \
+# install docker repo
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
+# install docker client
+    yum install -y docker-ce-cli && \
+# cleanup packages and yum
+    yum remove -y yum-utils && yum clean all && microdnf -y remove yum && microdnf clean all
+
 RUN chown -R jboss /home/jboss
 
 RUN subscription-manager unregister

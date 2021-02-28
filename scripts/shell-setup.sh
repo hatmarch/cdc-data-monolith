@@ -70,4 +70,25 @@ aws-down() {
         $(aws ec2 describe-instances --region ${AWS_REGION} --query 'Reservations[*].Instances[*].{Instance:InstanceId}' --output text --filters "Name=tag-key,Values=kubernetes.io/cluster/${CLUSTER_NAME}-*" "Name=instance-state-name,Values=running") 
 }
 
+EXTERNAL_KAFKA_ENDPOINT=$(oc get kafka my-cluster -o=jsonpath='{.status.listeners[?(@.type=="external")].bootstrapServers}{"\n"}' -n $dev_prj 2>/dev/null)
+if [[ -n ${EXTERNAL_KAFKA_ENDPOINT} ]]; then
+    echo "Setting up local environment to reach kafka cluster"
+        
+    # Get cert info for truststore to use when accessing Kafka endpoint
+    oc extract secret/my-cluster-cluster-ca-cert -n $dev_prj --keys=ca.crt --to=- > /tmp/ca.crt
+    KEYSTORE_FILE="$DEMO_HOME/docker-secrets/truststore.jks"
+    if [[ -f $KEYSTORE_FILE ]]; then
+        echo "Removing old keystore file at $KEYSTORE_FILE prior to import"
+        rm -f $KEYSTORE_FILE
+    fi
+    keytool -import -trustcacerts -alias root -file /tmp/ca.crt -keystore $KEYSTORE_FILE -storepass password -noprompt
+
+    # override configuration variables for use with config functionality in quarkus payment service
+    export mp_messaging_outgoing_orders_bootstrap_servers=${EXTERNAL_KAFKA_ENDPOINT}
+
+    export DEV_mp_messaging_outgoing_orders_bootstrap_servers=${EXTERNAL_KAFKA_ENDPOINT}
+else
+    echo "WARNING: No external kafka cluster could be found at $(oc whoami --show-server 2>/dev/null)"
+fi
+
 echo "Welcome to the cdc data monolith demo!"
