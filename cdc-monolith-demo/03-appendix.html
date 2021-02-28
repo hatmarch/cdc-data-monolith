@@ -177,6 +177,62 @@
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="mssql"><a class="anchor" href="#mssql"></a>Connect and View MS SQL Database</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can use adminer to connect to the mssql database.  Run this command from the VSCode terminal (assuming your current project is the project that houses the SQL Server)</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc port-forward svc/mssql-server-linux 1433:1433</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, back on your host machine, run the following in a terminal</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -p 8080:8080 -e ADMINER_DEFAULT_SERVER=docker.for.mac.localhost:1433 adminer</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Make sure the port after <code>docker.for.mac.localhost</code> matches the port that you are forwarding from the VSCode terminal</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>On your local machine, navigate to port 8080</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/adminer.png" alt="adminer">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Username</strong>: <code>sa</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>Password!</code></p>
+</li>
+<li>
+<p><strong>Database</strong>: <code>InternationalDB</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="02-walkthrough.html" class="query-params-link">2. Walkthrough</a></span>
 </nav>
