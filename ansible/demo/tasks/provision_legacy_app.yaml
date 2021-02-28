@@ -58,10 +58,10 @@
 
 - name: Deploy Application
   block:
-  - name: Deploy Earth Application
+  - name: Deploy Legacy Application
     shell: "oc new-app quay.io/hguerreroo/my-apache-php-app:latest \
             -e 'SERVER_NAME=mssql-server-linux.{{ db_project }}.svc' \
             -n {{ legacy_app_project }}"
-  - name: Create Earth Application Route
+  - name: Create Legacy Application Route
     shell: "oc expose service my-apache-php-app --name=www -n {{ legacy_app_project }}"
   when: (app_exists.resources is undefined) or (app_exists.resources | length == 0)
