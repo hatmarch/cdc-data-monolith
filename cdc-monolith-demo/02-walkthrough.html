@@ -156,6 +156,132 @@
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_demonstrate_dual_write"><a class="anchor" href="#_demonstrate_dual_write"></a>Demonstrate Dual Write</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Post a file to legacy app:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -X POST -H 'Content-Type: multipart/form-data' --compressed --insecure -F fileToUpload=@earth-orders.csv -F submit="true" -F fragment="_user10" $LEGACY_URL/upload.php</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can see the code of the upload.php page <a href="https://github.com/RedHat-Middleware-Workshops/dayinthelife-streaming/blob/ca810c56c9017424e128768c93983a3b4b8ca1b5/support/projects/module-2/enterprise-app/upload.php">here</a> to understand more about how it consumes the posted data</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_enable_debezium_connector"><a class="anchor" href="#_enable_debezium_connector"></a>Enable Debezium Connector</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_sql_database"><a class="anchor" href="#_configure_sql_database"></a>Configure SQL Database</h3>
+<div class="paragraph">
+<p>See last part of <code>ansible/demo/templates/configmap-data-sql.yaml.j2</code> and instructions <a href="https://debezium.io/documentation/reference/connectors/sqlserver.html#_enabling_cdc_on_the_sql_server_database">here</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_connect"><a class="anchor" href="#_create_connect"></a>Create Connect</h3>
+<div class="paragraph">
+<p>See: <code>ansible/demo/templates/kafka-connect.yaml.j2</code></p>
+</div>
+<div class="paragraph">
+<p>This is for metadata about the connector (I think)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_connector"><a class="anchor" href="#_create_connector"></a>Create Connector</h3>
+<div class="paragraph">
+<p>See: <code>ansible/demo/templates/kafka-connector-mssql.yaml.j2</code></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="demonstratedbz"><a class="anchor" href="#demonstratedbz"></a>Demonstrate Debezium</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Connect to database using Adminer per instructions <a href="03-appendix.html#mssql" class="page">here</a></p>
+</li>
+<li>
+<p>In another terminal watch where the order events will go</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Go to adminer and create a new entry</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generate_legacy_order_adaptor"><a class="anchor" href="#_generate_legacy_order_adaptor"></a>Generate legacy-order-adaptor</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_create_function"><a class="anchor" href="#_create_function"></a>Create function</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>use the following command to create a function scaffolding</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kn func create -t events -l quarkus legacy-order-adaptor</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>update <code>func.yml</code> with proper image target <code>quay.io/mhildenb/legacy-order-adaptor</code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_json_to_pojo"><a class="anchor" href="#_create_json_to_pojo"></a>Create JSON to POJO</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start with some example <code>.json</code> generated from CDC event in <a href="#demonstratedbz">this section</a></p>
+</li>
+<li>
+<p>Navigate to <a href="http://www.jsonschema2pojo.org/">this site</a> and paste in the json per screenshot</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/json2pojo.png" alt="json2pojo">
+</div>
+</div>
+</li>
+<li>
+<p>Click the link to download the zip file</p>
+</li>
+<li>
+<p>expand into the <code>functions</code> directory</p>
+</li>
+<li>
+<p>Update tests to show JSON to POJO working</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="01-setup.html" class="query-params-link">1. Setup</a></span>
   <span class="next"><a href="03-appendix.html#querysql" class="query-params-link">Querying SQL Database</a></span>
