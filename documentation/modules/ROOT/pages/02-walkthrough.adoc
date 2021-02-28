@@ -11,3 +11,75 @@ You can get the URL to the legacy application by running the following command i
 ----
 LEGACY_URL=http://$(oc get route www -o jsonpath='{.spec.host}' -n ${PROJECT_PREFIX}-dev)
 ----
+
+== Demonstrate Dual Write
+
+Post a file to legacy app:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+curl -X POST -H 'Content-Type: multipart/form-data' --compressed --insecure -F fileToUpload=@earth-orders.csv -F submit="true" -F fragment="_user10" $LEGACY_URL/upload.php
+----
+
+[NOTE]
+====
+You can see the code of the upload.php page link:https://github.com/RedHat-Middleware-Workshops/dayinthelife-streaming/blob/ca810c56c9017424e128768c93983a3b4b8ca1b5/support/projects/module-2/enterprise-app/upload.php[here] to understand more about how it consumes the posted data
+====
+
+== Enable Debezium Connector
+
+=== Configure SQL Database
+
+See last part of `ansible/demo/templates/configmap-data-sql.yaml.j2` and instructions link:https://debezium.io/documentation/reference/connectors/sqlserver.html#_enabling_cdc_on_the_sql_server_database[here]
+
+=== Create Connect
+
+See: `ansible/demo/templates/kafka-connect.yaml.j2`
+
+This is for metadata about the connector (I think)
+
+=== Create Connector
+
+See: `ansible/demo/templates/kafka-connector-mssql.yaml.j2`
+
+[#demonstratedbz]
+== Demonstrate Debezium
+
+. Connect to database using Adminer per instructions xref:03-appendix.adoc#mssql[here]
+. In another terminal watch where the order events will go
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning
+----
++
+. Go to adminer and create a new entry
+
+== Generate legacy-order-adaptor
+
+=== Create function
+
+. use the following command to create a function scaffolding
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+kn func create -t events -l quarkus legacy-order-adaptor
+----
++
+. update `func.yml` with proper image target `quay.io/mhildenb/legacy-order-adaptor`
+
+
+=== Create JSON to POJO
+
+. Start with some example `.json` generated from CDC event in xref:02-walkthrough.adoc#demonstratedbz[this section]
+. Navigate to link:http://www.jsonschema2pojo.org/[this site] and paste in the json per screenshot
++
+image::json2pojo.png[]
++
+. Click the link to download the zip file
+. expand into the `functions` directory
+. Update tests to show JSON to POJO working
+
