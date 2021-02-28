@@ -10,6 +10,7 @@ spec:
   tasksMax: 1
   config:
     database.hostname: "mssql-server-linux"
+    connector.class: "io.debezium.connector.sqlserver.SqlServerConnector"
     database.port: "1433"
     database.user: "sa"
     database.password: "Password!"

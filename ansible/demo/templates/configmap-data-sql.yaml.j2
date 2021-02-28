@@ -34,6 +34,9 @@ data:
         Price [NVARCHAR](50) NOT NULL,
         ShipmentAddress [NVARCHAR](100) NOT NULL,
         ZipCode [NVARCHAR](10) NOT NULL,
+        CreditCardNumber [NVARCHAR] (16) NOT NULL,       
+        Expiration [NVARCHAR] (5) NOT NULL,
+        Name [NVARCHAR] (60) NOT NULL,
         OrderUser [NVARCHAR](10) NOT NULL
         -- specify more columns here
     );
@@ -60,11 +63,11 @@ data:
     AS
         INSERT INTO Orders
         ( -- columns to insert data into
-         [OrderType], [OrderItemName], [Quantity], [Price], [ShipmentAddress], [ZipCode], [OrderUser]
+         [OrderType], [OrderItemName], [Quantity], [Price], [ShipmentAddress], [ZipCode], [OrderUser], [CreditCardNumber], [Expiration], [Name]
         )
         VALUES
         ( -- first row: values for the columns in the list above
-         @type, @item, @quantity, @price, @shipaddress, @zipcode, @orderuser
+         @type, @item, @quantity, @price, @shipaddress, @zipcode, @orderuser, '4232454678667866', '04/22', 'Jane G Doe'
         )
         GO
     GO
@@ -76,5 +79,5 @@ data:
     @source_schema = N'dbo',
     @source_name = N'Orders',
     @role_name = NULL,
-    @supports_net_changes = 1
+    @supports_net_changes = 0
     GO
