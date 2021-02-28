@@ -29,4 +29,34 @@ You can run a consumer to see all that's been posted to a kafka topic by running
 oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning
 ----
 
+[#mssql]
+== Connect and View MS SQL Database
 
+You can use adminer to connect to the mssql database.  Run this command from the VSCode terminal (assuming your current project is the project that houses the SQL Server)
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc port-forward svc/mssql-server-linux 1433:1433
+----
+
+Then, back on your host machine, run the following in a terminal
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+docker run --rm -p 8080:8080 -e ADMINER_DEFAULT_SERVER=docker.for.mac.localhost:1433 adminer
+----
+
+[IMPORTANT]
+====
+Make sure the port after `docker.for.mac.localhost` matches the port that you are forwarding from the VSCode terminal
+====
+
+On your local machine, navigate to port 8080
+
+image::adminer.png[]
+
+* *Username*: `sa`
+* *Password*: `Password!`
+* *Database*: `InternationalDB`
