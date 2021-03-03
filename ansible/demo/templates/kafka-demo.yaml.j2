@@ -4,16 +4,28 @@ metadata:
   name: demo
 spec:
   kafka:
-    version: 2.5.0
+    version: 2.6.0
     replicas: {{ num_kafka_brokers }}
     listeners:
-      plain: {}
-      tls: {}
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+      # This is used for accessing the kafka cluster locally.  Port forwarding doesn't 
+      # appear to work
+      - name: external
+        port: 9094
+        type: route
+        tls: true
     config:
       offsets.topic.replication.factor: '{{ default_replicas }}'
       transaction.state.log.replication.factor: '{{ default_replicas }}'
       transaction.state.log.min.isr: '{{ default_replicas }}'
-      log.message.format.version: "2.5"
+      log.message.format.version: "2.6"
     storage:
       type: jbod
       volumes:
