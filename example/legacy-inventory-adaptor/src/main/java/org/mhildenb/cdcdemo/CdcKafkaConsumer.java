@@ -5,20 +5,29 @@ import java.util.concurrent.CompletionStage;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import io.smallrye.reactive.messaging.kafka.Record;
 
 import org.jboss.logging.Logger;
 
+import org.mhildenb.cdcdemo.model.CDCEvent;
+
 @ApplicationScoped
 public class CdcKafkaConsumer {
 
     private final Logger logger = Logger.getLogger(CdcKafkaConsumer.class);
 
-    @Incoming("mssql-server-linux.dbo.Orders")
-    public void receive(Record<String, String> record) {
-        logger.infof("Got a cdc event: %s - %s", record.key(), record.value());
+    @Incoming("mssql-server-linux")
+    public void receive(Record<String, String> record) throws JsonProcessingException {
+        logger.infof("Got a cdc event with key %s", record.key());
+        CDCEvent event = new ObjectMapper().readValue(record.value(), CDCEvent.class);
+
+        logger.infof("Got a payload with name of %s", event.getPayload().getAfter().getName());
     }
 
     // @Incoming()

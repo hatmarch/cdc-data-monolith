@@ -1,5 +1,5 @@
 
-package functions;
+package org.mhildenb.cdcdemo.model;
 
 import java.util.HashMap;
 import java.util.List;

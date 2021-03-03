@@ -84,9 +84,9 @@ if [[ -n ${EXTERNAL_KAFKA_ENDPOINT} ]]; then
     keytool -import -trustcacerts -alias root -file /tmp/ca.crt -keystore $KEYSTORE_FILE -storepass password -noprompt
 
     # override configuration variables for use with config functionality in quarkus payment service
-    export mp_messaging_incoming_mssql_server-linux_dbo_Orders_bootstrap_servers=${EXTERNAL_KAFKA_ENDPOINT}
+    export mp_messaging_incoming_mssql_server_linux_bootstrap_servers=${EXTERNAL_KAFKA_ENDPOINT}
 
-    export DEV_mp_messaging_incoming_mssql_server-linux_dbo_Orders_bootstrap_servers=${EXTERNAL_KAFKA_ENDPOINT}
+    export DEV_mp_messaging_incoming_mssql_server_linux_bootstrap_servers=${EXTERNAL_KAFKA_ENDPOINT}
 else
     echo "WARNING: No external kafka cluster could be found at $(oc whoami --show-server 2>/dev/null)"
 fi
