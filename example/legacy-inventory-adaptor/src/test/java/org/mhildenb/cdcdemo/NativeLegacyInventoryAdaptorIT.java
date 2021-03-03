@@ -1,9 +1,9 @@
-package functions;
+package org.mhildenb.cdcdemo;
 
 import io.quarkus.test.junit.NativeImageTest;
 
 @NativeImageTest
-public class NativeFunctionIT extends FunctionTest {
+public class NativeLegacyInventoryAdaptorIT extends LegacyInventoryAdaptorTest {
 
     // Execute the same tests but in native mode.
 }
