@@ -88,7 +88,7 @@ mvn -B package -DskipTests \
         -Dquarkus.jib.base-jvm-image=registry.access.redhat.com/ubi8/openjdk-11@sha256:a6ad844fe15c91ae7a766c5c674c7c17b3a7ea082596ec823ef031d459b66b83 \
         -Dquarkus.container-image.username=pass:[${USER}] -Dquarkus.container-image.password=pass:[${PASSWORD}] \
         -Dquarkus.container-image.tag=latest \
-        -f pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor
+        -f pass:[${DEMO_HOME}]/example/cdc-legacy-consumer
 ----
 
 [#deploy]
@@ -99,7 +99,7 @@ Once the new image is built, you can deploy the `legacy-consumer` to the `${dev_
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -f pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor/kube/legacy-consumer-adaptor.yaml -n pass:[${dev_prj}]
+oc apply -f pass:[${DEMO_HOME}]/example/cdc-legacy-consumer/kube/legacy-consumer-adaptor.yaml -n pass:[${dev_prj}]
 ----
 
 [#testapp]
@@ -123,5 +123,5 @@ TOPIC=mssql-server-linux
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-echo $(cat pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor/src/test/resources/testCreateEvent.json) | oc exec -it demo-kafka-0 -n $dev_prj -- bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic pass:[${TOPIC}]
+echo $(cat pass:[${DEMO_HOME}]/example/cdc-legacy-consumer/src/test/resources/testCreateEvent.json) | oc exec -it demo-kafka-0 -n $dev_prj -- bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic pass:[${TOPIC}]
 ----

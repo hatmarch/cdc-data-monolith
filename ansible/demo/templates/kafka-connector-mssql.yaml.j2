@@ -17,6 +17,10 @@ spec:
     database.dbname: "InternationalDB"
     database.server.name: "mssql-server-linux"
     table.whitelist: "dbo.Orders"
+    transforms: Reroute
+    transforms.Reroute.type: "io.debezium.transforms.ByLogicalTableRouter"
+    transforms.Reroute.topic.regex: "(.*)Orders(.*)"
+    transforms.Reroute.topic.replacement: "{{ cdc_topic }}"
     database.history.kafka.bootstrap.servers: "demo-kafka-bootstrap:9092"
     database.history.kafka.topic: "dbhistory.internationaldb"
 #    key.converter: "org.apache.kafka.connect.json.JsonConverter"

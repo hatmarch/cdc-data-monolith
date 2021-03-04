@@ -11,3 +11,4 @@ default_replicas=1
 num_zk_nodes=1
 provision_walkthrough_step_1=true
 debezium_connectors_image=quay.io/hguerreroo/rhi-cdc-connect:2020-Q3
+cdc_topic=legacy-inventory-cdc

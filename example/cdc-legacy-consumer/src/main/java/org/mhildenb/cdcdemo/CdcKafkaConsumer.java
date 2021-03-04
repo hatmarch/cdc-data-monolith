@@ -22,7 +22,7 @@ public class CdcKafkaConsumer {
 
     private final Logger logger = Logger.getLogger(CdcKafkaConsumer.class);
 
-    @Incoming("mssql-server-linux")
+    @Incoming("legacy-inventory-cdc")
     public void receive(Record<String, String> record) throws JsonProcessingException {
         logger.infof("Got a cdc event with key %s", record.key());
         CDCEvent event = new ObjectMapper().readValue(record.value(), CDCEvent.class);
