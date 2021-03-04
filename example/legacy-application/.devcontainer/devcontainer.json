@@ -1,0 +1,55 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.159.0/containers/php
+{
+	"name": "PHP",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			// Update VARIANT to pick a PHP version: 8, 8.0, 7, 7.4, 7.3
+			"VARIANT": "7.4",
+			"INSTALL_NODE": "true",
+			"NODE_VERSION": "lts/*"
+		},
+	},
+	"runArgs": [
+		"-v", "/var/run/docker.sock.raw:/var/run/docker.sock",
+	
+		"-v", "${env:HOME}/.aws:/home/vscode/.aws",
+		"-v", "${env:HOME}/.kube:/home/vscode/.kube",
+		"-v", "${env:HOME}/.vs-kubernetes:/vscode/jboss/.vs-kubernetes",
+
+		// use local .oh-my-zsh configuration if it exists (overwriting one in container).
+		// comment the following line out if you want to use local installation on container instead
+		//"-v", "${env:HOME}/.oh-my-zsh:/home/vscode/.oh-my-zsh",
+		"-v", "${env:HOME}/.helm:/home/vscode/.helm",
+		"-v", "${env:HOME}/.ssh:/home/vscode/.ssh",
+
+		// mount npm cache locally
+		"-v", "${env:HOME}/.npm:/home/vscode/.npm",
+
+		// Default location for PHP app database
+		"-e", "SERVER_NAME=localhost:1433"
+	],
+	
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/zsh",
+		"php.validate.executablePath": "/usr/local/bin/php"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"felixfbecker.php-debug",
+		"bmewburn.vscode-intelephense-client",
+		"mrmlnc.vscode-apache"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [8080],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode"
+}
