@@ -18,6 +18,14 @@
 #  Use this when testing to skip this step
 #  when: false|bool 
 
+- name: Provision Coolstore
+  include_tasks: provision_coolstore.yaml
+  vars:
+#    coolstore_project: "{{ dev_project }}"
+    coolstore_project: coolstore-test
+    kafka_project: "{{ dev_project }}"
+  when: not skip_coolstore|bool
+
 - name: Provision Connect and Connector
   include_tasks: provision_debezium.yaml
   vars:

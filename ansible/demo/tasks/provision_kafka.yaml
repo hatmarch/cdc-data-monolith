@@ -7,7 +7,7 @@
 - name: Wait for Kafka Cluster to start
   k8s_info:
     kind: Kafka
-    name: demo
+    name: '{{ kafka_name }}'  
     namespace: '{{ kafka_project }}'
     api_version: kafka.strimzi.io/v1beta1
   register: r_k8s_info
