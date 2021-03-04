@@ -30,11 +30,12 @@
 		// Default location for PHP app database
 		"-e", "SERVER_NAME=Docker.for.mac.localhost, 1433"
 	],
-	
+	"postStartCommand": "rsync -a .devcontainer/workspace-setup/ ${containerWorkspaceFolder}/.vscode/ --ignore-existing",
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/zsh",
-		"php.validate.executablePath": "/usr/local/bin/php"
+		"php.validate.executablePath": "/usr/local/bin/php",
+		"workbench.colorTheme": "Abyss"
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
