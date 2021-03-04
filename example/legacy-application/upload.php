@@ -157,7 +157,7 @@ while( $row = sqlsrv_fetch_array( $stmt_s, SQLSRV_FETCH_ASSOC))
 {  
   echo '<tr>';
   foreach ($row as $val) {
-    echo '<td><a href="edit.php?order=' . base64_encode(json_encode($row)) . '">' . $val . '</a></td>';
+    echo '<td><a href="edit.php?inv=' . base64_encode(json_encode($row)) . '">' . $val . '</a></td>';
   }
   echo '</tr>';
 }  

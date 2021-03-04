@@ -61,7 +61,7 @@ echo '
                     <li class="nav-header">Type</li>
                     <li class="active"><a href="#">Entered</a></li>
                     <li><a href="#">Retrieved</a></li>
-                    <li><a href="#">Imported</a></li>
+                    <li><a href="index.php">Imported</a></li>
                     <li><a href="#">Generated</a></li>
                     <li class="nav-header">Status</li>
                     <li><a href="#">Open</a></li>
