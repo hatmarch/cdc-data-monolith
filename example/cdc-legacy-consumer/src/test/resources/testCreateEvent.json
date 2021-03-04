@@ -8,17 +8,17 @@
                     {
                         "type": "int32",
                         "optional": false,
-                        "field": "OrderId"
+                        "field": "ItemId"
                     },
                     {
                         "type": "string",
                         "optional": false,
-                        "field": "OrderType"
+                        "field": "ItemName"
                     },
                     {
                         "type": "string",
-                        "optional": false,
-                        "field": "OrderItemName"
+                        "optional": true,
+                        "field": "Description"
                     },
                     {
                         "type": "int32",
@@ -33,36 +33,16 @@
                     {
                         "type": "string",
                         "optional": false,
-                        "field": "ShipmentAddress"
+                        "field": "Location"
                     },
                     {
                         "type": "string",
                         "optional": false,
-                        "field": "ZipCode"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "CreditCardNumber"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "Expiration"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "Name"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "OrderUser"
+                        "field": "Link"
                     }
                 ],
                 "optional": true,
-                "name": "mssql_server_linux.dbo.Orders.Value",
+                "name": "legacy_inventory_cdc.Value",
                 "field": "before"
             },
             {
@@ -71,17 +51,17 @@
                     {
                         "type": "int32",
                         "optional": false,
-                        "field": "OrderId"
+                        "field": "ItemId"
                     },
                     {
                         "type": "string",
                         "optional": false,
-                        "field": "OrderType"
+                        "field": "ItemName"
                     },
                     {
                         "type": "string",
-                        "optional": false,
-                        "field": "OrderItemName"
+                        "optional": true,
+                        "field": "Description"
                     },
                     {
                         "type": "int32",
@@ -96,36 +76,16 @@
                     {
                         "type": "string",
                         "optional": false,
-                        "field": "ShipmentAddress"
+                        "field": "Location"
                     },
                     {
                         "type": "string",
                         "optional": false,
-                        "field": "ZipCode"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "CreditCardNumber"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "Expiration"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "Name"
-                    },
-                    {
-                        "type": "string",
-                        "optional": false,
-                        "field": "OrderUser"
+                        "field": "Link"
                     }
                 ],
                 "optional": true,
-                "name": "mssql_server_linux.dbo.Orders.Value",
+                "name": "legacy_inventory_cdc.Value",
                 "field": "after"
             },
             {
@@ -231,38 +191,34 @@
             }
         ],
         "optional": false,
-        "name": "mssql_server_linux.dbo.Orders.Envelope"
+        "name": "legacy_inventory_cdc.Envelope"
     },
     "payload": {
         "before": null,
         "after": {
-            "OrderId": 1,
-            "OrderType": "f",
-            "OrderItemName": "bar",
-            "Quantity": 4,
-            "Price": "45",
-            "ShipmentAddress": "5",
-            "ZipCode": "11787",
-            "CreditCardNumber": "4123",
-            "Expiration": "05/23",
-            "Name": "User Name III",
-            "OrderUser": "user5"
+            "ItemId": 1,
+            "ItemName": "Cherries",
+            "Description": "These are yummy and in season",
+            "Quantity": 123,
+            "Price": "3.21",
+            "Location": "New York",
+            "Link": "http://maps.google.com/?q=NewYork"
         },
         "source": {
             "version": "1.2.4.Final-redhat-00001",
             "connector": "sqlserver",
             "name": "mssql-server-linux",
-            "ts_ms": 1614489498317,
-            "snapshot": "false",
+            "ts_ms": 1614841363485,
+            "snapshot": "last",
             "db": "InternationalDB",
             "schema": "dbo",
-            "table": "Orders",
-            "change_lsn": "00000025:00000728:001c",
-            "commit_lsn": "00000025:00000728:001d",
-            "event_serial_no": 1
+            "table": "Inventory",
+            "change_lsn": null,
+            "commit_lsn": "00000040:000044f0:001c",
+            "event_serial_no": null
         },
         "op": "c",
-        "ts_ms": 1614489503961,
+        "ts_ms": 1614841363488,
         "transaction": null
     }
 }

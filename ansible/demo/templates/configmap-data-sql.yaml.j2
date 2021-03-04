@@ -19,55 +19,50 @@ data:
     -- Connect to the 'InternationalDB' database to run this snippet
     USE InternationalDB
     GO
-    -- Create a new table called 'Orders' in schema 'dbo'
+    -- Create a new table called 'Inventory' in schema 'dbo'
     -- Drop the table if it already exists
-    IF OBJECT_ID('dbo.Orders', 'U') IS NOT NULL
-    DROP TABLE dbo.Orders
+    IF OBJECT_ID('dbo.Inventory', 'U') IS NOT NULL
+    DROP TABLE dbo.Inventory
     GO
     -- Create the table in the specified schema
-    CREATE TABLE dbo.Orders
+    CREATE TABLE dbo.Inventory
     (
-        OrderId INT IDENTITY(1,1) NOT NULL PRIMARY KEY, -- primary key column
-        OrderType [NVARCHAR](1) NOT NULL,
-        OrderItemName [NVARCHAR](50) NOT NULL,
+        ItemId INT IDENTITY(1,1) NOT NULL PRIMARY KEY, -- primary key column
+        ItemName [NVARCHAR](256) NOT NULL,
+        Description [NVARCHAR](2560) NULL,
         Quantity INT NOT NULL,
         Price [NVARCHAR](50) NOT NULL,
-        ShipmentAddress [NVARCHAR](100) NOT NULL,
-        ZipCode [NVARCHAR](10) NOT NULL,
-        CreditCardNumber [NVARCHAR] (16) NOT NULL,       
-        Expiration [NVARCHAR] (5) NOT NULL,
-        Name [NVARCHAR] (60) NOT NULL,
-        OrderUser [NVARCHAR](10) NOT NULL
+        Location [NVARCHAR](256) NOT NULL,
+        Link [NVARCHAR](256) NOT NULL,
         -- specify more columns here
     );
     GO
-    -- Create a new stored procedure called 'SpInsertOrder' in schema 'dbo'
+    -- Create a new stored procedure called 'SpInsertInventory' in schema 'dbo'
     -- Drop the stored procedure if it already exists
     IF EXISTS (
     SELECT *
         FROM INFORMATION_SCHEMA.ROUTINES
     WHERE SPECIFIC_SCHEMA = N'dbo'
-        AND SPECIFIC_NAME = N'SpInsertOrder'
+        AND SPECIFIC_NAME = N'SpInsertInventory'
     )
-    DROP PROCEDURE dbo.SpInsertOrder
+    DROP PROCEDURE dbo.SpInsertInventory
     GO
     -- Create the stored procedure in the specified schema
     CREATE PROCEDURE dbo.SpInsertOrder
-        @type NVARCHAR(1),
-        @item NVARCHAR(50),
+        @name [NVARCHAR](256),
+        @description [NVARCHAR](2560),
         @quantity INT,
-        @price NVARCHAR(50),
-        @shipaddress NVARCHAR(100),
-        @zipcode NVARCHAR(10),
-        @orderuser NVARCHAR(10)
+        @price [NVARCHAR](50),
+        @location [NVARCHAR](256),
+        @link [NVARCHAR](256)
     AS
-        INSERT INTO Orders
+        INSERT INTO Inventory
         ( -- columns to insert data into
-         [OrderType], [OrderItemName], [Quantity], [Price], [ShipmentAddress], [ZipCode], [OrderUser], [CreditCardNumber], [Expiration], [Name]
+            [ItemId], [ItemName], [Description], [Quantity], [Price], [Location], [Link]
         )
         VALUES
         ( -- first row: values for the columns in the list above
-         @type, @item, @quantity, @price, @shipaddress, @zipcode, @orderuser, '4232454678667866', '04/22', 'Jane G Doe'
+            @name, @description, @quantity, @price, @location, @link
         )
         GO
     GO
@@ -77,7 +72,7 @@ data:
     -- Enable a Table 
     EXEC sys.sp_cdc_enable_table
     @source_schema = N'dbo',
-    @source_name = N'Orders',
+    @source_name = N'Inventory',
     @role_name = NULL,
     @supports_net_changes = 0
     GO

@@ -28,7 +28,7 @@
 		"-v", "${env:HOME}/.npm:/home/vscode/.npm",
 
 		// Default location for PHP app database
-		"-e", "SERVER_NAME=localhost:1433"
+		"-e", "SERVER_NAME=127.0.0.1, 1433"
 	],
 	
 	// Set *default* container specific settings.json values on container create.

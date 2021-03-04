@@ -27,7 +27,7 @@ public class CdcKafkaConsumer {
         logger.infof("Got a cdc event with key %s", record.key());
         CDCEvent event = new ObjectMapper().readValue(record.value(), CDCEvent.class);
 
-        logger.infof("Got a payload with name of %s", event.getPayload().getAfter().getName());
+        logger.infof("Got a payload with item name of %s", event.getPayload().getAfter().getItemName());
     }
 
     // @Incoming()

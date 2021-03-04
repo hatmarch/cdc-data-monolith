@@ -12,73 +12,61 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "OrderId",
-    "OrderType",
-    "OrderItemName",
+    "ItemId",
+    "ItemName",
+    "Description",
     "Quantity",
     "Price",
-    "ShipmentAddress",
-    "ZipCode",
-    "CreditCardNumber",
-    "Expiration",
-    "Name",
-    "OrderUser"
+    "Location",
+    "Link"
 })
 public class After {
 
-    @JsonProperty("OrderId")
-    private Long orderId;
-    @JsonProperty("OrderType")
-    private String orderType;
-    @JsonProperty("OrderItemName")
-    private String orderItemName;
+    @JsonProperty("ItemId")
+    private Long itemId;
+    @JsonProperty("ItemName")
+    private String itemName;
+    @JsonProperty("Description")
+    private String description;
     @JsonProperty("Quantity")
     private Long quantity;
     @JsonProperty("Price")
     private String price;
-    @JsonProperty("ShipmentAddress")
-    private String shipmentAddress;
-    @JsonProperty("ZipCode")
-    private String zipCode;
-    @JsonProperty("CreditCardNumber")
-    private String creditCardNumber;
-    @JsonProperty("Expiration")
-    private String expiration;
-    @JsonProperty("Name")
-    private String name;
-    @JsonProperty("OrderUser")
-    private String orderUser;
+    @JsonProperty("Location")
+    private String location;
+    @JsonProperty("Link")
+    private String link;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("OrderId")
-    public Long getOrderId() {
-        return orderId;
+    @JsonProperty("ItemId")
+    public Long getItemId() {
+        return itemId;
     }
 
-    @JsonProperty("OrderId")
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    @JsonProperty("ItemId")
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
-    @JsonProperty("OrderType")
-    public String getOrderType() {
-        return orderType;
+    @JsonProperty("ItemName")
+    public String getItemName() {
+        return itemName;
     }
 
-    @JsonProperty("OrderType")
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
+    @JsonProperty("ItemName")
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    @JsonProperty("OrderItemName")
-    public String getOrderItemName() {
-        return orderItemName;
+    @JsonProperty("Description")
+    public String getDescription() {
+        return description;
     }
 
-    @JsonProperty("OrderItemName")
-    public void setOrderItemName(String orderItemName) {
-        this.orderItemName = orderItemName;
+    @JsonProperty("Description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonProperty("Quantity")
@@ -101,64 +89,24 @@ public class After {
         this.price = price;
     }
 
-    @JsonProperty("ShipmentAddress")
-    public String getShipmentAddress() {
-        return shipmentAddress;
+    @JsonProperty("Location")
+    public String getLocation() {
+        return location;
     }
 
-    @JsonProperty("ShipmentAddress")
-    public void setShipmentAddress(String shipmentAddress) {
-        this.shipmentAddress = shipmentAddress;
+    @JsonProperty("Location")
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    @JsonProperty("ZipCode")
-    public String getZipCode() {
-        return zipCode;
+    @JsonProperty("Link")
+    public String getLink() {
+        return link;
     }
 
-    @JsonProperty("ZipCode")
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    @JsonProperty("CreditCardNumber")
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
-
-    @JsonProperty("CreditCardNumber")
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
-    }
-
-    @JsonProperty("Expiration")
-    public String getExpiration() {
-        return expiration;
-    }
-
-    @JsonProperty("Expiration")
-    public void setExpiration(String expiration) {
-        this.expiration = expiration;
-    }
-
-    @JsonProperty("Name")
-    public String getName() {
-        return name;
-    }
-
-    @JsonProperty("Name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonProperty("OrderUser")
-    public String getOrderUser() {
-        return orderUser;
-    }
-
-    @JsonProperty("OrderUser")
-    public void setOrderUser(String orderUser) {
-        this.orderUser = orderUser;
+    @JsonProperty("Link")
+    public void setLink(String link) {
+        this.link = link;
     }
 
     @JsonAnyGetter

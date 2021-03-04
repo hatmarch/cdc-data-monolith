@@ -43,11 +43,11 @@ public class Source {
     @JsonProperty("table")
     private String table;
     @JsonProperty("change_lsn")
-    private String changeLsn;
+    private Object changeLsn;
     @JsonProperty("commit_lsn")
     private String commitLsn;
     @JsonProperty("event_serial_no")
-    private Long eventSerialNo;
+    private Object eventSerialNo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -132,12 +132,12 @@ public class Source {
     }
 
     @JsonProperty("change_lsn")
-    public String getChangeLsn() {
+    public Object getChangeLsn() {
         return changeLsn;
     }
 
     @JsonProperty("change_lsn")
-    public void setChangeLsn(String changeLsn) {
+    public void setChangeLsn(Object changeLsn) {
         this.changeLsn = changeLsn;
     }
 
@@ -152,12 +152,12 @@ public class Source {
     }
 
     @JsonProperty("event_serial_no")
-    public Long getEventSerialNo() {
+    public Object getEventSerialNo() {
         return eventSerialNo;
     }
 
     @JsonProperty("event_serial_no")
-    public void setEventSerialNo(Long eventSerialNo) {
+    public void setEventSerialNo(Object eventSerialNo) {
         this.eventSerialNo = eventSerialNo;
     }
 
