@@ -33,7 +33,7 @@ echo '
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">Orders Deluxe &#39;95</a>
+                <a class="brand" href="#">Inventory Deluxe &#39;95</a>
                 <div class="nav-collapse collapse">
                     <p class="navbar-text pull-right">
                         Logged in as <a href="#" class="navbar-link">SuperAdmin</a>
@@ -75,15 +75,15 @@ echo '
         <!--/span-->
         <div class="span9">
             <div class="hero-unit">
-            <h1>Entered Order</h1>
+            <h1>Entered Inventory</h1>
 ';
 
-if ( isset($_GET["order"]) == false ) 
+if ( isset($_GET["inv"]) == false ) 
 {
-  die("No order selected");
+  die("No inventory selected");
 }
 
-$order = json_decode(base64_decode(htmlspecialchars($_GET["order"])), true);
+$inv = json_decode(base64_decode(htmlspecialchars($_GET["inv"])), true);
 
 if ( isset($_POST["submit"]) == true ) 
 {
@@ -101,10 +101,10 @@ if ( isset($_POST["submit"]) == true )
     die(var_dump(sqlsrv_errors()));
   }
   /* update row */
-  $query = "UPDATE [InternationalDB].[dbo].[Orders]
-            SET [OrderItemName] = (?), [Quantity] = (?), [ShipmentAddress] = (?), [ZipCode] = (?) 
-            WHERE [OrderId] = (?)";
-  $params = array($_POST["OrderItemName"], $_POST["Quantity"], $_POST["ShipmentAddress"], $_POST["ZipCode"], $_POST["OrderId"]);
+  $query = "UPDATE [InternationalDB].[dbo].[Inventory]
+            SET [ItemName] = (?), [Quantity] = (?), [Description] = (?), [Price] = (?), [Location] = (?), [Link] = (?) 
+            WHERE [ItemId] = (?)";
+  $params = array($_POST["ItemName"], $_POST["Quantity"], $_POST["Description"], $_POST["Price"], $_POST["Location"], $_POST["Link"], $_POST["ItemId"]);
 
   $stmt = sqlsrv_query( $conn, $query, $params);
 
@@ -119,24 +119,28 @@ if ( isset($_POST["submit"]) == true )
   /* Free connection resources. */
   sqlsrv_close( $conn );
 
-  echo '<span class="label label-success">Order Saved!</span>';
+  echo '<span class="label label-success">Inventory Saved!</span>';
 
-  $order = array_merge($order, $_POST);
+  $inv = array_merge($inv, $_POST);
 }  
 
 echo '
             <form class="form-horizontal" method="post">
               <fieldset>
-                <legend>Edit Order ' . $order["OrderId"] . '</legend>
-                <input type="hidden" name="OrderId" value="' . $order["OrderId"] . '">
+                <legend>Edit Item ' . $inv["ItemId"] . '</legend>
+                <input type="hidden" name="ItemId" value="' . $inv["ItemId"] . '">
                 <label>Item Name</label>
-                <input type="text" name="OrderItemName" placeholder="OrderItemName" value="' . $order["OrderItemName"] . '">
+                <input type="text" name="ItemName" placeholder="ItemName" value="' . $inv["ItemName"] . '">
                 <label>Quantity</label>
-                <input type="text" name="Quantity" placeholder="Quantity" value="' . $order["Quantity"] . '">
-                <label>Shipment Address</label>
-                <input type="text" name="ShipmentAddress"  placeholder="ShipmentAddress" value="' . $order["ShipmentAddress"] . '">
-                <label>Zip Code</label>
-                <input type="text" name="ZipCode"  placeholder="ZipCode" value="' . $order["ZipCode"] . '">
+                <input type="text" name="Quantity" placeholder="Quantity" value="' . $inv["Quantity"] . '">
+                <label>Description</label>
+                <input type="text" name="Description"  placeholder="Description" value="' . $inv["Description"] . '">
+                <label>Price</label>
+                <input type="text" name="Price"  placeholder="Price" value="' . $inv["Price"] . '">
+                <label>Price</label>
+                <input type="text" name="Location"  placeholder="Location" value="' . $inv["Location"] . '">
+                <label>Price</label>
+                <input type="text" name="Link"  placeholder="Link" value="' . $inv["Link"] . '">
                 <span class="help-block">Click Save to update the record.</span>
                 <button type="submit" name="submit" class="btn">Save</button>
               </fieldset>

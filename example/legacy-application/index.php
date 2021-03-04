@@ -30,7 +30,7 @@ echo '
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">Orders Deluxe &#39;95</a>
+                <a class="brand" href="#">Inventory Deluxe &#39;95</a>
                 <div class="nav-collapse collapse">
                     <p class="navbar-text pull-right">
                         Logged in as <a href="#" class="navbar-link">SuperAdmin</a>
@@ -73,7 +73,7 @@ echo '
                 <!--/span-->
                 <div class="span9">
                     <div class="hero-unit">
-                        <h1>Pre-generated Orders</h1>
+                        <h1>Pre-generated Inventory</h1>
                         <p>This is a template for a simple marketing or informational website. It includes a large
                             callout called the hero unit and three supporting pieces of content. Use it as a starting
                             point to create something more unique.</p>

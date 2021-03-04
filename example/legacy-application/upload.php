@@ -33,7 +33,7 @@ echo '
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">Orders Deluxe &#39;95</a>
+                <a class="brand" href="#">Inventory Deluxe &#39;95</a>
                 <div class="nav-collapse collapse">
                     <p class="navbar-text pull-right">
                         Logged in as <a href="#" class="navbar-link">SuperAdmin</a>
@@ -75,7 +75,7 @@ echo '
         <!--/span-->
         <div class="span9">
             <div class="hero-unit">
-            <h1>Imported Orders</h1>
+            <h1>Imported Inventory</h1>
 ';
 
 if ( isset($_POST["submit"]) == false ) 
@@ -87,12 +87,6 @@ if ( isset($_FILES["fileToUpload"]) == false)
 {
   die("No file selected");
 }
-
-if ( isset($_ENV["USER"]) == false && empty($_POST['fragment']) )
-{
-  die("Missing #user information");
-}
-
 
 //if there was an error uploading the file
 if ($_FILES["fileToUpload"]["error"] > 0) 
@@ -106,17 +100,13 @@ echo "Type: " . $_FILES["fileToUpload"]["type"] . "<br />";
 echo "Size: " . ($_FILES["fileToUpload"]["size"] / 1024) . " Kb<br />";
 echo "Temp file: " . $_FILES["fileToUpload"]["tmp_name"] . "<br />";
 
-$user = isset($_ENV["USER"]) ? $_ENV["USER"] : substr($_POST['fragment'],1);
-
-echo "User: " .  $user . "<br />";
-
 $csvFile = file($_FILES["fileToUpload"]["tmp_name"]);
 $csv = array_map('str_getcsv', $csvFile);
 array_shift($csv);
 
 /* Connect to the remote server using SQL Server Authentication and   
 specify the InternationalDB database as the database in use. */
-$serverName = $_ENV["SERVER_NAME"] ? $_ENV["SERVER_NAME"] : "127.0.0.1";
+$serverName = $_ENV["SERVER_NAME"] ? $_ENV["SERVER_NAME"] : "localhost, 1433";
 $connectionOptions = array(
     "Database"=>"InternationalDB",  
     "Authentication"=>"SqlPassword",
@@ -128,11 +118,10 @@ if($conn == false)
   die(var_dump(sqlsrv_errors()));
 }
 
-$tsql_callSP = "{call SpInsertOrder( ?, ?, ?, ?, ?, ?, ? )}";
+$tsql_callSP = "{call SpInsertInventory( ?, ?, ?, ?, ?, ? )}";
 
 foreach ($csv as $item) 
 {
-  array_push( $item, $user );
   $stmt = sqlsrv_query( $conn, $tsql_callSP, $item);
   if ( $stmt == false )
   {
@@ -144,9 +133,9 @@ foreach ($csv as $item)
 }
 
 /* Retrieve rows */
-$query = "SELECT [OrderId],[OrderType],[OrderItemName],[Quantity],[Price],[ShipmentAddress],[ZipCode],[OrderUser] FROM [InternationalDB].[dbo].[Orders] WHERE [OrderUser] = (?)";
+$query = "SELECT [ItemId], [ItemName], [Description], [Quantity], [Price], [Location], [Link] FROM [InternationalDB].[dbo].[Inventory]";
 
-$stmt_s = sqlsrv_query( $conn, $query, array($user));
+$stmt_s = sqlsrv_query( $conn, $query);
 
 if( $stmt_s === false)  
 {  
@@ -158,7 +147,7 @@ if( $stmt_s === false)
 echo '
 </div>
 <div class="row-fluid">
-<h2>Orders</h2>
+<h2>Inventory</h2>
 </div>
 <table class="table table-condensed">
 ';
