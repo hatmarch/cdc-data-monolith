@@ -60,3 +60,44 @@ image::adminer.png[]
 * *Username*: `sa`
 * *Password*: `Password!`
 * *Database*: `InternationalDB`
+
+[#build]
+== Building the Legacy App Consumer
+
+To build the application that is going to be watching for CDC events, you can do the following:
+
+. Issue the following command (ensuring the environment setup specified has been done)
++
+[IMPORTANT]
+====
+You first must set the following environment variables to log into your chosen image registry (e.g. `quay.io`):
+
+* `USER`
+* `PASSWORD`
+====
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+mvn -B package -DskipTests \
+        -Dquarkus.container-image.build=true \
+        -Dquarkus.container-image.push=true \
+        -Dquarkus.container-image.registry=quay.io \
+        -Dquarkus.container-image.group=mhildenb \
+        -Dquarkus.container-image.name=cdc-legacy-consumer \
+        -Dquarkus.jib.base-jvm-image=registry.access.redhat.com/ubi8/openjdk-11@sha256:a6ad844fe15c91ae7a766c5c674c7c17b3a7ea082596ec823ef031d459b66b83 \
+        -Dquarkus.container-image.username=pass:[${USER}] -Dquarkus.container-image.password=pass:[${PASSWORD}] \
+        -Dquarkus.container-image.tag=latest \
+        -f pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor
+----
+
+[#deploy]
+== Deploying the Legacy App Consumer
+
+Once the new image is built, you can deploy the `legacy-consumer` to the `${dev_prj}`, with the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -f pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor/kube/legacy-consumer-adaptor.yaml -n pass:[${dev_prj}]
+----

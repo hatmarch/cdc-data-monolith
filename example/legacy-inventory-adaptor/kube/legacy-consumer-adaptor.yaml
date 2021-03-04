@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdc-legacy-consumer
+spec:
+  selector:
+    matchLabels:
+      app: cdc-legacy-consumer
+  replicas: 1 
+  strategy:
+    type: Recreate # during an upgrade the consumer will shut down before the new version comes up to prevent two instances running at the same time
+  template:
+    metadata:
+      labels:
+        app: cdc-legacy-consumer
+    spec:
+#      serviceAccount: default
+      containers:
+      - name: app
+        image: quay.io/mhildenb/cdc-legacy-consumer:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /q/health/live
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+        readinessProbe:
+          httpGet:
+            path: q/health/ready
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
