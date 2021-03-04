@@ -101,3 +101,27 @@ Once the new image is built, you can deploy the `legacy-consumer` to the `${dev_
 ----
 oc apply -f pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor/kube/legacy-consumer-adaptor.yaml -n pass:[${dev_prj}]
 ----
+
+[#testapp]
+== Strategies for Testing Legacy App Consumer
+
+There are a few different ways you can test the application
+
+=== Produce a message on a topic
+
+You can use the following command to send a pre-formatted file to the kafka cluster.  Assuming the correct topic, both local (`mvn quarkus:dev`) and deployed versions of the application should be able to consume this
+
+[NOTE]
+====
+For this to work you need to ensure you are logged into the OpenShift cluster and that this variable is set to whatever topic you're wanting to watch. For example:
+
+----
+TOPIC=mssql-server-linux
+----
+====
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+echo $(cat pass:[${DEMO_HOME}]/example/legacy-inventory-adaptor/src/test/resources/testCreateEvent.json) | oc exec -it demo-kafka-0 -n $dev_prj -- bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic pass:[${TOPIC}]
+----
