@@ -8,3 +8,8 @@
 * xref:03-appendix[Appendix]
 ** xref:03-appendix.adoc#querysql[Querying SQL Database]
 ** xref:03-appendix.adoc#kafkatopicdebug[Debugging Kafka Topics]
+** xref:03-appendix.adoc#mssql[Connect and View MS SQL Database]
+** xref:03-appendix.adoc#build[Build Legacy Consumer]
+** xref:03-appendix.adoc#deploy[Deploy Legacy Consumer]
+** xref:03-appendix.adoc#testapp[Strategies for Testing Legacy Consumer]
+** xref:03-appendix.adoc#buildcoolstore[Building Coolstore Services]
