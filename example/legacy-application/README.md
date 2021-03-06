@@ -1,21 +1,9 @@
-# Try Out Development Containers: PHP
+# CDC Demo Legacy Application
 
-A **development container** is a running [Docker](https://www.docker.com) container with a well-defined tool/runtime stack and its prerequisites. You can try out development containers with **[GitHub Codespaces](https://github.com/features/codespaces)** or **[Visual Studio Code Remote - Containers](https://aka.ms/vscode-remote/containers)**.
-
-This is a sample project that lets you try out either option in a few easy steps. We have a variety of other [vscode-remote-try-*](https://github.com/search?q=org%3Amicrosoft+vscode-remote-try-&type=Repositories) sample projects, too.
-
-> **Note:** If you already have a Codespace or dev container, you can jump to the [Things to try](#things-to-try) section.
+A **development container** is a running [Docker](https://www.docker.com) container with a well-defined tool/runtime stack and its prerequisites. This uses **[Visual Studio Code Remote - Containers](https://aka.ms/vscode-remote/containers)**.
 
 ## Setting up the development container
 
-### GitHub Codespaces
-Follow these steps to open this sample in a Codespace:
-1. Click the Code drop-down menu and select the **Open with Codespaces** option.
-1. Select **+ New codespace** at the bottom on the pane.
-
-For more info, check out the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/developing-online-with-codespaces/creating-a-codespace#creating-a-codespace).
-
-### VS Code Remote - Containers
 Follow these steps to open this sample in a container using the VS Code Remote - Containers extension:
 
 1. If this is your first time using a development container, please ensure your system meets the pre-reqs (i.e. have Docker installed) in the [getting started steps](https://aka.ms/vscode-remote/containers/getting-started).
@@ -66,21 +54,16 @@ Some things to try:
    - Reload your browser window
    - Once the breakpoint is hit, try hovering over variables, examining locals, and more.
 
-## Contributing
+## Building the Container
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+From the root of this repo, run this command:
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+```
+docker build -t quay.io/mhildenb/cdc-legacy-app:1.0 -f .docker/Dockerfile
+```
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+Then optionally push the container:
 
-## License
-
-Copyright © Microsoft Corporation All rights reserved.<br />
-Licensed under the MIT License. See LICENSE in the project root for license information.
+```
+docker push quay.io/mhildenb/cdc-legacy-app:1.0
+```
