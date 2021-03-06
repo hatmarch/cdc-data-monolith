@@ -22,9 +22,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Payload {
 
     @JsonProperty("before")
-    private Object before;
+    private RowData before;
     @JsonProperty("after")
-    private After after;
+    private RowData after;
     @JsonProperty("source")
     private Source source;
     @JsonProperty("op")
@@ -37,22 +37,22 @@ public class Payload {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("before")
-    public Object getBefore() {
+    public RowData getBefore() {
         return before;
     }
 
     @JsonProperty("before")
-    public void setBefore(Object before) {
+    public void setBefore(RowData before) {
         this.before = before;
     }
 
     @JsonProperty("after")
-    public After getAfter() {
+    public RowData getAfter() {
         return after;
     }
 
     @JsonProperty("after")
-    public void setAfter(After after) {
+    public void setAfter(RowData after) {
         this.after = after;
     }
 

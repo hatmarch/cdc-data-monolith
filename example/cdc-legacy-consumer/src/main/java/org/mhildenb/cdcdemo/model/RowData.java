@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "Location",
     "Link"
 })
-public class After {
+public class RowData {
 
     @JsonProperty("ItemId")
     private Long itemId;
