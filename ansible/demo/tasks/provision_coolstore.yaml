@@ -30,7 +30,7 @@
     shell: |
       oc tag --source docker mhildema/cart:v1 cart:initial-build -n {{ coolstore_project }}
       oc tag --source docker mhildema/coolstore-ui:v1 coolstore-ui:initial-build -n {{ coolstore_project }}
-      oc tag --source docker mhildema/inventory:v1 inventory:initial-build -n {{ coolstore_project }}
+      oc tag --source docker mhildema/inventory:cdc-demo inventory:initial-build -n {{ coolstore_project }}
       oc tag --source docker mhildema/catalog:cdc-demo catalog:initial-build -n {{ coolstore_project }}
       oc tag --source docker mhildema/order:v1 order:initial-build -n {{ coolstore_project }}
   - name: Image Streams> Wait

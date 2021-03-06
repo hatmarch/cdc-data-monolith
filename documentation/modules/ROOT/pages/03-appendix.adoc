@@ -166,3 +166,34 @@ oc port-forward svc/inventory 8084:8080
 ----
 oc port-forward svc/catalog-database 5432:5432
 ----
+
+=== Inventory
+
+Build a new version of the Inventory service using the following command:
+
+[NOTE]
+====
+Set these variables accordingly based on what images are defined in the provision_coolstore.yaml ansible task.  We will pass these to jib from the maven command line.
+
+* *REGISTRY*: `docker.io`
+* *IMAGE_GROUP*: `mhildema`
+* *IMAGE_TAG*: `cdc-demo`
+* *USER*: `<your login to the registry>`
+* *PASSWORD*: `<your password to the registry>`
+
+====
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+mvn -B package -DskipTests \
+        -Dquarkus.container-image.build=true \
+        -Dquarkus.container-image.push=true \
+        -Dquarkus.container-image.registry=pass:[${REGISTRY}] \
+        -Dquarkus.container-image.group=pass:[${IMAGE_GROUP}] \
+        -Dquarkus.container-image.name=inventory \
+        -Dquarkus.jib.base-jvm-image=registry.access.redhat.com/ubi8/openjdk-11@sha256:a6ad844fe15c91ae7a766c5c674c7c17b3a7ea082596ec823ef031d459b66b83 \
+        -Dquarkus.container-image.username=pass:[${USER}] -Dquarkus.container-image.password=pass:[${PASSWORD}] \
+        -Dquarkus.container-image.tag=pass:[${IMAGE_TAG}] \
+        -f pass:[${DEMO_HOME}]/coolstore/inventory-service
+----
