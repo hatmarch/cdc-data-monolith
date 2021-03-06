@@ -148,7 +148,7 @@ For more information on parameters that can be provided to jib, see link:https:/
 [source,bash,subs="attributes+,+macros"]
 ----
 mvn -B compile com.google.cloud.tools:jib-maven-plugin:2.8.0:build -Djib.to.image=pass:[${IMAGE}] \
-  -Djib.to.auth.username=pass:[{$USER}] -Djib.to.auth.password=pass:[${PASSWORD}] \
+  -Djib.to.auth.username=pass:[${USER}] -Djib.to.auth.password=pass:[${PASSWORD}] \
   -f pass:[${DEMO_HOME}]/coolstore/catalog-service
 ----
 
