@@ -1,0 +1,90 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: legacy-inventory-consumer
+  annotations:
+    app.openshift.io/connects-to: debezium
+  labels:
+    app: legacy-inventory-consumer
+    app.kubernetes.io/component: legacy-inventory-consumer
+    app.kubernetes.io/instance: legacy-inventory-consumer
+    app.kubernetes.io/part-of: coolstore-cdc-consumers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: legacy-inventory-consumer
+  template:
+    metadata:
+      labels:
+        app: legacy-inventory-consumer
+        deploymentconfig: legacy-inventory-consumer
+    spec:
+      volumes:
+        - name: application-properties
+          configMap:
+            name: connector-runtime-properties
+#            defaultMode: 420
+      containers:
+        - name: legacy-inventory-consumer
+          livenessProbe:
+            httpGet:
+                path: /q/health/live
+                port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+                path: q/health/ready
+                port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+          env:
+#            - name: ACCEPT_EULA
+#              value: 'Y'
+#            - name: SA_PASSWORD
+#              value: Password!
+#            - name: MSSQL_PID
+#              value: Standard
+#            - name: MSSQL_AGENT_ENABLED
+#              value: 'true'
+          image: >-
+            quay.io/mhildenb/cdc-legacy-consumer:1.0
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: application-properties
+              mountPath: /work/config
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: legacy-inventory-consumer
+  labels:
+    app: legacy-inventory-consumer
+    app.kubernetes.io/component: legacy-inventory-consumer
+    app.kubernetes.io/instance: legacy-inventory-consumer
+    app.kubernetes.io/part-of: coolstore-cdc-consumers
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: legacy-inventory-consumer
+  type: ClusterIP

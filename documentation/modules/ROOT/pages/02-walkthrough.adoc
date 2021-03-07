@@ -59,19 +59,6 @@ oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server loc
 
 == Generate legacy-order-adaptor
 
-=== Create function
-
-. use the following command to create a function scaffolding
-+
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-kn func create -t events -l quarkus legacy-order-adaptor
-----
-+
-. update `func.yml` with proper image target `quay.io/mhildenb/legacy-order-adaptor`
-
-
 === Create JSON to POJO
 
 . Start with some example `.json` generated from CDC event in xref:02-walkthrough.adoc#demonstratedbz[this section]
@@ -83,3 +70,14 @@ image::json2pojo.png[]
 . expand into the `functions` directory
 . Update tests to show JSON to POJO working
 
+=== Deploy Legacy Consumer
+
+Run the following ansible command to create a deployment and configmap for the connecto
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
+    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
+    -e "ACTION=consumer_create" 
+----

@@ -87,7 +87,7 @@ mvn -B package -DskipTests \
         -Dquarkus.container-image.name=cdc-legacy-consumer \
         -Dquarkus.jib.base-jvm-image=registry.access.redhat.com/ubi8/openjdk-11@sha256:a6ad844fe15c91ae7a766c5c674c7c17b3a7ea082596ec823ef031d459b66b83 \
         -Dquarkus.container-image.username=pass:[${USER}] -Dquarkus.container-image.password=pass:[${PASSWORD}] \
-        -Dquarkus.container-image.tag=latest \
+        -Dquarkus.container-image.tag=1.0 \
         -f pass:[${DEMO_HOME}]/example/cdc-legacy-consumer
 ----
 

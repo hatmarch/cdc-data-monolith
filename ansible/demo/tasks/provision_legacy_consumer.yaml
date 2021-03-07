@@ -1,0 +1,35 @@
+---
+- name: Create Consumer Namespace
+  k8s:
+    api_version: v1
+    kind: Namespace
+    name: '{{ dev_project }}'
+    state: present
+
+- name: Create Consumer ConfigMap
+  k8s:
+    state: present
+    namespace: '{{ dev_project }}'
+    resource_definition: "{{ lookup('template', 'connector/connector-application.properties.yaml.j2') }}"
+
+- name: Deploy Legacy Consumer
+  k8s:
+    state: present
+    namespace: '{{ dev_project }}'
+    resource_definition: "{{ lookup('template', 'connector/legacy-consumer.j2') }}"
+
+- name: Wait for Legacy Consumer to be Ready
+  k8s_info:
+    kind: Deployment
+    name: legacy-inventory-consumer
+    namespace: '{{ dev_project }}'
+    api_version: apps/v1
+  register: consumer_resource
+  until: >-
+    (consumer_resource.resources is defined)
+    and (consumer_resource.resources|length>0)
+    and (consumer_resource.resources[0].status is defined)
+    and (consumer_resource.resources[0].status.readyReplicas is defined)
+    and (consumer_resource.resources[0].status.readyReplicas > 0)
+  retries: 30
+  delay: 10

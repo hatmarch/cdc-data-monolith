@@ -1,0 +1,14 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: connector-runtime-properties
+data:
+  application.properties: |-
+    # NOTE: See main properties file at $DEMO_HOME/example/cdc-legacy-consumer/src/main/resources/application.properties
+
+    # Kafka properties for function running on cluster
+    mp.messaging.incoming.legacy-inventory-cdc.bootstrap.servers={{ kafka_name }}-kafka-bootstrap.{{ kafka_project }}:9092
+
+    # Rest client properties
+    org.mhildenb.cdcdemo.InventoryProxy/mp-rest/url=http://inventory.{{ coolstore_project }}.svc.cluster.local:8080
+    org.mhildenb.cdcdemo.CatalogProxy/mp-rest/url=http://catalog.{{ coolstore_project }}.svc.cluster.local:8080
