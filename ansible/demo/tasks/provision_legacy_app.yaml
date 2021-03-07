@@ -36,18 +36,20 @@
 
 - name: Configure CDC in Database
   shell: "oc -n {{ db_project }} exec deployment/mssql-server-linux -- /opt/mssql-tools/bin/sqlcmd -S mssql-server-linux -U sa -P 'Password!' -i /opt/workshop/data.sql"
-  retries: 10
-  delay: 30
+  retries: 5
+  delay: 2
+  register: result
+  until: result.rc == 0
 
 # FIXME: For some reason the legacy app wants to bind to port 80
 - name: Enable anyuid on Legacy Application Namespace
-  shell: "oc adm policy add-scc-to-user anyuid -z default -n {{ legacy_app_project }}"
+  shell: "oc adm policy add-scc-to-user anyuid -z default -n {{ main_project }}"
 
 - name: Check if App has been deployed
   k8s_info:
     kind: Deployment
-    name: my-apache-php-app
-    namespace: '{{ legacy_app_project }}'
+    name: '{{ legacy_app_name }}'
+    namespace: '{{ main_project }}'
     api_version: v1
   register: app_exists
 
@@ -59,9 +61,9 @@
 - name: Deploy Application
   block:
   - name: Deploy Legacy Application
-    shell: "oc new-app quay.io/hguerreroo/my-apache-php-app:latest \
+    shell: "oc new-app {{ legacy_app_image }} --name '{{ legacy_app_name }}' \
             -e 'SERVER_NAME=mssql-server-linux.{{ db_project }}.svc' \
-            -n {{ legacy_app_project }}"
+            -n {{ main_project }}"
   - name: Create Legacy Application Route
-    shell: "oc expose service my-apache-php-app --name=www -n {{ legacy_app_project }}"
+    shell: "oc expose service {{ legacy_app_name }} --name=www -n {{ main_project }}"
   when: (app_exists.resources is undefined) or (app_exists.resources | length == 0)

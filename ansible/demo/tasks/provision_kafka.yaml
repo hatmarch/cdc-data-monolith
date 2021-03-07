@@ -1,14 +1,14 @@
 - name: Create Kafka Cluster
   k8s:
     state: present
-    namespace: '{{ kafka_project }}'
+    namespace: '{{ project }}'
     resource_definition: "{{ lookup('template', 'kafka-demo.yaml.j2') }}"
 
 - name: Wait for Kafka Cluster to start
   k8s_info:
     kind: Kafka
     name: '{{ kafka_name }}'  
-    namespace: '{{ kafka_project }}'
+    namespace: '{{ project }}'
     api_version: kafka.strimzi.io/v1beta1
   register: r_k8s_info
   until: r_k8s_info.resources[0].status.conditions[0].type | default('') == 'Ready'

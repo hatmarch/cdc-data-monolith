@@ -3,45 +3,45 @@
   k8s:
     api_version: v1
     kind: Namespace
-    name: '{{ coolstore_project }}'
+    name: '{{ project }}'
     state: present
 
 - name: Create Coolstore Configuration
   k8s:
     state: present
-    namespace: '{{ coolstore_project }}'
+    namespace: '{{ project }}'
     resource_definition: "{{ lookup('template', 'coolstore/coolstore-config.yaml.j2') }}"
 
 - name: Create Coolstore
   k8s:
     state: present
-    namespace: '{{ coolstore_project }}'
+    namespace: '{{ project }}'
     resource_definition: "{{ lookup('template', 'coolstore/coolstore-template.yaml.j2') }}"
 
 - name: Create Payment Service
   k8s:
     state: present
-    namespace: '{{ coolstore_project }}'
+    namespace: '{{ project }}'
     resource_definition: "{{ lookup('template', 'coolstore/payment-template.yaml.j2') }}"
 
 - name: Setup Coolstore Image Streams
   block:
   - name: Image Streams> Import images
     shell: |
-      oc tag --source docker mhildema/cart:v1 cart:initial-build -n {{ coolstore_project }}
-      oc tag --source docker mhildema/coolstore-ui:v1 coolstore-ui:initial-build -n {{ coolstore_project }}
-      oc tag --source docker mhildema/inventory:cdc-demo inventory:initial-build -n {{ coolstore_project }}
-      oc tag --source docker mhildema/catalog:cdc-demo catalog:initial-build -n {{ coolstore_project }}
-      oc tag --source docker mhildema/order:v1 order:initial-build -n {{ coolstore_project }}
+      oc tag --source docker mhildema/cart:v1 cart:initial-build -n {{ project }}
+      oc tag --source docker mhildema/coolstore-ui:v1 coolstore-ui:initial-build -n {{ project }}
+      oc tag --source docker mhildema/inventory:cdc-demo inventory:initial-build -n {{ project }}
+      oc tag --source docker mhildema/catalog:cdc-demo catalog:initial-build -n {{ project }}
+      oc tag --source docker mhildema/order:v1 order:initial-build -n {{ project }}
   - name: Image Streams> Wait
     shell: |
       # Need to wait for tagging to finish or next section of script may fail
       sleep 5
   - name: Image Streams> Tag images
     shell: |
-      oc tag cart:initial-build cart:latest -n {{ coolstore_project }}
-      oc tag coolstore-ui:initial-build coolstore-ui:latest -n {{ coolstore_project }}
-      oc tag inventory:initial-build inventory:latest -n {{ coolstore_project }}
-      oc tag catalog:initial-build catalog:latest -n {{ coolstore_project }}
-      oc tag order:initial-build order:latest -n {{ coolstore_project }}
+      oc tag cart:initial-build cart:latest -n {{ project }}
+      oc tag coolstore-ui:initial-build coolstore-ui:latest -n {{ project }}
+      oc tag inventory:initial-build inventory:latest -n {{ project }}
+      oc tag catalog:initial-build catalog:latest -n {{ project }}
+      oc tag order:initial-build order:latest -n {{ project }}
 
