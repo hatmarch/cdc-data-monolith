@@ -14,6 +14,7 @@ A demo walkthrough to show how Change Data Capture can be used to get around a l
 .xref:01-setup.adoc[Setup Demo]
 * xref:01-setup.adoc#prerequisite[Prerequisites]
 * xref:01-setup.adoc#install[Install Demo]
+* xref:01-setup.adoc#uninstall[Uninstalling Demo]
 
 [.tile]
 .xref:02-walkthrough.adoc[Walkthrough]

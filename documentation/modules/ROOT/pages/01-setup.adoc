@@ -49,3 +49,18 @@ Finishing with return value of 0
 ----
 +
 . Once completed, you can now follow the instructions xref:02-walkthrough.adoc[in this walkthrough]
+
+[#uninstall]
+== Uninstalling Demo
+
+You can cleanup the demo using this command (with the following options):
+
+** `-o` [optional] remove operators and other pre-requisites (default false)
+** `-p` is not necessary if you don't want to change the default `PROJECT_PREFIX`
+** `-v` [optional] Run ansible playbooks in verbose mode
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+$DEMO_HOME/scripts/remove-demo.sh -p $PROJECT_PREFIX -o
+----
