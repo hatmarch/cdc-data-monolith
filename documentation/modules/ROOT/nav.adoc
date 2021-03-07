@@ -13,3 +13,7 @@
 ** xref:03-appendix.adoc#deploy[Deploy Legacy Consumer]
 ** xref:03-appendix.adoc#testapp[Strategies for Testing Legacy Consumer]
 ** xref:03-appendix.adoc#buildcoolstore[Building Coolstore Services]
+
+* xref:04-troubleshooting[Troubleshooting]
+** xref:04-troubleshooting.adoc#kafka[Troubleshooting Kafka]
+** xref:04-troubleshooting.adoc#kafkaconnect[Troubleshooting Kafka Connect]

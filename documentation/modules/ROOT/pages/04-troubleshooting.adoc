@@ -1,0 +1,41 @@
+= Troubleshooting
+include::_attributes.adoc[]
+
+[#kafka]
+== Troubleshooting Kafka
+
+=== Cluster fails to startup after OCP cluster restart
+
+Sometimes with publically exposed kafka cluster (using OCP routes) the cluster gets stuck due to some race condition with the Route resource being reported.  The operator then gets into a state that prevents it from healing the Kafka cluster.
+
+From the `Topology View` of your cluster, it might look like this:
+
+image:kafka-cluster-restart-issue.png[]
+
+To remedy, you can try running this command:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc get pods -n openshift-operators -oname | grep amq-streams-cluster-operator | xargs oc delete -n openshift-operators
+----
+
+[#kafkaconnect]
+== Troubleshooting Kafka Connect
+
+=== Debezium fails to connect to database
+
+**Symptom:** You will see the following in the Kakfa connect logs
+
+[.console-output]
+[source,bash,subs="+macros,+attributes"]
+----
+2021-03-04 04:05:55,115 WARN No whitelisted table has enabled CDC, whitelisted table list does not contain any table with CDC enabled or no table match the white/blacklist filter(s) (io.debezium.connector.sqlserver.SqlServerStreamingChangeEventSource) [debezium-sqlserverconnector-mssql-server-linux-change-event-source-coordinator]
+----
+
+This has been fixed by:
+
+. Deleting and recreating the database
+. Deleting the connect pod
+** NOTE: Whilst the database is deleted and recreated, the connection appears to die and it doesn't restart itself😞 
+
