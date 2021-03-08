@@ -6,6 +6,7 @@
     <title>Appendix :: CDC Monolith Demo (Dev Mode)</title>
     <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/03-appendix.html">
     <link rel="prev" href="02-walkthrough.html">
+    <link rel="next" href="04-troubleshooting.html#kafka">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -80,6 +81,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="01-setup.html#install">Install Demo</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-setup.html#uninstall">Uninstalling Demo</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -100,6 +104,33 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#kafkatopicdebug">Debugging Kafka Topics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#mssql">Connect and View MS SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#build">Build Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploy">Deploy Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#testapp">Strategies for Testing Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#buildcoolstore">Building Coolstore Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-troubleshooting">Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-troubleshooting.html#kafka">Troubleshooting Kafka</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-troubleshooting.html#kafkaconnect">Troubleshooting Kafka Connect</a>
   </li>
 </ul>
   </li>
@@ -233,8 +264,240 @@
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="build"><a class="anchor" href="#build"></a>Building the Legacy App Consumer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To build the application that is going to be watching for CDC events, you can do the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Issue the following command (ensuring the environment setup specified has been done)</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You first must set the following environment variables to log into your chosen image registry (e.g. <code>quay.io</code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>USER</code></p>
+</li>
+<li>
+<p><code>PASSWORD</code></p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn -B package -DskipTests \
+        -Dquarkus.container-image.build=true \
+        -Dquarkus.container-image.push=true \
+        -Dquarkus.container-image.registry=quay.io \
+        -Dquarkus.container-image.group=mhildenb \
+        -Dquarkus.container-image.name=cdc-legacy-consumer \
+        -Dquarkus.jib.base-jvm-image=registry.access.redhat.com/ubi8/openjdk-11@sha256:a6ad844fe15c91ae7a766c5c674c7c17b3a7ea082596ec823ef031d459b66b83 \
+        -Dquarkus.container-image.username=${USER} -Dquarkus.container-image.password=${PASSWORD} \
+        -Dquarkus.container-image.tag=1.0 \
+        -f ${DEMO_HOME}/example/cdc-legacy-consumer</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deploy"><a class="anchor" href="#deploy"></a>Deploying the Legacy App Consumer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the new image is built, you can deploy the <code>legacy-consumer</code> to the <code>${dev_prj}</code>, with the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f ${DEMO_HOME}/example/cdc-legacy-consumer/kube/legacy-consumer-adaptor.yaml -n ${dev_prj}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="testapp"><a class="anchor" href="#testapp"></a>Strategies for Testing Legacy App Consumer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are a few different ways you can test the application</p>
+</div>
+<div class="sect2">
+<h3 id="_produce_a_message_on_a_topic"><a class="anchor" href="#_produce_a_message_on_a_topic"></a>Produce a message on a topic</h3>
+<div class="paragraph">
+<p>You can use the following command to send a pre-formatted file to the kafka cluster.  Assuming the correct topic, both local (<code>mvn quarkus:dev</code>) and deployed versions of the application should be able to consume this</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For this to work you need to ensure you are logged into the OpenShift cluster and that this variable is set to whatever topic you&#8217;re wanting to watch. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>TOPIC=mssql-server-linux</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo $(cat ${DEMO_HOME}/example/cdc-legacy-consumer/src/test/resources/testCreateEvent.json) | oc exec -it demo-kafka-0 -n $dev_prj -- bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic ${TOPIC}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="buildcoolstore"><a class="anchor" href="#buildcoolstore"></a>Building Coolstore Services</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_catalog"><a class="anchor" href="#_catalog"></a>Catalog</h3>
+<div class="paragraph">
+<p>Rebuild the catalog service using this command:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Set these variables accordingly based on what images are defined in the provision_coolstore.yaml ansible task.  We will pass these to jib from the maven command line.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>IMAGE</strong>: <code>mhildema/catalog:cdc-demo</code></p>
+</li>
+<li>
+<p><strong>USER</strong>: <code>&lt;your login to the registry&gt;</code></p>
+</li>
+<li>
+<p><strong>PASSWORD</strong>: <code>&lt;your password to the registry&gt;</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For more information on parameters that can be provided to jib, see <a href="https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#system-properties">here</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn -B compile com.google.cloud.tools:jib-maven-plugin:2.8.0:build -Djib.to.image=${IMAGE} \
+  -Djib.to.auth.username=${USER} -Djib.to.auth.password=${PASSWORD} \
+  -f ${DEMO_HOME}/coolstore/catalog-service</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_testing_catalog_locally"><a class="anchor" href="#_testing_catalog_locally"></a>Testing Catalog Locally</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Uncomment the properties at the bottom of: ${DEMO_HOME}/coolstore/catalog-service/src/main/resources/application-default.properties</p>
+</li>
+<li>
+<p>Port forward to the inventory service</p>
+<div class="listingblock">
+<div class="content">
+<pre>oc port-forward svc/inventory 8084:8080</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Port forward to the catalog database</p>
+<div class="listingblock">
+<div class="content">
+<pre>oc port-forward svc/catalog-database 5432:5432</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inventory"><a class="anchor" href="#_inventory"></a>Inventory</h3>
+<div class="paragraph">
+<p>Build a new version of the Inventory service using the following command:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Set these variables accordingly based on what images are defined in the provision_coolstore.yaml ansible task.  We will pass these to jib from the maven command line.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>REGISTRY</strong>: <code>docker.io</code></p>
+</li>
+<li>
+<p><strong>IMAGE_GROUP</strong>: <code>mhildema</code></p>
+</li>
+<li>
+<p><strong>IMAGE_TAG</strong>: <code>cdc-demo</code></p>
+</li>
+<li>
+<p><strong>USER</strong>: <code>&lt;your login to the registry&gt;</code></p>
+</li>
+<li>
+<p><strong>PASSWORD</strong>: <code>&lt;your password to the registry&gt;</code></p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn -B package -DskipTests \
+        -Dquarkus.container-image.build=true \
+        -Dquarkus.container-image.push=true \
+        -Dquarkus.container-image.registry=${REGISTRY} \
+        -Dquarkus.container-image.group=${IMAGE_GROUP} \
+        -Dquarkus.container-image.name=inventory \
+        -Dquarkus.jib.base-jvm-image=registry.access.redhat.com/ubi8/openjdk-11@sha256:a6ad844fe15c91ae7a766c5c674c7c17b3a7ea082596ec823ef031d459b66b83 \
+        -Dquarkus.container-image.username=${USER} -Dquarkus.container-image.password=${PASSWORD} \
+        -Dquarkus.container-image.tag=${IMAGE_TAG} \
+        -f ${DEMO_HOME}/coolstore/inventory-service</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="02-walkthrough.html" class="query-params-link">2. Walkthrough</a></span>
+  <span class="next"><a href="04-troubleshooting.html#kafka" class="query-params-link">Troubleshooting Kafka</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

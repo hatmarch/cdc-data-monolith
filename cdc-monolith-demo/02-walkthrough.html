@@ -81,6 +81,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="01-setup.html#install">Install Demo</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-setup.html#uninstall">Uninstalling Demo</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
@@ -101,6 +104,33 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-appendix.html#kafkatopicdebug">Debugging Kafka Topics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#mssql">Connect and View MS SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#build">Build Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#deploy">Deploy Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#testapp">Strategies for Testing Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#buildcoolstore">Building Coolstore Services</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-troubleshooting">Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-troubleshooting.html#kafka">Troubleshooting Kafka</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-troubleshooting.html#kafkaconnect">Troubleshooting Kafka Connect</a>
   </li>
 </ul>
   </li>
@@ -236,24 +266,6 @@
 <h2 id="_generate_legacy_order_adaptor"><a class="anchor" href="#_generate_legacy_order_adaptor"></a>Generate legacy-order-adaptor</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_create_function"><a class="anchor" href="#_create_function"></a>Create function</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>use the following command to create a function scaffolding</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kn func create -t events -l quarkus legacy-order-adaptor</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>update <code>func.yml</code> with proper image target <code>quay.io/mhildenb/legacy-order-adaptor</code></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_create_json_to_pojo"><a class="anchor" href="#_create_json_to_pojo"></a>Create JSON to POJO</h3>
 <div class="olist arabic">
 <ol class="arabic">
@@ -278,6 +290,19 @@
 <p>Update tests to show JSON to POJO working</p>
 </li>
 </ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deploy_legacy_consumer"><a class="anchor" href="#_deploy_legacy_consumer"></a>Deploy Legacy Consumer</h3>
+<div class="paragraph">
+<p>Run the following ansible command to create a deployment and configmap for the connecto</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook -i ${DEMO_HOME}/ansible/demo/inventory \
+    ${DEMO_HOME}/ansible/demo/main.yaml \
+    -e "ACTION=consumer_create"</code></pre>
+</div>
 </div>
 </div>
 </div>
