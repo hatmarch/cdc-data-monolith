@@ -93,6 +93,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#legacy">Intro to Legacy App</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -119,6 +122,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-appendix.html#buildcoolstore">Building Coolstore Services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-appendix.html#legacyinteract">Interacting with Legacy App</a>
   </li>
 </ul>
   </li>
@@ -250,22 +256,79 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_kafka_command_line_consumer_example"><a class="anchor" href="#_kafka_command_line_consumer_example"></a>Kafka: Command Line Consumer example</h2>
+<h2 id="_kafka_operator_install"><a class="anchor" href="#_kafka_operator_install"></a>Kafka: Operator Install</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>#TODO</p>
-</div>
+
 </div>
 </div>
 <div class="sect1">
-<h2 id="_demonstrate_dual_write"><a class="anchor" href="#_demonstrate_dual_write"></a>Demonstrate Dual Write</h2>
+<h2 id="producerconsumer"><a class="anchor" href="#producerconsumer"></a>Kafka: Producers, Consumers, and Groups</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Post a file to legacy app:</p>
+<p>In this demo we want to show the notion of producers and consumers and ideally topics without any of the k8 overlays</p>
+</div>
+<div class="paragraph">
+<p>See <a href="https://medium.com/@TimvanBaarsen/apache-kafka-cli-commands-cheat-sheet-a6f06eac01b#fe4f">here</a> for some commands that can be used.</p>
+</div>
+<div class="paragraph">
+<p>For this we setup 4 terminals.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>All four get setup in the same way.  Run the following command first in each:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># from the root of this repo
+docker run -it -v ~/.kube:/home/jboss/.kube -v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh -v $(pwd):/workspaces/cdc-data-monolith -w /workspaces/cdc-data-monolith quay.io/mhildenb/cdc-demo-shell /bin/zsh</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Once in the docker shell, ensure you are logged in (one you are logged into one you should be logged into all)</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc whoami</code></pre>
+</div>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">opentlc-mgr</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Next run the following command to setup your environment</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">. ${DEMO_HOME}/example/scripts/producer-consumer-setup.sh</code></pre>
+</div>
+</div>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset1_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+<li>
+<p><a id="tabset1_terminal-2"></a>Terminal 2</p>
+</li>
+<li>
+<p><a id="tabset1_terminal-3"></a>Terminal 3</p>
+</li>
+<li>
+<p><a id="tabset1_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset1_terminal-1-producer">
+<div class="paragraph">
+<p>Terminal one is for producing information on a topic.  Run the following command to get started</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -X POST -H 'Content-Type: multipart/form-data' --compressed --insecure -F fileToUpload=@earth-orders.csv -F submit="true" -F fragment="_user10" $LEGACY_URL/upload.php</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic ${TOPIC}</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -275,12 +338,277 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>You can see the code of the upload.php page <a href="https://github.com/RedHat-Middleware-Workshops/dayinthelife-streaming/blob/ca810c56c9017424e128768c93983a3b4b8ca1b5/support/projects/module-2/enterprise-app/upload.php">here</a> to understand more about how it consumes the posted data</p>
-</div>
+The terminal is ready to take input on the topic when you see the chevron (<code>&gt;</code>)
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_terminal-2">
+<div class="paragraph">
+<p>Terminal 2 will be our first consumer in the group <code>consumer-group-1</code></p>
+</div>
+<div class="paragraph">
+<p>Run the following command to get it started:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ${TOPIC} --group consumer-group-1</code></pre>
+</div>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_terminal-3">
+<div class="paragraph">
+<p>Terminal 3 will be our second consumer in the group <code>consumer-group-1</code></p>
+</div>
+<div class="paragraph">
+<p>Run the following command to get it started:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ${TOPIC} --group consumer-group-1</code></pre>
+</div>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_terminal-4">
+<div class="paragraph">
+<p>Terminal 4 will be our first consumer in the group <code>consumer-group-solo</code></p>
+</div>
+<div class="paragraph">
+<p>Run the following command to get it started:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ${TOPIC} --group consumer-group-solo</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Enter the following</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset2_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset2_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>You should notice output in one of Terminal 2 or 3 and Terminal 4</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/four-terminal-producer-consumer.png" alt="four terminal producer consumer">
+</div>
+</div>
+</li>
+<li>
+<p>Enter the following</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset3_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset3_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 2</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>You should notice output in the same of Terminal 2 and 3 that received the event before and Terminal 4</p>
+</li>
+<li>
+<p>Next kill the consumer in either Terminal 2 or 3, whichever one got the previous two events, with <span class="keyseq"><kbd>ctrl</kbd>+<kbd>c</kbd></span></p>
+</li>
+<li>
+<p>Enter the following</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset4_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset4_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 3</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>This time the other terminal of <code>consumer-group-1</code> should get the message as should Terminal 4</p>
+</li>
+<li>
+<p>Now kill the consumer in Terminal 4 with <span class="keyseq"><kbd>ctrl</kbd>+<kbd>c</kbd></span></p>
+</li>
+<li>
+<p>Enter the following:</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset5_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset5_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 4</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>You should only see the event appear in the remaining connected terminal</p>
+</li>
+<li>
+<p>Finally, let&#8217;s see how the consumer groups have gone.  Let&#8217;s use the <code>kafka-consumer-groups</code> command to see:</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset6_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset6_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-solo
+oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Output should be similar to:</p>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Consumer group 'consumer-group-solo' has no active members.
+
+GROUP               TOPIC                    PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+consumer-group-solo test-producer-consumer   0          16              17              1               -               -               -</code></pre>
+</div>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GROUP            TOPIC                    PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                      HOST            CLIENT-ID
+consumer-group-1 test-producer-consumer   0          17              17              0               consumer-consumer-group-1-1-c2d8588c-996e-47df-bb46-66d948d4a9ea /10.128.2.16    consumer-consumer-group-1-1</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Next, let&#8217;s reset the offset of the only consumer group that is currently offline (has no active members)</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset7_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset7_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --reset-offsets --to-earliest --group consumer-group-solo --topic ${TOPIC} --execute</code></pre>
+</div>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GROUP                          TOPIC                          PARTITION  NEW-OFFSET
+consumer-group-solo            test-producer-consumer-1       0          0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Finally, let&#8217;s restart a consumer of the <code>consumer-group-solo</code></p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset8_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset8_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ${TOPIC} --group consumer-group-solo</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>After a few seconds you should see the following output</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset9_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset9_terminal-4">
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 1
+Test Event 2
+Test Event 3
+Test Event 4
+Test Event 5</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Which shows that our offset has been reset to the start causing us to reread the events</p>
+</li>
+</ol>
 </div>
 </div>
 </div>

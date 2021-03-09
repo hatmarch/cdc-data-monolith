@@ -93,6 +93,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="02-walkthrough.html#legacy">Intro to Legacy App</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-walkthrough.html#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -119,6 +122,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#buildcoolstore">Building Coolstore Services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#legacyinteract">Interacting with Legacy App</a>
   </li>
 </ul>
   </li>
@@ -529,6 +535,33 @@ KAFKA_PROJECT=cdc-demo-dev</pre>
         -f ${DEMO_HOME}/coolstore/inventory-service</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="legacyinteract"><a class="anchor" href="#legacyinteract"></a>Interacting with Legacy App</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Post a file to legacy app:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -X POST -H 'Content-Type: multipart/form-data' --compressed --insecure -F fileToUpload=@earth-orders.csv -F submit="true" -F fragment="_user10" $LEGACY_URL/upload.php</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can see the code of the upload.php page <a href="https://github.com/RedHat-Middleware-Workshops/dayinthelife-streaming/blob/ca810c56c9017424e128768c93983a3b4b8ca1b5/support/projects/module-2/enterprise-app/upload.php">here</a> to understand more about how it consumes the posted data</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
