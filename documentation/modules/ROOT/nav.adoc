@@ -5,6 +5,7 @@
 
 * xref:02-walkthrough.adoc[2. Walkthrough]
 ** xref:02-walkthrough.adoc#legacy[Intro to Legacy App]
+** xref:02-walkthrough.adoc#producerconsumer[Kafka: Producers, Consumers, and Groups]
 
 * xref:03-appendix[Appendix]
 ** xref:03-appendix.adoc#querysql[Querying SQL Database]
@@ -14,6 +15,7 @@
 ** xref:03-appendix.adoc#deploy[Deploy Legacy Consumer]
 ** xref:03-appendix.adoc#testapp[Strategies for Testing Legacy Consumer]
 ** xref:03-appendix.adoc#buildcoolstore[Building Coolstore Services]
+** xref:03-appendix.adoc#legacyinteract[Interacting with Legacy App]
 
 * xref:04-troubleshooting[Troubleshooting]
 ** xref:04-troubleshooting.adoc#kafka[Troubleshooting Kafka]
