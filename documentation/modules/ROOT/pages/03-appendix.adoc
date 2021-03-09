@@ -216,3 +216,19 @@ mvn -B package -DskipTests \
         -Dquarkus.container-image.tag=pass:[${IMAGE_TAG}] \
         -f pass:[${DEMO_HOME}]/coolstore/inventory-service
 ----
+
+[#legacyinteract]
+== Interacting with Legacy App
+
+Post a file to legacy app:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+curl -X POST -H 'Content-Type: multipart/form-data' --compressed --insecure -F fileToUpload=@earth-orders.csv -F submit="true" -F fragment="_user10" $LEGACY_URL/upload.php
+----
+
+[NOTE]
+====
+You can see the code of the upload.php page link:https://github.com/RedHat-Middleware-Workshops/dayinthelife-streaming/blob/ca810c56c9017424e128768c93983a3b4b8ca1b5/support/projects/module-2/enterprise-app/upload.php[here] to understand more about how it consumes the posted data
+====
