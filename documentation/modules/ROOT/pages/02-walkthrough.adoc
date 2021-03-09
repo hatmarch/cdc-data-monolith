@@ -43,8 +43,6 @@ image:loaded-inventory.png[]
 +
 . Reopen the `$COOLSTORE_URL` and notice that inventory has not been updated still
 
-== Kafka: Operator Install
-
 [#producerconsumer]
 == Kafka: Producers, Consumers, and Groups
 
@@ -302,6 +300,13 @@ Test Event 5
 ====
 . Which shows that our offset has been reset to the start causing us to reread the events
 
+[#strimzi]
+== Strimzi and AMQStreams Operator
+
+[#kafkaconnect]
+== Kafka Connect
+
+[#debeziumconnector]
 == Enable Debezium Connector
 
 === Configure SQL Database
