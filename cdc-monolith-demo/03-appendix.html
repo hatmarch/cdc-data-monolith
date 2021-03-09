@@ -201,9 +201,29 @@
 <div class="paragraph">
 <p>You can run a consumer to see all that&#8217;s been posted to a kafka topic by running the following command (NOTE: This assumes that command is run in the context of the current kafka project)</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For this to work you need to ensure you are logged into the OpenShift cluster and that this variable is set to whatever topic you&#8217;re wanting to watch. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>TOPIC=legacy-inventory-cdc
+KAFKA_PROJECT=cdc-demo-dev</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n ${KAFKA_PROJECT} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ${TOPIC} --from-beginning</code></pre>
 </div>
 </div>
 </div>
@@ -320,6 +340,23 @@
 <div class="sect1">
 <h2 id="deploy"><a class="anchor" href="#deploy"></a>Deploying the Legacy App Consumer</h2>
 <div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This consumer gets deployed as part of the walkthrough.  Ideally you would follow the ansible playbook command as specified <a href="02-walkthrough.html#deploylegacyconsumer" class="page">here</a> so that the consumer is deployed with the proper configuration</p>
+</div>
+<div class="paragraph">
+<p>The instructions below for are lower-level testing</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Once the new image is built, you can deploy the <code>legacy-consumer</code> to the <code>${dev_prj}</code>, with the following command:</p>
 </div>
@@ -353,7 +390,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>TOPIC=mssql-server-linux</pre>
+<pre>TOPIC=legacy-inventory-cdc</pre>
 </div>
 </div>
 </td>

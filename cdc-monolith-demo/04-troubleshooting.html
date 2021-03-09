@@ -202,6 +202,40 @@
 <h2 id="kafkaconnect"><a class="anchor" href="#kafkaconnect"></a>Troubleshooting Kafka Connect</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_change_events_not_coming_from_the_connector"><a class="anchor" href="#_change_events_not_coming_from_the_connector"></a>Change events not coming from the connector</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Check to see if there are any events on the topic as outlined <a href="03-appendix.html#kafkatopicdebug" class="page">here</a></p>
+</li>
+<li>
+<p>If no events are found, check the connector status</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it deploy/debezium-connect -n ${KAFKA_PROJECT} -- curl <a href="http://localhost:8083/connectors/debezium-connector/status" class="bare">http://localhost:8083/connectors/debezium-connector/status</a></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>You should see output like this:</p>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{"name":"debezium-connector","connector":{"state":"RUNNING","worker_id":"10.131.0.215:8083"},"tasks":[{"id":0,"state":"RUNNING","worker_id":"10.131.0.215:8083"}],"type":"source"}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Attempt to restart the connector task</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it deploy/debezium-connect -n ${KAFKA_PROJECT} -- curl -X POST <a href="http://localhost:8083/connectors/debezium-connector/tasks/0/restart" class="bare">http://localhost:8083/connectors/debezium-connector/tasks/0/restart</a></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_debezium_fails_to_connect_to_database"><a class="anchor" href="#_debezium_fails_to_connect_to_database"></a>Debezium fails to connect to database</h3>
 <div class="paragraph">
 <p><strong>Symptom:</strong> You will see the following in the Kakfa connect logs</p>
