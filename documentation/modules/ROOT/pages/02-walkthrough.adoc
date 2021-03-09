@@ -4,13 +4,48 @@ include::_attributes.adoc[]
 [#legacy]
 == Introduction to Legacy Application
 
-You can get the URL to the legacy application by running the following command in the demo shell
-
+. Show the coolstore without the inventory.  You can get the URL of the coolstore UI by running the following command
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+COOLSTORE_URL=http://$(oc get route coolstore-ui -o jsonpath='{.spec.host}' -n cdc-coolstore)
+----
++
+. Explain that the inventory comes from another system.  A legacy system.
+. Navigate to the legacy system.  You can get the URL to the legacy application by running the following command in the demo shell:
++
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
 LEGACY_URL=http://$(oc get route www -o jsonpath='{.spec.host}' -n ${PROJECT_PREFIX}-dev)
 ----
++
+. Show that the inventory database is currently empty by clicking on the "Inventory" navbar
++
+image::legacy-inventory-navbar.png[]
++
+. Show that the legacy system accepts an upload of inventory data by clicking on the `Home` navbar element
+. Next click on `Choose file` button which should open up a window like so:
++
+image::legacy-inventory-upload.png[]
++
+. In the directory shown (`$DEMO_HOME/example`) choose the `coolstore-inventory.csv'
+. Click `Load File`
+. You should now see a screen of all the imported inventory.  
++
+[IMPORTANT]
+====
+Keep this tab open as we will revisit this page later
+====
++
+image:loaded-inventory.png[]
++
+. Reopen the `$COOLSTORE_URL` and notice that inventory has not been updated still
+
+== Kafka: Command Line Consumer example
+
+#TODO
 
 == Demonstrate Dual Write
 
@@ -70,9 +105,10 @@ image::json2pojo.png[]
 . expand into the `functions` directory
 . Update tests to show JSON to POJO working
 
+[#deploylegacyconsumer]
 === Deploy Legacy Consumer
 
-Run the following ansible command to create a deployment and configmap for the connecto
+Run the following ansible command to create a deployment and configmap for the connector
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
