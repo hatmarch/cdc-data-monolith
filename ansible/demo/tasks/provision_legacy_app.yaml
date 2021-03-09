@@ -41,10 +41,6 @@
   register: result
   until: result.rc == 0
 
-# FIXME: For some reason the legacy app wants to bind to port 80
-- name: Enable anyuid on Legacy Application Namespace
-  shell: "oc adm policy add-scc-to-user anyuid -z default -n {{ main_project }}"
-
 - name: Check if App has been deployed
   k8s_info:
     kind: Deployment
@@ -64,6 +60,10 @@
     shell: "oc new-app {{ legacy_app_image }} --name '{{ legacy_app_name }}' \
             -e 'SERVER_NAME=mssql-server-linux.{{ db_project }}.svc' \
             -n {{ main_project }}"
+  - name: Delete incorrect (automatically created) service
+    shell: "oc delete service {{ legacy_app_name }}"
+  - name: Correct Service
+    shell: "oc expose service {{ legacy_app_name }} --port 8080 --target-port 8080"
   - name: Create Legacy Application Route
     shell: "oc expose service {{ legacy_app_name }} --name=www -n {{ main_project }}"
   when: (app_exists.resources is undefined) or (app_exists.resources | length == 0)

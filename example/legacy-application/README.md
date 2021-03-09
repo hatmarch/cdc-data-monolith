@@ -59,11 +59,18 @@ Some things to try:
 From the root of this repo, run this command:
 
 ```
-docker build -t quay.io/mhildenb/cdc-legacy-app:1.0 -f .docker/Dockerfile
+docker build -t quay.io/mhildenb/cdc-legacy-app:1.0 -f .docker/Dockerfile .
 ```
 
 Then optionally push the container:
 
 ```
 docker push quay.io/mhildenb/cdc-legacy-app:1.0
+```
+
+And finally, optionally tag this as latest:
+
+```
+docker tag quay.io/mhildenb/cdc-legacy-app:1.0 quay.io/mhildenb/cdc-legacy-app:latest
+docker push quay.io/mhildenb/cdc-legacy-app:latest
 ```

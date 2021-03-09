@@ -16,4 +16,9 @@ RUN pecl install sqlsrv pdo_sqlsrv \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv \
     && rm -rf /var/lib/apt/lists/*
 
+# run on port 8080 instead of 80 so that special priviliges are not needed
+COPY ./.docker/ports-8080.conf /etc/apache2/ports.conf
+EXPOSE 8080
+
 COPY ./ /var/www/html
+
