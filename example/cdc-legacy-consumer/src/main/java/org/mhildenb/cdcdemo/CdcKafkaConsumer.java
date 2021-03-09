@@ -44,6 +44,12 @@ public class CdcKafkaConsumer {
 
         try{
             switch (event.getPayload().getOp()) {
+
+                // "r" applies to snapshots, 
+                // per here: https://debezium.io/documentation/reference/connectors/sqlserver.html
+                // since we're just doing "upserting" we'll treat it just like a create
+                case "r":
+                    logger.info("Got a snapshot cdc event [op=r]");
                 case "c":
                 case "u":
                     processUpsert(event);
