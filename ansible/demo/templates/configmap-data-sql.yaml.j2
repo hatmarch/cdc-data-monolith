@@ -27,7 +27,7 @@ data:
     -- Create the table in the specified schema
     CREATE TABLE dbo.Inventory
     (
-        ItemId INT IDENTITY(1,1) NOT NULL PRIMARY KEY, -- primary key column
+        ItemId [NVARCHAR](16) NOT NULL PRIMARY KEY, -- primary key column
         ItemName [NVARCHAR](256) NOT NULL,
         Description [NVARCHAR](2560) NULL,
         Quantity INT NOT NULL,
@@ -37,33 +37,36 @@ data:
         -- specify more columns here
     );
     GO
-    -- Create a new stored procedure called 'SpInsertInventory' in schema 'dbo'
+    -- Create a new stored procedure called 'SpUpsertInventory' in schema 'dbo'
     -- Drop the stored procedure if it already exists
     IF EXISTS (
     SELECT *
         FROM INFORMATION_SCHEMA.ROUTINES
     WHERE SPECIFIC_SCHEMA = N'dbo'
-        AND SPECIFIC_NAME = N'SpInsertInventory'
+        AND SPECIFIC_NAME = N'SpUpsertInventory'
     )
-    DROP PROCEDURE dbo.SpInsertInventory
+    DROP PROCEDURE dbo.SpUpsertInventory
     GO
     -- Create the stored procedure in the specified schema
-    CREATE PROCEDURE dbo.SpInsertInventory
+    CREATE PROCEDURE dbo.SpUpsertInventory
+        @itemId [NVARCHAR](16),
         @name [NVARCHAR](256),
         @description [NVARCHAR](2560),
         @quantity INT,
         @price [NVARCHAR](50),
         @location [NVARCHAR](256),
         @link [NVARCHAR](256)
-    AS
-        INSERT INTO Inventory
-        ( -- columns to insert data into
-            [ItemName], [Description], [Quantity], [Price], [Location], [Link]
-        )
-        VALUES
-        ( -- first row: values for the columns in the list above
-            @name, @description, @quantity, @price, @location, @link
-        )
+        AS
+            BEGIN
+            IF NOT EXISTS (SELECT ItemId FROM dbo.Inventory WHERE Inventory.ItemId=@itemId)
+                BEGIN
+                        INSERT INTO dbo.Inventory ( [ItemId], [ItemName], [Description], [Quantity], [Price], [Location], [Link] ) VALUES ( @itemId, @name, @description, @quantity, @price, @location, @link )
+                END
+            ELSE
+                BEGIN
+                        UPDATE dbo.Inventory SET ItemName=@name,Description=@description,Quantity=@quantity,Price=@price,Location=@location,Link=@link WHERE ItemId=@itemId
+                END   
+            END
         GO
     GO
     -- Enable Database for CDC template
