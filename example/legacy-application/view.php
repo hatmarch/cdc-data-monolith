@@ -39,7 +39,7 @@ echo '
                         Logged in as <a href="#" class="navbar-link">SuperAdmin</a>
                     </p>
                     <ul class="nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="#invoice">Invoices</a></li>
                         <li><a href="#inventory">Inventory</a></li>
                         <li><a href="#accounts">Accounts</a></li>
@@ -75,50 +75,10 @@ echo '
         <!--/span-->
         <div class="span9">
             <div class="hero-unit">
-            <h1>Imported Inventory</h1>
+            <h1>Current Inventory</h1>
 ';
 
-if ( isset($_POST["submit"]) == false ) 
-{
-  die("No file selected");
-}
-
-if ( isset($_FILES["fileToUpload"]) == false) 
-{
-  die("No file selected");
-}
-
-//if there was an error uploading the file
-if ($_FILES["fileToUpload"]["error"] > 0) 
-{
-  die("Return Code: " . $_FILES["fileToUpload"]["error"]);
-}
-
-//Print file details
-echo "Upload: " . $_FILES["fileToUpload"]["name"] . "<br />";
-echo "Type: " . $_FILES["fileToUpload"]["type"] . "<br />";
-echo "Size: " . ($_FILES["fileToUpload"]["size"] / 1024) . " Kb<br />";
-echo "Temp file: " . $_FILES["fileToUpload"]["tmp_name"] . "<br />";
-
-$csvFile = file($_FILES["fileToUpload"]["tmp_name"]);
-$csv = array_map('str_getcsv', $csvFile);
-array_shift($csv);
-
 require 'includes/connection.php';
-
-$tsql_callSP = "{call SpUpsertInventory( ?, ?, ?, ?, ?, ?, ? )}";
-
-foreach ($csv as $item) 
-{
-  $stmt = sqlsrv_query( $conn, $tsql_callSP, $item);
-  if ( $stmt == false )
-  {
-    echo "Error in statement execution: <br />";
-    die( print_r( sqlsrv_errors(), true));
-  }  
-  /* Free statement resources. */
-  sqlsrv_free_stmt( $stmt );
-}
 
 require 'includes/view_partial.php';
 
