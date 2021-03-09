@@ -664,6 +664,11 @@
         - env:
           - name: QUARKUS_PROFILE
             value: prod
+          # create the inventory schema, but don't populate the inventory table with the contents of the import.sql
+          - name: quarkus_hibernate_orm_database_generation
+            value: update
+          - name: quarkus_hibernate_orm_database_generation_create_schemas
+            value: "true"
           image: image-registry.openshift-image-registry.svc:5000/{{ coolstore_project }}/inventory@sha256:dde8dd7d61da5e1b1339b7eba70aa5a7685abff7c765ee1b12a289eebeca05cc
           imagePullPolicy: Always
           name: inventory

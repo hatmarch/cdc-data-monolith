@@ -1,3 +1,3 @@
-ItemName,Description,Quantity,Price,Location,Link
-Red Fedora,Official Red Hat Fedora,10,34.99,http://maps.google.com/?q=NewYork,New York
-Red Hat Cherries,The official red fruit of Red Hat,9,32.99,http://boom.com,Providence
+ItemId,ItemName,Description,Quantity,Price,Location,Link
+329299,Red Fedora,Official Red Hat Fedora,10,34.99,http://maps.google.com/?q=NewYork,New York
+100,Red Hat Cherries,The official red fruit of Red Hat,9,32.99,http://boom.com,Providence
