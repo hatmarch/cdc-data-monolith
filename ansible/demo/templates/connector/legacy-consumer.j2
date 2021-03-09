@@ -25,7 +25,6 @@ spec:
         - name: application-properties
           configMap:
             name: connector-runtime-properties
-#            defaultMode: 420
       containers:
         - name: legacy-inventory-consumer
           livenessProbe:
@@ -40,15 +39,6 @@ spec:
                 port: 8080
             initialDelaySeconds: 5
             timeoutSeconds: 2
-          env:
-#            - name: ACCEPT_EULA
-#              value: 'Y'
-#            - name: SA_PASSWORD
-#              value: Password!
-#            - name: MSSQL_PID
-#              value: Standard
-#            - name: MSSQL_AGENT_ENABLED
-#              value: 'true'
           image: >-
             quay.io/mhildenb/cdc-legacy-consumer:1.0
           ports:
