@@ -23,6 +23,34 @@ oc get pods -n openshift-operators -oname | grep amq-streams-cluster-operator | 
 [#kafkaconnect]
 == Troubleshooting Kafka Connect
 
+=== Change events not coming from the connector
+
+. Check to see if there are any events on the topic as outlined xref:03-appendix.adoc#kafkatopicdebug[here]
+. If no events are found, check the connector status
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc exec -it deploy/{kafka-connect-name} -n pass:[${KAFKA_PROJECT}] -- curl http://localhost:8083/connectors/{kafka-connector-name}/status
+----
++
+. You should see output like this:
++
+[.console-output]
+[source,bash,subs="+macros,+attributes"]
+----
+{"name":"{kafka-connector-name}","connector":{"state":"RUNNING","worker_id":"10.131.0.215:8083"},"tasks":[{"id":0,"state":"RUNNING","worker_id":"10.131.0.215:8083"}],"type":"source"}
+----
++
+. Attempt to restart the connector task
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc exec -it deploy/{kafka-connect-name} -n pass:[${KAFKA_PROJECT}] -- curl -X POST http://localhost:8083/connectors/{kafka-connector-name}/tasks/0/restart
+----
+
+
 === Debezium fails to connect to database
 
 **Symptom:** You will see the following in the Kakfa connect logs

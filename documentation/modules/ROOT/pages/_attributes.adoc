@@ -1,2 +1,5 @@
 :experimental:
 :source-highlighter: highlightjs
+:cdc-topic: legacy-inventory-cdc
+:kafka-connect-name: debezium-connect
+:kafka-connector-name: debezium-connector

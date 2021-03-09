@@ -23,10 +23,21 @@ oc exec deployment/mssql-server-linux -- /opt/mssql-tools/bin/sqlcmd -S mssql-se
 
 You can run a consumer to see all that's been posted to a kafka topic by running the following command (NOTE: This assumes that command is run in the context of the current kafka project)
 
+[NOTE]
+====
+For this to work you need to ensure you are logged into the OpenShift cluster and that this variable is set to whatever topic you're wanting to watch. For example:
+
+[subs="+macros,+attributes"]
+----
+TOPIC={cdc-topic}
+KAFKA_PROJECT=cdc-demo-dev
+----
+====
+
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
-oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning
+oc exec -it demo-kafka-0 -n pass:[${KAFKA_PROJECT}] -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic pass:[${TOPIC}] --from-beginning
 ----
 
 [#mssql]
@@ -94,6 +105,13 @@ mvn -B package -DskipTests \
 [#deploy]
 == Deploying the Legacy App Consumer
 
+[WARNING]
+====
+This consumer gets deployed as part of the walkthrough.  Ideally you would follow the ansible playbook command as specified xref:02-walkthrough.adoc#deploylegacyconsumer[here] so that the consumer is deployed with the proper configuration
+
+The instructions below for are lower-level testing
+====
+
 Once the new image is built, you can deploy the `legacy-consumer` to the `${dev_prj}`, with the following command:
 
 [.console-input]
@@ -115,8 +133,9 @@ You can use the following command to send a pre-formatted file to the kafka clus
 ====
 For this to work you need to ensure you are logged into the OpenShift cluster and that this variable is set to whatever topic you're wanting to watch. For example:
 
+[subs="+macros,+attributes"]
 ----
-TOPIC=mssql-server-linux
+TOPIC={cdc-topic}
 ----
 ====
 
