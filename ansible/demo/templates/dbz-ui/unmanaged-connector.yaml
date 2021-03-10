@@ -1,0 +1,59 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: debezium-connect-unmanaged
+  labels:
+    app.kubernetes.io/name: kafka-connect-unmanaged
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: kafka-connect-unmanaged
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: kafka-connect-unmanaged
+    spec:
+      restartPolicy: Always
+      serviceAccountName: default
+      schedulerName: default-scheduler
+      affinity: {}
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+      containers:
+        - resources:
+            limits:
+              memory: 2Gi
+            requests:
+              memory: 2Gi
+          terminationMessagePath: /dev/termination-log
+          name: debezium-connect
+          env:
+            - name: GROUP_ID
+              value: '1000'
+            - name: BOOTSTRAP_SERVERS
+              value: 'demo-kafka-bootstrap.cdc-demo-dev.svc.cluster.local:9092'
+            - name: CONFIG_STORAGE_TOPIC
+              value: 'my_connect_configs'
+            - name: OFFSET_STORAGE_TOPIC
+              value: 'my_connect_offsets'
+            - name: STATUS_STORAGE_TOPIC
+              value: 'my_connect_statuses'
+          ports:
+            - name: rest-api
+              containerPort: 8083
+              protocol: TCP
+          imagePullPolicy: Always
+          terminationMessagePolicy: File
+# FIXME: Need to make this based on 
+          image: 'debezium/connect:1.5.0.Beta1'
+      serviceAccount: default
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

@@ -1,0 +1,81 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: data-sql
+data:
+  data.sql: |-
+    -- Create a new database called 'InternationalDB'
+    -- Connect to the 'master' database to run this snippet
+    USE master
+    GO
+    -- Create the new database if it does not exist already
+    IF NOT EXISTS (
+        SELECT name
+            FROM sys.databases
+            WHERE name = N'InternationalDB'
+    )
+    CREATE DATABASE InternationalDB
+    GO
+    -- Connect to the 'InternationalDB' database to run this snippet
+    USE InternationalDB
+    GO
+    -- Create a new table called 'Inventory' in schema 'dbo'
+    -- Drop the table if it already exists
+    IF OBJECT_ID('dbo.Inventory', 'U') IS NOT NULL
+    DROP TABLE dbo.Inventory
+    GO
+    -- Create the table in the specified schema
+    CREATE TABLE Inventory
+    (
+        ItemId NVARCHAR(16) NOT NULL PRIMARY KEY, -- primary key column
+        ItemName NVARCHAR(256) NOT NULL,
+        Description NVARCHAR(2560) NULL,
+        Quantity INT NOT NULL,
+        Price NVARCHAR(50) NOT NULL,
+        Location NVARCHAR(256) NOT NULL,
+        Link NVARCHAR(256) NOT NULL
+        -- specify more columns here
+    );
+    GO
+    -- Create a new stored procedure called 'SpUpsertInventory' in schema 'dbo'
+    -- Drop the stored procedure if it already exists
+    IF EXISTS (
+    SELECT *
+        FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_SCHEMA = N'dbo'
+        AND SPECIFIC_NAME = N'SpUpsertInventory'
+    )
+    DROP PROCEDURE dbo.SpUpsertInventory
+    GO
+    -- Create the stored procedure in the specified schema
+    CREATE PROCEDURE dbo.SpUpsertInventory
+        @itemId [NVARCHAR](16),
+        @name [NVARCHAR](256),
+        @description [NVARCHAR](2560),
+        @quantity INT,
+        @price [NVARCHAR](50),
+        @location [NVARCHAR](256),
+        @link [NVARCHAR](256)
+        AS
+            BEGIN
+            IF NOT EXISTS (SELECT ItemId FROM dbo.Inventory WHERE Inventory.ItemId=@itemId)
+                BEGIN
+                        INSERT INTO dbo.Inventory ( [ItemId], [ItemName], [Description], [Quantity], [Price], [Location], [Link] ) VALUES ( @itemId, @name, @description, @quantity, @price, @location, @link )
+                END
+            ELSE
+                BEGIN
+                        UPDATE dbo.Inventory SET ItemName=@name,Description=@description,Quantity=@quantity,Price=@price,Location=@location,Link=@link WHERE ItemId=@itemId
+                END   
+            END
+        GO
+    GO
+    -- Enable Database for CDC template
+    EXEC sys.sp_cdc_enable_db
+    GO
+    -- Enable a Table 
+    EXEC sys.sp_cdc_enable_table
+    @source_schema = N'dbo',
+    @source_name = N'Inventory',
+    @role_name = NULL,
+    @supports_net_changes = 0
+    GO
