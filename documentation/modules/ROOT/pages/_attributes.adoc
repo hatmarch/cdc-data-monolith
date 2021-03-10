@@ -3,3 +3,5 @@
 :cdc-topic: legacy-inventory-cdc
 :kafka-connect-name: debezium-connect
 :kafka-connector-name: debezium-connector
+:test-project: cdc-test
+:example-connector-topic: file-stream-topic

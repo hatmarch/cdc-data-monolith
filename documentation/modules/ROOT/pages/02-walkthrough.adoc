@@ -303,8 +303,189 @@ Test Event 5
 [#strimzi]
 == Strimzi and AMQStreams Operator
 
-[#kafkaconnect]
-== Kafka Connect
+. Go to the {test-project} project, Developer Perspective
+. Click on `+Add` select `Developer Catalog` and then start searching for `kafka` in the "Operator Backed" items
++
+image::kafka-operator.png[]
++
+. A page will show up, just click `Create`
+. Show some of the options (perhaps even "YAML View") briefly, but create a kafka using the defaults, *setting name to `example`* then scrolling down and clicking `Create`
++
+image::kafka-example-creation.png[]
++
+. The Kafka cluster will start to appear
+
+[#examplekafkaconnect]
+== Kafka Connect Introduction
+
+. Go to the `{test-project}` project, Developer Perspective
++
+NOTE: The `example` kafka cluster should be fully running now
++
+. Before doing anything, pick a shell and run the following `stern` command which we'll use to look at the plugins on the Connect instance
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal 1::
++
+--
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+stern connect -n {test-project} -i "Added plugin"
+----
+--
+====
++
+. Click the book with the plus (`Quick Catalog Add`) and type `Connect` in the text box and then click `Create`
++
+image:kafka-connect-catalog.png[]
++
+. Then fill in the kafka connect form view per below **being extra careful to remove the tls certs** and **add the annotation* in YAML
++ 
+image:kafka-connect-form.png[]
+image:remove-certs.png[]
++
+. Switch to YAML view and make sure to add the following annotation:
++
+----
+  annotations:
+    strimzi.io/use-connector-resources: 'true'
+----
++
+image::kafka-connect-yaml.png[]
++
+. Finally click `Create` to create the KakfaConnect
+. After a few moments you should see the following in the `stern` shell (*Terminal 1*)
++
+[.console-output]
+----
++ example-connect-7856c88cf-mthmb › example-connect
+example-connect-7856c88cf-mthmb example-connect 2021-03-10 12:05:05,423 INFO Added plugin 'org.apache.kafka.connect.mirror.MirrorSourceConnector' (org.apache.kafka.connect.runtime.isolation.DelegatingClassLoader) [main]
+example-connect-7856c88cf-mthmb example-connect 2021-03-10 12:05:05,423 INFO Added plugin 'org.apache.kafka.connect.file.FileStreamSinkConnector' (org.apache.kafka.connect.runtime.isolation.DelegatingClassLoader) [main]
+example-connect-7856c88cf-mthmb example-connect 2021-03-10 12:05:05,424 INFO Added plugin 'org.apache.kafka.connect.tools.MockSourceConnector' (org.apache.kafka.connect.runtime.isolation.DelegatingClassLoader) [main]
+example-connect-7856c88cf-mthmb example-connect 2021-03-10 12:05:05,424 INFO Added plugin 'org.apache.kafka.connect.tools.SchemaSourceConnector' (org.apache.kafka.connect.runtime.isolation.DelegatingClassLoader) [main]
+#example-connect-7856c88cf-mthmb example-connect 2021-03-10 12:05:05,424 INFO Added plugin 'org.apache.kafka.connect.file.FileStreamSourceConnector' (org.apache.kafka.connect.runtime.isolation.DelegatingClassLoader) [main]#
+...
+NoneConnectorClientConfigOverridePolicy' (org.apache.kafka.connect.runtime.isolation.DelegatingClassLoader) [main]
+----
+. Then, make the following two terminals visible and run the commands therein:
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal2::
++
+--
+Here we will remote to the connect instance
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc rsh deploy/example-connect
+----
+
+Once connected, run the following in the pod:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cd /tmp
+echo "Line 1" >> test.txt
+----
+--
+Terminal 3::
++
+--
+Here we will look to receive any updates on the topic that the file will be streaming to
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc exec -it example-kafka-0 -n {test-project} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {example-connector-topic} --from-beginning
+----
+--
+====
+. Next, use the `Quick Add Catalog` button to create a new `Kafka Connector`
++
+image:new-kafka-connector.png[]
++
+. Switch to `YAML View`
+. Show that the name of the connector matches the Plugin log output from Terminal 1
+** `org.apache.kafka.connect.file.FileStreamSourceConnector`
+. Update the YAML as follows:
+** Make sure the topic matches what is being consumed in *Terminal 3*
+** Make sure the file matches what was just created in the `rsh` on *Terminal 2*
++
+image::file-connector-yaml.png[]
++
+. A few moments later, you should then see the following in *Terminal 3*
++
+[.console-output]
+----
+{"schema":{"type":"string","optional":false},"payload":"Line 1"}
+----
++
+. Click `Search` and then start typing `kafkaconnnect` and select `KafkaConnector` from the drop-down
++
+image:connector-search.png[]
++
+. Click on the `file-stream-connector` and then the YAML view
++
+image::connector-status.png[]
++
+[NOTE]
+====
+Alternatively, you can following command in Terminal 2 (rsh)
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+curl localhost:8083/connectors/file-stream-connector/status
+----
+====
+. Next let's pump some text through the file
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal 2 (rsh)::
++
+--
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+c=0; while (true); do ((c=c+1)); echo "Line ${c}" >> test.txt; sleep 2; done
+----
+--
+====
++
+. This should cause lines like the following to appear every 2 seconds in *Terminal 3*
++
+[.console-output]
+----
+{"schema":{"type":"string","optional":false},"payload":"Line 2"}
+{"schema":{"type":"string","optional":false},"payload":"Line 3"}
+{"schema":{"type":"string","optional":false},"payload":"Line 4"}
+{"schema":{"type":"string","optional":false},"payload":"Line 5"}
+{"schema":{"type":"string","optional":false},"payload":"Line 6"}
+{"schema":{"type":"string","optional":false},"payload":"Line 7"}
+{"schema":{"type":"string","optional":false},"payload":"Line 8"}
+{"schema":{"type":"string","optional":false},"payload":"Line 9"}
+{"schema":{"type":"string","optional":false},"payload":"Line 10"}
+----
++
+. Delete the kafkaconnector and then notice that eventually (when the amq operator catches up) the topic goes silent
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal 1::
++
+--
+----
+oc delete -n {test-project} kafkaconnector/file-stream-connector
+----
+--
+====
+
 
 [#debeziumconnector]
 == Enable Debezium Connector
@@ -312,16 +493,6 @@ Test Event 5
 === Configure SQL Database
 
 See last part of `ansible/demo/templates/configmap-data-sql.yaml.j2` and instructions link:https://debezium.io/documentation/reference/connectors/sqlserver.html#_enabling_cdc_on_the_sql_server_database[here]
-
-=== Create Connect
-
-See: `ansible/demo/templates/kafka-connect.yaml.j2`
-
-This is for metadata about the connector (I think)
-
-=== Create Connector
-
-See: `ansible/demo/templates/kafka-connector-mssql.yaml.j2`
 
 [#demonstratedbz]
 == Demonstrate Debezium
