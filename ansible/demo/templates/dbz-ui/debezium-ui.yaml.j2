@@ -1,0 +1,51 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: dbz-ui
+  annotations:
+    app.openshift.io/connects-to: debezium
+  labels:
+    app: dbz-ui
+    app.kubernetes.io/component: dbz-ui
+    app.kubernetes.io/instance: dbz-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbz-ui
+  template:
+    metadata:
+      labels:
+        app: dbz-ui
+        deploymentconfig: dbz-ui
+    spec:
+      containers:
+        - name: dbz-ui
+          env:
+            - name: KAFKA_CONNECT_URI
+              value: "http://debezium-connect-api.{{ kafka_project }}.svc.cluster.local:8083"
+            - name: UI_MODE
+              value: prod
+            - name: UI_BASE_URI
+              value: 'http://{{ ui_public_host }}/api'
+          image: '{{ debezium_ui_image }}'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+---

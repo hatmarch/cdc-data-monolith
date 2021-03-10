@@ -12,3 +12,30 @@
     state: present
     namespace: '{{ db_project }}'
     resource_definition: "{{ lookup('template', 'kafka-connector-mssql.yaml.j2') }}"
+
+- name: Deploy Debezium UI Services
+  k8s:
+    state: present
+    namespace: '{{ db_project }}'
+    resource_definition: "{{ lookup('template', 'dbz-ui/debezium-ui-services.yaml.j2') }}"
+
+- name: Wait for Route
+  k8s_info:
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: dbz-ui
+    namespace: '{{ db_project }}'
+  register: dbz_ui_route
+  until: >-
+    (dbz_ui_route.resources is defined)
+    and (dbz_ui_route.resources|length>0)
+    and (dbz_ui_route.resources[0].spec.host is defined)
+
+- name: Deploy Debezium UI
+  k8s:
+    state: present
+    namespace: '{{ db_project }}'
+    resource_definition: "{{ lookup('template', 'dbz-ui/debezium-ui.yaml.j2') }}"
+  vars:
+      ui_public_host: '{{ item }}'
+  loop: "{{ dbz_ui_route | json_query('resources[*].spec.host') }}"
