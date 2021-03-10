@@ -1,0 +1,224 @@
+{
+    "schema": {
+        "type": "struct",
+        "fields": [
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemId"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemName"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "Description"
+                    },
+                    {
+                        "type": "int32",
+                        "optional": false,
+                        "field": "Quantity"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Price"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Location"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Link"
+                    }
+                ],
+                "optional": true,
+                "name": "legacy_inventory_cdc.Value",
+                "field": "before"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemId"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemName"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "Description"
+                    },
+                    {
+                        "type": "int32",
+                        "optional": false,
+                        "field": "Quantity"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Price"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Location"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Link"
+                    }
+                ],
+                "optional": true,
+                "name": "legacy_inventory_cdc.Value",
+                "field": "after"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "version"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "connector"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "name"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "ts_ms"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "name": "io.debezium.data.Enum",
+                        "version": 1,
+                        "parameters": {
+                            "allowed": "true,last,false"
+                        },
+                        "default": "false",
+                        "field": "snapshot"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "db"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "schema"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "table"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "change_lsn"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "commit_lsn"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": true,
+                        "field": "event_serial_no"
+                    }
+                ],
+                "optional": false,
+                "name": "io.debezium.connector.sqlserver.Source",
+                "field": "source"
+            },
+            {
+                "type": "string",
+                "optional": false,
+                "field": "op"
+            },
+            {
+                "type": "int64",
+                "optional": true,
+                "field": "ts_ms"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "id"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "total_order"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "data_collection_order"
+                    }
+                ],
+                "optional": true,
+                "field": "transaction"
+            }
+        ],
+        "optional": false,
+        "name": "legacy_inventory_cdc.Envelope"
+    },
+    "payload": {
+        "before": null,
+        "after": {
+            "ItemId": "444437",
+            "ItemName": "Lytro Camera",
+            "Description": "Consumers who want to up their photography game are looking at newfangled cameras like the Lytro Field camera, designed to take photos with infinite focus, so you can decide later exactly where you want the focus of each image to be.",
+            "Quantity": 400,
+            "Price": "44.30",
+            "Location": "http://maps.google.com/?q=Tokyo",
+            "Link": "Tokyo"
+        },
+        "source": {
+            "version": "1.5.0.Beta1",
+            "connector": "sqlserver",
+            "name": "mssql-server-linux",
+            "ts_ms": 1615358908347,
+            "snapshot": "last",
+            "db": "InternationalDB",
+            "schema": "dbo",
+            "table": "Inventory",
+            "change_lsn": null,
+            "commit_lsn": "00000024:00000590:0003",
+            "event_serial_no": null
+        },
+        "op": "r",
+        "ts_ms": 1615358908347,
+        "transaction": null
+    }
+}

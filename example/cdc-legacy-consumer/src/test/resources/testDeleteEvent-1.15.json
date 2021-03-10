@@ -1,0 +1,224 @@
+{
+    "schema": {
+        "type": "struct",
+        "fields": [
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemId"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemName"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "Description"
+                    },
+                    {
+                        "type": "int32",
+                        "optional": false,
+                        "field": "Quantity"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Price"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Location"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Link"
+                    }
+                ],
+                "optional": true,
+                "name": "legacy_inventory_cdc.Value",
+                "field": "before"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemId"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemName"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "Description"
+                    },
+                    {
+                        "type": "int32",
+                        "optional": false,
+                        "field": "Quantity"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Price"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Location"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Link"
+                    }
+                ],
+                "optional": true,
+                "name": "legacy_inventory_cdc.Value",
+                "field": "after"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "version"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "connector"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "name"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "ts_ms"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "name": "io.debezium.data.Enum",
+                        "version": 1,
+                        "parameters": {
+                            "allowed": "true,last,false"
+                        },
+                        "default": "false",
+                        "field": "snapshot"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "db"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "schema"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "table"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "change_lsn"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "commit_lsn"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": true,
+                        "field": "event_serial_no"
+                    }
+                ],
+                "optional": false,
+                "name": "io.debezium.connector.sqlserver.Source",
+                "field": "source"
+            },
+            {
+                "type": "string",
+                "optional": false,
+                "field": "op"
+            },
+            {
+                "type": "int64",
+                "optional": true,
+                "field": "ts_ms"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "id"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "total_order"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "data_collection_order"
+                    }
+                ],
+                "optional": true,
+                "field": "transaction"
+            }
+        ],
+        "optional": false,
+        "name": "legacy_inventory_cdc.Envelope"
+    },
+    "payload": {
+        "before": {
+            "ItemId": "165613",
+            "ItemName": "Solid Performance Polo",
+            "Description": "Moisture-wicking! antimicrobial 100% polyester design wicks for life of garment. No-curl, rib-knit collar; special collar band maintains crisp fold; three-button placket with dyed-to-match buttons; hemmed sleeves; even bottom with side vents; Import. Embroidery. Red Pepper.",
+            "Quantity": 1,
+            "Price": "17.80",
+            "Location": "http://maps.google.com/?q=Boston",
+            "Link": "Boston Mass"
+        },
+        "after": null,
+        "source": {
+            "version": "1.5.0.Beta1",
+            "connector": "sqlserver",
+            "name": "mssql-server-linux",
+            "ts_ms": 1615360150917,
+            "snapshot": "false",
+            "db": "InternationalDB",
+            "schema": "dbo",
+            "table": "Inventory",
+            "change_lsn": "00000025:00000018:0002",
+            "commit_lsn": "00000025:00000018:0005",
+            "event_serial_no": 1
+        },
+        "op": "d",
+        "ts_ms": 1615360155429,
+        "transaction": null
+    }
+}
