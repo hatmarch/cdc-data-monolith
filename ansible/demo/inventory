@@ -23,6 +23,6 @@ kafka_name=demo
 payment_image=quay.io/mhildenb/homemade-serverless-java:initial-service-1.0
 payment_devfile_revision=serverless-demo
 payment_devfile_repo=https://github.com/hatmarch/coolstore.git
-legacy_app_image=quay.io/mhildenb/cdc-legacy-app:1.1
+legacy_app_image=quay.io/mhildenb/cdc-legacy-app:1.2
 legacy_app_name=legacy-inventory
 remove_operators=false

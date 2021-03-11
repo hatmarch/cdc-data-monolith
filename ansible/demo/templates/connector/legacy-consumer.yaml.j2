@@ -42,6 +42,12 @@ spec:
             timeoutSeconds: 2
           image: >-
             quay.io/mhildenb/cdc-legacy-consumer:1.0
+          command:
+            - java
+            - '-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n'
+            - '-Djava.util.logging.manager=org.jboss.logmanager.LogManager'
+            - '-jar'
+            - quarkus-run.jar
           ports:
             - containerPort: 8080
               protocol: TCP
