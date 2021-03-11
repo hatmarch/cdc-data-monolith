@@ -30,7 +30,14 @@ image::legacy-inventory-navbar.png[]
 +
 image::legacy-inventory-upload.png[]
 +
-. In the directory shown (`$DEMO_HOME/example`) choose the `coolstore-inventory.csv'
+. In the directory shown (`$DEMO_HOME/example`) choose the `inventory-initial.csv`
++
+.link:{github-repo}/{resources-repo}/inventory-initial.csv[build-resources.yaml^]
+[source,subs="+macros,attributes+"]
+----
+include::ROOT:example$inventory-initial.csv[]
+----
++
 . Click `Load File`
 . You should now see a screen of all the imported inventory.  
 +
@@ -480,12 +487,123 @@ c=0; while (true); do ((c=c+1)); echo "Line ${c}" >> test.txt; sleep 2; done
 Terminal 1::
 +
 --
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
 ----
 oc delete -n {test-project} kafkaconnector/file-stream-connector
 ----
 --
 ====
 
+[#cdc]
+== Legacy App Change Data Capture
+
+In this section we're going to put all the pieces together and demonstrate the ability to have our website updated based on debezium and a consumer that we write.  This is the general plan:
+
+image::cdc-arch-overview.png[]
+
+. Remember that we've already uploaded a number of items and quantities into the inventory via the legacy app
++
+image:loaded-inventory.png[]
++
+. First we will deploy the Strimzi-ified KafkaConnect and Debezium Connector for our application.  Show them briefly this playbook:
++
+.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$provision_debezium.yaml[]
+----
++
+. To deploy the playbook, run the following in the shell
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
+    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
+    -e "ACTION=debezium_create" 
+----
++
+. From the Developer Perspective, watch the DBZ UI and the connector appear
++
+. Search for the KafkaConnect for `debezium` as shown:
++
+image::search-dbz-connect.png[]
++
+. Review the yaml (see below for example from playbook)
+** Point out all the possible connectors that can be registered within this connect (for all the different databases)
++
+.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$kafka-connect.yaml.j2[]
+----
++
+. Click on the link badge of the `dbz-ui` and show the visualization of the debezium connector:
++
+image::dbz-ui-badge.png[]
+image::dbz-ui.png[]
++
+. Search for the `KafkaConnector` and click on the `debezium-connector` 
++
+image:search-dbz-connector.png[]
++
+. Review the YAML (see below for example from playbook)
+** Point out the legacy topic we want to watch
++
+.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$kafka-connector-mssql.yaml.j2[]
+----
++
+. Now let's watch that legacy topic that we see in the connector.  We'd expect there should be data there for the one row we added to the legacy database
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal 1::
++
+--
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc exec -it demo-kafka-0 -n {kafka-project} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {cdc-topic} --from-beginning
+----
+--
+====
++
+. After a few moments, a blob of JSON should appear that looks something like the following (just unformatted):
++
+.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+[source,json,subs="+macros,attributes+"]
+----
+include::ROOT:example$testCreateEvent-1.15.json[]
+----
++
+. Copy the JSON blob and paste it into an online JSON formatting service such as link:https://jsonformatter.org/[JSON Formatter]
++
+image:json-formatter.png[]
++
+. Use folding ability to point out the following parts of the message:
+** `schema`
+** `payload` 
+** `before` and `after`
+** `op`
++
+image:schema-payload.png[]
+
+[#deploylegacyconsumer]
+=== Deploy Legacy Consumer
+
+Run the following ansible command to create a deployment and configmap for the connector
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
+    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
+    -e "ACTION=consumer_create" 
+----
 
 [#debeziumconnector]
 == Enable Debezium Connector
@@ -521,15 +639,4 @@ image::json2pojo.png[]
 . expand into the `functions` directory
 . Update tests to show JSON to POJO working
 
-[#deploylegacyconsumer]
-=== Deploy Legacy Consumer
 
-Run the following ansible command to create a deployment and configmap for the connector
-
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
-    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
-    -e "ACTION=consumer_create" 
-----
