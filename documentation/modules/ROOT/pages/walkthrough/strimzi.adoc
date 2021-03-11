@@ -14,4 +14,18 @@ image::kafka-operator.png[]
 +
 image::kafka-example-creation.png[]
 +
-. The Kafka cluster will start to appear
+. The Kafka cluster will start to appear in the Topology View
++
+. Next use the search functionality to search for the `Kafka` custom resource you just created
++
+image:kafka-search.png[]
++
+. Click on `example` and scroll to the bottom to review the `Conditions`.  Wait until this is set to `Ready`
++
+image:kafka-condition-ready.png[]
++
+. Finally, navigate back to the topology view to see all the aspects that were created.  Point out
+** Example Zookeeper
+** Example Kakfa (Brokers, see Services)
++
+image:kafka-deployed-strimzi.png[]

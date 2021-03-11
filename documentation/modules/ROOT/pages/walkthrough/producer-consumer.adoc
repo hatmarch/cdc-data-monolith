@@ -150,28 +150,24 @@ Terminal 4::
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc exec -it demo-kafka-0 -n {kafka-project} -- bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-solo
-oc exec -it demo-kafka-0 -n {kafka-project} -- bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-1
+oc exec -it demo-kafka-0 -n {kafka-project} -- bash -c "printf '\033[?7l'; bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-1; echo '-------------------------'; bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-solo; printf '\033[?7h'"
 ----
 --
 ====
 +
-. Output should be similar to:
+. Output should be similar to (notice the truncation due to the `printf` above):
 +
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
 ----
+GROUP            TOPIC                  PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                    
+consumer-group-1 test-producer-consumer 0          4               4               0               consumer-consumer-group-1-1-f888bb4c-46dd-4723-
+-------------------------
+
 Consumer group 'consumer-group-solo' has no active members.
 
-GROUP               TOPIC                    PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
-consumer-group-solo test-producer-consumer   0          16              17              1               -               -               -
-----
-+
-[.console-output]
-[source,bash,subs="attributes+,+macros"]
-----
-GROUP            TOPIC                    PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                      HOST            CLIENT-ID
-consumer-group-1 test-producer-consumer   0          17              17              0               consumer-consumer-group-1-1-c2d8588c-996e-47df-bb46-66d948d4a9ea /10.128.2.16    consumer-consumer-group-1-1
+GROUP               TOPIC                  PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+consumer-group-solo test-producer-consumer 0          3               4               1               -               -               -
 ----
 +
 . Next, let's reset the offset of the only consumer group that is currently offline (has no active members)
@@ -225,7 +221,6 @@ Test Event 1
 Test Event 2
 Test Event 3
 Test Event 4
-Test Event 5
 ----
 --
 ====

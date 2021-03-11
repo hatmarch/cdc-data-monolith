@@ -31,22 +31,19 @@ ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
     -e "ACTION=debezium_create" 
 ----
 +
-. From the Developer Perspective, watch the DBZ UI and the connector appear
-+
+. From the Developer Perspective, the elements appear and try to match them to the playbook logs.
+. Wait for the dbz-ui to appear indicating the end of the playbook
 . Search for the KafkaConnect for `debezium` as shown:
 +
 image::search-dbz-connect.png[]
 +
 . Review the yaml (see below for example from playbook)
+NOTE: You may need to wait a while until the connector is in a `ready` state before you see the status appear.  You can wait either on the Topology page or on the CR page
 ** Point out all the possible connectors that can be registered within this connect (for all the different databases)
 +
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
-[source,yaml,subs="+macros,attributes+"]
-----
-include::ROOT:example$kafka-connect.yaml.j2[]
-----
+image:status-connectors.png[]
 +
-. Click on the link badge of the `dbz-ui` and show the visualization of the debezium connector:
+. Back in the Topology View, click on the link badge of the `dbz-ui` and show the visualization of the debezium connector:
 +
 image::dbz-ui-badge.png[]
 image::dbz-ui.png[]

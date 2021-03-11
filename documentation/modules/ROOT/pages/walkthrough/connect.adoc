@@ -6,7 +6,7 @@ include::../_attributes.adoc[]
 
 [IMPORTANT]
 ====
-This section assumes you have setup a kafka cluster in `{test-project}` already.  If you have not, then please first complete xref::walkthrough/strimzi.adoc[this part of the walkthrough]
+This section assumes you have setup a kafka cluster in `{test-project}` already.  If you have not, then please first complete xref::walkthrough/strimzi.adoc#strimzi[this part of the walkthrough]
 ====
 
 . Go to the `{test-project}` project, Developer Perspective
@@ -72,7 +72,7 @@ Here we will remote to the connect instance
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc rsh deploy/example-connect
+oc rsh -n {test-project} deploy/example-connect 
 ----
 
 Once connected, run the following in the pod:
@@ -144,7 +144,7 @@ Terminal 2 (rsh)::
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-c=0; while (true); do ((c=c+1)); echo "Line ${c}" >> test.txt; sleep 2; done
+c=1; while (true); do pass:[((c=c+1))]; echo "Line ${c}" >> test.txt; sleep 2; done
 ----
 --
 ====
@@ -178,149 +178,44 @@ oc delete -n {test-project} kafkaconnector/file-stream-connector
 ----
 --
 ====
-
-[#cdc]
-== Legacy App Change Data Capture
-
-In this section we're going to put all the pieces together and demonstrate the ability to have our website updated based on debezium and a consumer that we write.  This is the general plan:
-
-image::cdc-arch-overview.png[]
-
-. Remember that we've already uploaded a number of items and quantities into the inventory via the legacy app
-+
-image:loaded-inventory.png[]
-+
-. First we will deploy the Strimzi-ified KafkaConnect and Debezium Connector for our application.  Show them briefly this playbook:
-+
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
-[source,yaml,subs="+macros,attributes+"]
-----
-include::ROOT:example$provision_debezium.yaml[]
-----
-+
-. To deploy the playbook, run the following in the shell
-+
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
-    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
-    -e "ACTION=debezium_create" 
-----
-+
-. From the Developer Perspective, watch the DBZ UI and the connector appear
-+
-. Search for the KafkaConnect for `debezium` as shown:
-+
-image::search-dbz-connect.png[]
-+
-. Review the yaml (see below for example from playbook)
-** Point out all the possible connectors that can be registered within this connect (for all the different databases)
-+
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
-[source,yaml,subs="+macros,attributes+"]
-----
-include::ROOT:example$kafka-connect.yaml.j2[]
-----
-+
-. Click on the link badge of the `dbz-ui` and show the visualization of the debezium connector:
-+
-image::dbz-ui-badge.png[]
-image::dbz-ui.png[]
-+
-. Search for the `KafkaConnector` and click on the `debezium-connector` 
-+
-image:search-dbz-connector.png[]
-+
-. Review the YAML (see below for example from playbook)
-** Point out the legacy topic we want to watch
-+
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
-[source,yaml,subs="+macros,attributes+"]
-----
-include::ROOT:example$kafka-connector-mssql.yaml.j2[]
-----
-+
-. Now let's watch that legacy topic that we see in the connector.  We'd expect there should be data there for the one row we added to the legacy database
+. Finally, you might consider returning to *Terminal 2* to show that the writing to the file continued
 +
 [tabs,subs="attributes+,+macros"]	
 ====	
-Terminal 1::
+Terminal 2 (rsh)::
 +
 --
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc exec -it demo-kafka-0 -n {kafka-project} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {cdc-topic} --from-beginning
+cat test.txt
 ----
 --
 ====
++ 
+. This should yield output something like this:
 +
-. After a few moments, a blob of JSON should appear that looks something like the following (just unformatted):
-+
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
-[source,json,subs="+macros,attributes+"]
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
 ----
-include::ROOT:example$testCreateEvent-1.15.json[]
+Line 1
+Line 2
+Line 3
+Line 4
+Line 5
+Line 6
+Line 7
+Line 8
+Line 9
+Line 10
+Line 11
+Line 12
+Line 13
+Line 14
+Line 15
+Line 16
+Line 17
+Line 18
+Line 19
+Line 20
 ----
-+
-. Copy the JSON blob and paste it into an online JSON formatting service such as link:https://jsonformatter.org/[JSON Formatter]
-+
-image:json-formatter.png[]
-+
-. Use folding ability to point out the following parts of the message:
-** `schema`
-** `payload` 
-** `before` and `after`
-** `op`
-+
-image:schema-payload.png[]
-
-[#deploylegacyconsumer]
-=== Deploy Legacy Consumer
-
-Run the following ansible command to create a deployment and configmap for the connector
-
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
-    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
-    -e "ACTION=consumer_create" 
-----
-
-[#debeziumconnector]
-== Enable Debezium Connector
-
-=== Configure SQL Database
-
-See last part of `ansible/demo/templates/configmap-data-sql.yaml.j2` and instructions link:https://debezium.io/documentation/reference/connectors/sqlserver.html#_enabling_cdc_on_the_sql_server_database[here]
-
-[#demonstratedbz]
-== Demonstrate Debezium
-
-. Connect to database using Adminer per instructions xref:03-appendix.adoc#mssql[here]
-. In another terminal watch where the order events will go
-+
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning
-----
-+
-. Go to adminer and create a new entry
-
-== Generate legacy-order-adaptor
-
-=== Create JSON to POJO
-
-. Start with some example `.json` generated from CDC event in xref:02-walkthrough.adoc#demonstratedbz[this section]
-. Navigate to link:http://www.jsonschema2pojo.org/[this site] and paste in the json per screenshot
-+
-image::json2pojo.png[]
-+
-. Click the link to download the zip file
-. expand into the `functions` directory
-. Update tests to show JSON to POJO working
-
-
