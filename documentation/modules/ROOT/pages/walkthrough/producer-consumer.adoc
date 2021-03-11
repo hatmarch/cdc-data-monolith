@@ -12,6 +12,7 @@ Make sure your terminals are setup per the xref::walkthrough/index.adoc#setup[in
 ====
 
 . Make sure you can see 4 terminals on your desktop
+** _see the suggested layout xref::walkthrough/index.adoc#suggestedlayout[here]_
 . Enter the following commands in each of the terminals:
 +
 [tabs,subs="attributes+,+macros"]	

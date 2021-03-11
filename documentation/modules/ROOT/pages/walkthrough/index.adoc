@@ -33,3 +33,8 @@ oc whoami
 ----
 opentlc-mgr
 ----
+
+[#suggestedlayout]
+=== Suggested Layout
+
+image::suggested-desktop.png[]
