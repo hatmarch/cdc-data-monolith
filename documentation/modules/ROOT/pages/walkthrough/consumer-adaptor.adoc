@@ -4,8 +4,37 @@ include::../_attributes.adoc[]
 [#deploylegacyconsumer]
 == Deploy Legacy Consumer
 
-Run the following ansible command to create a deployment and configmap for the connector
+=== Demonstrating connector
 
+. In anticipation of the connector running, let's first start `stern` in a terminal
+IMPORTANT: *Terminal 4* should still be watching the kafka-topic as per xref:walkthrough/legacy-cdc.adoc#watchcdctopic[these instructions], which are repeated below
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal 2::
++
+--
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+clear
+stern -n cdc-demo-dev -i org.mhi.cdc.CdcKafkaConsumer legacy-inventory-consumer 
+----
+--
+Terminal 4::
++
+--
+include::ROOT:partial$watch-cdc-topic-console.adoc[]
+--
+====
++
+. With the *Topology View* visible, run the following ansible command to create a deployment and configmap for the connector
++
+[tabs,subs="attributes+,+macros"]	
+====	
+Terminal 1::
++
+--
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
@@ -13,6 +42,51 @@ ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
     pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
     -e "ACTION=consumer_create" 
 ----
+--
+====
++
+. Once the app is deployed, you should see output from `stern` that looks like this:
++
+[.console-output]
+[source,bash,subs="+macros,+attributes"]
+----
+legacy-inventory-consumer-585bbc4fb8-gg9wt › legacy-inventory-consumer
+legacy-inventory-consumer-585bbc4fb8-gg9wt legacy-inventory-consumer 2021-03-11 07:34:40,136 INFO  [org.mhi.cdc.CdcKafkaConsumer] (vert.x-eventloop-thread-0) Got a cdc event with key {"schema":{"type":"struct","fields":[{"type":"string","optional":false,"field":"ItemId"},{"type":"string","optional":false,"field":"__dbz__physicalTableIdentifier"}],"optional":false,"name":"legacy_inventory_cdc.Key"},"payload":{"ItemId":"329299","__dbz__physicalTableIdentifier":"mssql-server-linux.dbo.Inventory"}}
+legacy-inventory-consumer-585bbc4fb8-gg9wt legacy-inventory-consumer 2021-03-11 07:34:40,725 INFO  [org.mhi.cdc.CdcKafkaConsumer] (vert.x-eventloop-thread-0) Got a snapshot cdc event [op=r]
+legacy-inventory-consumer-585bbc4fb8-gg9wt legacy-inventory-consumer 2021-03-11 07:34:40,725 INFO  [org.mhi.cdc.CdcKafkaConsumer] (vert.x-eventloop-thread-0) New/Updated a payload with item name of Red Fedora (itemId: 329299)
+legacy-inventory-consumer-585bbc4fb8-gg9wt legacy-inventory-consumer 2021-03-11 07:34:41,452 INFO  [org.mhi.cdc.CdcKafkaConsumer] (vert.x-eventloop-thread-0) Got a cdc event with key {"schema":{"type":"struct","fields":[{"type":"string","optional":false,"field":"ItemId"},{"type":"string","optional":false,"field":"__dbz__physicalTableIdentifier"}],"optional":false,"name":"legacy_inventory_cdc.Key"},"payload":{"ItemId":"329299","__dbz__physicalTableIdentifier":"mssql-server-linux.dbo.Inventory"}}
+legacy-inventory-consumer-585bbc4fb8-gg9wt legacy-inventory-consumer 2021-03-11 07:34:41,520 INFO  [org.mhi.cdc.CdcKafkaConsumer] (vert.x-eventloop-thread-0) New/Updated a payload with item name of Red Fedora (itemId: 329299)
+----
++
+. Go back to the coolstore website and now the quantity of the Fedora in *Coolstore* should match what's in the *Legacy Inventory*.  Switch back and forth between both to prove
++
+image:coolstore-with-inventory.png[]
++
+. Next let's do a batch upload of all the items and see them get populated in the store
+. Follow the following instructions, but using the file `inventory-coolstore.csv`
+# FIXME INCLUDE
+
+=== Debugging the Connector
+
+. From within Visual Studio, use the Kubernetes extension to locate the legacy-consumer pod and attach the debugger to it
++
+image::vscode-kubernetes-attach.png[]
++
+. User kbd:[cmd + p] to open `example/cdc-legacy-consumer/src/main/java/org/mhildenb/cdcdemo/CdcKafkaConsumer.java` quickly
++
+. Set a breakpoint in the CdcKafkaConsumer.receive method
++
+. In the legacy application, edit a field to trigger a change
++
+. As you step through the breakpoints, point out have the adaptor has been configured from this `application.properties` ansible template
++
+.link:{github-repo}/examples/connector-application.properties.yaml.j2[connector-application.properties.yaml.j2^]
+[source,subs="+macros,attributes+"]
+----
+include::ROOT:example$connector-application.properties.yaml.j2[]
+----
+
+
 
 [#debeziumconnector]
 == Enable Debezium Connector

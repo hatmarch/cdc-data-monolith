@@ -1,0 +1,5 @@
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc exec -it demo-kafka-0 -n {kafka-project} -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {cdc-topic} --from-beginning
+----
