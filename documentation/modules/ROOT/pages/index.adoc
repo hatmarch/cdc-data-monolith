@@ -11,18 +11,19 @@ A demo walkthrough to show how Change Data Capture can be used to get around a l
 == Browse modules
 
 [.tile]
-.xref:01-setup.adoc[Setup Demo]
+.xref:01-setup.adoc[General Setup]
 * xref:01-setup.adoc#prerequisite[Prerequisites]
 * xref:01-setup.adoc#install[Install Demo]
 * xref:01-setup.adoc#uninstall[Uninstalling Demo]
 
 [.tile]
-.xref:02-walkthrough.adoc[Walkthrough]
-* xref:02-walkthrough.adoc#legacy[Introduction to Legacy App]
-* xref:02-walkthrough.adoc#producerconsumer[Kafka: Producers, Consumers, and Groups]
-* xref:02-walkthrough.adoc#strimzi[Strimzi and AMQStreams Operator]
-* xref:02-walkthrough.adoc#examplekafkaconnect[Kafka Connect Introduction]
-* xref:02-walkthrough.adoc#cdc[Legacy App Change Data Capture]
+.xref:walkthrough/index.adoc#setup[Walkthrough Setup]
+* xref:walkthrough/legacy.adoc#legacy[Intro to Legacy App]
+* xref:walkthrough/producer-consumer.adoc#producerconsumer[Kafka: Producers, onsumers, and Groups]
+* xref:walkthrough/strimzi.adoc#strimzi[Strimzi and AMQStreams Operator]
+* xref:walkthrough/connect.adoc#examplekafkaconnect[Kafka Connect Introduction]
+* xref:walkthrough/legacy-cdc.adoc#cdc[Legacy App Change Data Capture]
+* xref:walkthrough/consumer-adaptor.adoc#deploylegacyconsumer[Deploy Legacy Consumer]
 
 [.tile]
 .xref:03-appendix[Appendix]

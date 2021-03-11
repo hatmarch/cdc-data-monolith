@@ -1,0 +1,17 @@
+= Demo Walkthrough: Strimzi and AMQStreams Operator
+include::../_attributes.adoc[]
+
+[#strimzi]
+== Strimzi and AMQStreams Operator
+
+. Go to the `{test-project}` project, Developer Perspective
+. Click on `+Add` select `Developer Catalog` and then start searching for `kafka` in the "Operator Backed" items
++
+image::kafka-operator.png[]
++
+. A page will show up, just click `Create`
+. Show some of the options (perhaps even "YAML View") briefly, but create a kafka using the defaults, *setting name to `example`* then scrolling down and clicking `Create`
++
+image::kafka-example-creation.png[]
++
+. The Kafka cluster will start to appear

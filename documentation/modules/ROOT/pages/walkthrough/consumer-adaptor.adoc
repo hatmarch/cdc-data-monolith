@@ -1,0 +1,51 @@
+= Demo Walkthrough
+include::../_attributes.adoc[]
+
+[#deploylegacyconsumer]
+== Deploy Legacy Consumer
+
+Run the following ansible command to create a deployment and configmap for the connector
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+ansible-playbook -i pass:[${DEMO_HOME}]/ansible/demo/inventory \
+    pass:[${DEMO_HOME}]/ansible/demo/main.yaml \
+    -e "ACTION=consumer_create" 
+----
+
+[#debeziumconnector]
+== Enable Debezium Connector
+
+=== Configure SQL Database
+
+See last part of `ansible/demo/templates/configmap-data-sql.yaml.j2` and instructions link:https://debezium.io/documentation/reference/connectors/sqlserver.html#_enabling_cdc_on_the_sql_server_database[here]
+
+[#demonstratedbz]
+== Demonstrate Debezium
+
+. Connect to database using Adminer per instructions xref:03-appendix.adoc#mssql[here]
+. In another terminal watch where the order events will go
++
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning
+----
++
+. Go to adminer and create a new entry
+
+== Generate legacy-order-adaptor
+
+=== Create JSON to POJO
+
+. Start with some example `.json` generated from CDC event in xref:02-walkthrough.adoc#demonstratedbz[this section]
+. Navigate to link:http://www.jsonschema2pojo.org/[this site] and paste in the json per screenshot
++
+image::json2pojo.png[]
++
+. Click the link to download the zip file
+. expand into the `functions` directory
+. Update tests to show JSON to POJO working
+
+

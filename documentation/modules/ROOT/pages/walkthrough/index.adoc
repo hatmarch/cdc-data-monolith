@@ -1,0 +1,35 @@
+= Walkthrough: CDC Data Monolith
+include::../_attributes.adoc[]
+
+[#setup]
+== Walkthrough Setup
+In this demo we want to show the notion of producers and consumers and ideally topics without any of the k8 overlays
+
+See link:https://medium.com/@TimvanBaarsen/apache-kafka-cli-commands-cheat-sheet-a6f06eac01b#fe4f[here] for some commands that can be used.
+
+For this we setup 4 terminals.  
+
+. All four get setup in the same way.  Run the following command first in each:
++
+IMPORTANT: These commands must be run from the root of the demo git repo
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+# from the root of this repo
+docker run -it -v ~/.kube:/home/jboss/.kube -v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh -v $(pwd):/workspaces/cdc-data-monolith -w /workspaces/cdc-data-monolith quay.io/mhildenb/cdc-demo-shell /bin/zsh
+----
++
+. Once in the docker shell, ensure you are logged in (one you are logged into one you should be logged into all)
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc whoami
+----
++
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+opentlc-mgr
+----
