@@ -45,7 +45,7 @@
   k8s_info:
     kind: Deployment
     name: '{{ legacy_app_name }}'
-    namespace: '{{ main_project }}'
+    namespace: '{{ legacy_app_project }}'
     api_version: v1
   register: app_exists
 
@@ -59,11 +59,11 @@
   - name: Deploy Legacy Application
     shell: "oc new-app {{ legacy_app_image }} --name '{{ legacy_app_name }}' \
             -e 'SERVER_NAME=mssql-server-linux.{{ db_project }}.svc' \
-            -n {{ main_project }}"
+            -n {{ legacy_app_project }}"
   - name: Delete incorrect (automatically created) service
-    shell: "oc delete service {{ legacy_app_name }} -n {{ main_project }}"
+    shell: "oc delete service {{ legacy_app_name }} -n {{ legacy_app_project }}"
   - name: Correct Service
-    shell: "oc expose deploy {{ legacy_app_name }} --port 8080 --target-port 8080 -n {{ main_project }}"
+    shell: "oc expose deploy {{ legacy_app_name }} --port 8080 --target-port 8080 -n {{ legacy_app_project }}"
   - name: Create Legacy Application Route
-    shell: "oc expose service {{ legacy_app_name }} --name=www -n {{ main_project }}"
+    shell: "oc expose service {{ legacy_app_name }} --name=www -n {{ legacy_app_project }}"
   when: (app_exists.resources is undefined) or (app_exists.resources | length == 0)

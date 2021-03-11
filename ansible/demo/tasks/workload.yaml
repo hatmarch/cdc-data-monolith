@@ -3,11 +3,11 @@
   include_tasks: provision_amqstreams.yaml
   when: install_prereqs|bool
 
+- name: Provision Sandbox
+  include_tasks: provision_sandbox.yaml
+
 - name: Provision Legacy App
   include_tasks: provision_legacy_app.yaml
-  vars:
-    db_project: "{{ legacy_project }}"
-    main_project: "{{ legacy_project }}"
 #  Use this when testing to skip this step
 #  when: false|bool
 
@@ -24,13 +24,6 @@
     project: "{{ coolstore_project }}"
     #kafka_project: "{{ kafka_project }}"
   when: not skip_coolstore|bool
-
-- name: Provision Connect and Connector
-  include_tasks: provision_debezium.yaml
-  vars:
-    db_project: "{{ dev_project }}"
-    kafka_project: "{{ dev_project }}"
-  when: provision_walkthrough_step_1|bool
 
 # - name: Provision Operator Snapshot
 #   include_tasks: provision_snapshotoperator.yaml

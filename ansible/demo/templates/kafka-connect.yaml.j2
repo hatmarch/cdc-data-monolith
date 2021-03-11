@@ -5,7 +5,7 @@ metadata:
     strimzi.io/use-connector-resources: 'true'
   name: '{{ kc_name }}'
 spec:
-  bootstrapServers: 'demo-kafka-bootstrap:9092'
+  bootstrapServers: 'demo-kafka-bootstrap.{{ kafka_project }}:9092'
   config:
     config.storage.topic: '{{ kc_name }}-cluster-configs'
     group.id: '{{ kc_name }}-cluster'

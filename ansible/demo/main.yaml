@@ -30,6 +30,15 @@
         become: "{{ become_override | bool }}"
     when: ACTION == "create" or ACTION == "provision"
 
+  - name: Provision Debezium connectors_image
+    include_tasks:
+      file: ./tasks/provision_debezium.yaml
+      apply:
+        become: "{{ become_override | bool }}"
+    vars:
+      db_project: "{{ dev_project }}"
+    when: ACTION == "provision" or ACTION == "debezium_create"
+
   - name: Deploy Legacy Consumer
     include_tasks:
       file: ./tasks/provision_legacy_consumer.yaml

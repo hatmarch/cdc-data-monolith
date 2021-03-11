@@ -16,7 +16,7 @@
   k8s:
     state: present
     namespace: '{{ dev_project }}'
-    resource_definition: "{{ lookup('template', 'connector/legacy-consumer.j2') }}"
+    resource_definition: "{{ lookup('template', 'connector/legacy-consumer.yaml.j2') }}"
 
 - name: Wait for Legacy Consumer to be Ready
   k8s_info:

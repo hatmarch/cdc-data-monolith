@@ -65,10 +65,13 @@
     kind: Namespace
     name: '{{ item }}'
   loop:
-    - "{{ dev_project }}"
     - "{{ coolstore_project }}"
+    - "{{ legacy_app_project }}"
+    - "{{ dbz_project }}"
+    - "{{ sandbox_project }}"
+    - "{{ dev_project }}"
     - "{{ kafka_project }}"
-    - "{{ legacy_project }}"
+    - "{{ db_project }}"
 
 # Leave this as the last task in the playbook.
 - name: Remove workload tasks complete
