@@ -3,7 +3,7 @@
 ** xref:01-setup.adoc#install[Install Demo]
 ** xref:01-setup.adoc#uninstall[Uninstalling Demo]
 
-* xref:walkthrough/index.adoc#setup[Walkthrough Setup]
+* xref:walkthrough/index.adoc#setup[Demo Walkthrough]
 ** xref:walkthrough/legacy.adoc#legacy[Intro to Legacy App]
 ** xref:walkthrough/producer-consumer.adoc#producerconsumer[Kafka: Producers, Consumers, and Groups]
 ** xref:walkthrough/strimzi.adoc#strimzi[Strimzi and AMQStreams Operator]

@@ -38,3 +38,5 @@ opentlc-mgr
 === Suggested Layout
 
 image::suggested-desktop.png[]
+
+Once setup is complete, see the subheadings under "Walkthrough" (you may need to expand the navbar to the left) to go through the various sections of the demo.
