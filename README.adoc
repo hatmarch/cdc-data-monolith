@@ -1,4 +1,4 @@
-See https://hatmarch.github.io/cdc-data-monolith[documentation] for how to setup and walk through this demo.
+See https://hatmarch.github.io/cdc-data-monolith/[documentation] for how to setup and walk through this demo.
 
 [NOTE]
 ====
