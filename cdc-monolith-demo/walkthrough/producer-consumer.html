@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Demo Walkthrough :: CDC Monolith Demo (Dev Mode)</title>
+    <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/walkthrough/producer-consumer.html">
+    <link rel="prev" href="legacy.html#legacy">
+    <link rel="next" href="strimzi.html#strimzi">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo (Dev Mode)</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="cdc-monolith-demo" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">CDC Monolith Demo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../01-setup.html">General Setup</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#prerequisite">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#install">Install Demo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#uninstall">Uninstalling Demo</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html#setup">Demo Walkthrough</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="legacy.html#legacy">Intro to Legacy App</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="strimzi.html#strimzi">Strimzi and AMQStreams Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect.html#examplekafkaconnect">Kafka Connect Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="legacy-cdc.html#cdc">Legacy App Change Data Capture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="consumer-adaptor.html#deploylegacyconsumer">Deploy Legacy Consumer</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#03-appendix">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#querysql">Querying SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#kafkatopicdebug">Debugging Kafka Topics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#mssql">Connect and View MS SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#build">Build Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#deploy">Deploy Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#testapp">Strategies for Testing Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#buildcoolstore">Building Coolstore Services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#legacyinteract">Interacting with Legacy App</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-troubleshooting">Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../04-troubleshooting.html#kafka">Troubleshooting Kafka</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../04-troubleshooting.html#kafkaconnect">Troubleshooting Kafka Connect</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">CDC Monolith Demo</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">CDC Monolith Demo</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">CDC Monolith Demo</a></li>
+    <li><a href="index.html#setup">Demo Walkthrough</a></li>
+    <li><a href="#producerconsumer">Kafka: Producers, Consumers, and Groups</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/walkthrough/producer-consumer.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Demo Walkthrough</h1>
+<div class="sect1">
+<h2 id="producerconsumer"><a class="anchor" href="#producerconsumer"></a>Kafka: Producers, Consumers, and Groups</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this demo we want to show the notion of producers and consumers and ideally topics without any of the k8 (Strimzi) overlays</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Make sure your terminals are setup per the <a href="index.html#setup" class="page">instructions here</a> before executing the steps below</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Make sure you can see 4 terminals on your desktop</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>see the suggested layout <a href="index.html#suggestedlayout" class="page">here</a></em></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Enter the following commands in each of the terminals:</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset1_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+<li>
+<p><a id="tabset1_terminal-2"></a>Terminal 2</p>
+</li>
+<li>
+<p><a id="tabset1_terminal-3"></a>Terminal 3</p>
+</li>
+<li>
+<p><a id="tabset1_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset1_terminal-1-producer">
+<div class="paragraph">
+<p>Terminal one is for producing information on a topic.  Run the following command to get started</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic test-producer-consumer</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The terminal is ready to take input on the topic when you see the chevron (<code>&gt;</code>)
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_terminal-2">
+<div class="paragraph">
+<p>Terminal 2 will be our first consumer in the group <code>consumer-group-1</code></p>
+</div>
+<div class="paragraph">
+<p>Run the following command to get it started:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-producer-consumer --group consumer-group-1</code></pre>
+</div>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_terminal-3">
+<div class="paragraph">
+<p>Terminal 3 will be our second consumer in the group <code>consumer-group-1</code></p>
+</div>
+<div class="paragraph">
+<p>Run the following command to get it started:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-producer-consumer --group consumer-group-1</code></pre>
+</div>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_terminal-4">
+<div class="paragraph">
+<p>Terminal 4 will be our first consumer in the group <code>consumer-group-solo</code></p>
+</div>
+<div class="paragraph">
+<p>Run the following command to get it started:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-producer-consumer --group consumer-group-solo</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Enter the following</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset2_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset2_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>You should notice output in one of Terminal 2 or 3 and Terminal 4</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/four-terminal-producer-consumer.png" alt="four terminal producer consumer">
+</div>
+</div>
+</li>
+<li>
+<p>Enter the following</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset3_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset3_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 2</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>You should notice output in the same of Terminal 2 and 3 that received the event before and Terminal 4</p>
+</li>
+<li>
+<p>Next kill the consumer in either Terminal 2 or 3, whichever one got the previous two events, with <span class="keyseq"><kbd>ctrl</kbd>+<kbd>c</kbd></span></p>
+</li>
+<li>
+<p>Enter the following</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset4_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset4_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 3</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>This time the other terminal of <code>consumer-group-1</code> should get the message as should Terminal 4</p>
+</li>
+<li>
+<p>Now kill the consumer in Terminal 4 with <span class="keyseq"><kbd>ctrl</kbd>+<kbd>c</kbd></span></p>
+</li>
+<li>
+<p>Enter the following:</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset5_terminal-1-producer"></a>Terminal 1 (Producer)</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset5_terminal-1-producer">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 4</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>You should only see the event appear in the remaining connected terminal</p>
+</li>
+<li>
+<p>Finally, let&#8217;s see how the consumer groups have gone.  Let&#8217;s use the <code>kafka-consumer-groups</code> command to see:</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset6_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset6_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bash -c "printf '\033[?7l'; bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-1; echo '-------------------------'; bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group consumer-group-solo; printf '\033[?7h'"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Output should be similar to (notice the truncation due to the <code>printf</code> above):</p>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GROUP            TOPIC                  PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID
+consumer-group-1 test-producer-consumer 0          4               4               0               consumer-consumer-group-1-1-f888bb4c-46dd-4723-
+-------------------------
+
+Consumer group 'consumer-group-solo' has no active members.
+
+GROUP               TOPIC                  PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+consumer-group-solo test-producer-consumer 0          3               4               1               -               -               -</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Next, let&#8217;s reset the offset of the only consumer group that is currently offline (has no active members)</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset7_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset7_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --reset-offsets --to-earliest --group consumer-group-solo --topic test-producer-consumer --execute</code></pre>
+</div>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GROUP                          TOPIC                          PARTITION  NEW-OFFSET
+consumer-group-solo            test-producer-consumer-1       0          0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Finally, let&#8217;s restart a consumer of the <code>consumer-group-solo</code></p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset8_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset8_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-producer-consumer --group consumer-group-solo</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>After a few seconds you should see the following output</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset9_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset9_terminal-4">
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Test Event 1
+Test Event 2
+Test Event 3
+Test Event 4</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Which shows that our offset has been reset to the start causing us to reread the events</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="legacy.html#legacy" class="query-params-link">Intro to Legacy App</a></span>
+  <span class="next"><a href="strimzi.html#strimzi" class="query-params-link">Strimzi and AMQStreams Operator</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

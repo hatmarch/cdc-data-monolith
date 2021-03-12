@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Demo Walkthrough: Strimzi and AMQStreams Operator :: CDC Monolith Demo (Dev Mode)</title>
+    <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/walkthrough/strimzi.html">
+    <link rel="prev" href="producer-consumer.html#producerconsumer">
+    <link rel="next" href="connect.html#examplekafkaconnect">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo (Dev Mode)</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="cdc-monolith-demo" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">CDC Monolith Demo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../01-setup.html">General Setup</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#prerequisite">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#install">Install Demo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#uninstall">Uninstalling Demo</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html#setup">Demo Walkthrough</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="legacy.html#legacy">Intro to Legacy App</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="producer-consumer.html#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#strimzi">Strimzi and AMQStreams Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect.html#examplekafkaconnect">Kafka Connect Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="legacy-cdc.html#cdc">Legacy App Change Data Capture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="consumer-adaptor.html#deploylegacyconsumer">Deploy Legacy Consumer</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#03-appendix">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#querysql">Querying SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#kafkatopicdebug">Debugging Kafka Topics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#mssql">Connect and View MS SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#build">Build Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#deploy">Deploy Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#testapp">Strategies for Testing Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#buildcoolstore">Building Coolstore Services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#legacyinteract">Interacting with Legacy App</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-troubleshooting">Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../04-troubleshooting.html#kafka">Troubleshooting Kafka</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../04-troubleshooting.html#kafkaconnect">Troubleshooting Kafka Connect</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">CDC Monolith Demo</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">CDC Monolith Demo</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">CDC Monolith Demo</a></li>
+    <li><a href="index.html#setup">Demo Walkthrough</a></li>
+    <li><a href="#strimzi">Strimzi and AMQStreams Operator</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/walkthrough/strimzi.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Demo Walkthrough: Strimzi and AMQStreams Operator</h1>
+<div class="sect1">
+<h2 id="strimzi"><a class="anchor" href="#strimzi"></a>Strimzi and AMQStreams Operator</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to the <code>cdc-sandbox</code> project, Developer Perspective</p>
+</li>
+<li>
+<p>Click on <code>+Add</code> select <code>Developer Catalog</code> and then start searching for <code>kafka</code> in the "Operator Backed" items</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/kafka-operator.png" alt="kafka operator">
+</div>
+</div>
+</li>
+<li>
+<p>A page will show up, just click <code>Create</code></p>
+</li>
+<li>
+<p>Show some of the options (perhaps even "YAML View") briefly, but create a kafka using the defaults, <strong>setting name to <code>example</code></strong> then scrolling down and clicking <code>Create</code></p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/kafka-example-creation.png" alt="kafka example creation">
+</div>
+</div>
+</li>
+<li>
+<p>The Kafka cluster will start to appear in the Topology View</p>
+</li>
+<li>
+<p>Next use the search functionality to search for the <code>Kafka</code> custom resource you just created</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/kafka-search.png" alt="kafka search"></span></p>
+</div>
+</li>
+<li>
+<p>Click on <code>example</code> and scroll to the bottom to review the <code>Conditions</code>.  Wait until this is set to <code>Ready</code></p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/kafka-condition-ready.png" alt="kafka condition ready"></span></p>
+</div>
+</li>
+<li>
+<p>Finally, navigate back to the topology view to see all the aspects that were created.  Point out</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Example Zookeeper</p>
+</li>
+<li>
+<p>Example Kakfa (Brokers, see Services)</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/kafka-deployed-strimzi.png" alt="kafka deployed strimzi"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="producer-consumer.html#producerconsumer" class="query-params-link">Kafka: Producers, Consumers, and Groups</a></span>
+  <span class="next"><a href="connect.html#examplekafkaconnect" class="query-params-link">Kafka Connect Introduction</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

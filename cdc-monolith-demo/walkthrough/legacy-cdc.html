@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Demo Walkthrough :: CDC Monolith Demo (Dev Mode)</title>
+    <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/walkthrough/legacy-cdc.html">
+    <link rel="prev" href="connect.html#examplekafkaconnect">
+    <link rel="next" href="consumer-adaptor.html#deploylegacyconsumer">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo (Dev Mode)</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="cdc-monolith-demo" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">CDC Monolith Demo</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../01-setup.html">General Setup</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#prerequisite">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#install">Install Demo</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../01-setup.html#uninstall">Uninstalling Demo</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html#setup">Demo Walkthrough</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="legacy.html#legacy">Intro to Legacy App</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="producer-consumer.html#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="strimzi.html#strimzi">Strimzi and AMQStreams Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="connect.html#examplekafkaconnect">Kafka Connect Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#cdc">Legacy App Change Data Capture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="consumer-adaptor.html#deploylegacyconsumer">Deploy Legacy Consumer</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#03-appendix">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#querysql">Querying SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#kafkatopicdebug">Debugging Kafka Topics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#mssql">Connect and View MS SQL Database</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#build">Build Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#deploy">Deploy Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#testapp">Strategies for Testing Legacy Consumer</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#buildcoolstore">Building Coolstore Services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../03-appendix.html#legacyinteract">Interacting with Legacy App</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-troubleshooting">Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../04-troubleshooting.html#kafka">Troubleshooting Kafka</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../04-troubleshooting.html#kafkaconnect">Troubleshooting Kafka Connect</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">CDC Monolith Demo</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">CDC Monolith Demo</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">CDC Monolith Demo</a></li>
+    <li><a href="index.html#setup">Demo Walkthrough</a></li>
+    <li><a href="#cdc">Legacy App Change Data Capture</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/walkthrough/legacy-cdc.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Demo Walkthrough</h1>
+<div class="sect1">
+<h2 id="cdc"><a class="anchor" href="#cdc"></a>Legacy App Change Data Capture</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this section we&#8217;re going to put all the pieces together and demonstrate the ability to have our website updated based on debezium and a consumer that we write.  This is the general plan:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/cdc-arch-overview.png" alt="cdc arch overview">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Remember that we&#8217;ve already uploaded a number of items and quantities into the inventory via the legacy app</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/loaded-inventory.png" alt="loaded inventory"></span></p>
+</div>
+</li>
+<li>
+<p>Go to the <code>cdc-demo-dev</code> project, Developer Perspective</p>
+</li>
+<li>
+<p>First we will deploy the Strimzi-ified KafkaConnect and Debezium Connector for our application.  Show them briefly this playbook:</p>
+<div class="listingblock">
+<div class="title"><a href="{github-repo}/{resources-repo}/build-resources.yaml" target="_blank" rel="noopener">build-resources.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
+- name: Create Namespace for Debezium Connectors
+  k8s:
+    api_version: v1
+    kind: Namespace
+    name: '{{ dbz_project }}'
+    state: present
+
+- name: Deploy Debezium Kafka Connect
+  k8s:
+    state: present
+    namespace: '{{ dbz_project }}'
+    resource_definition: "{{ lookup('template', 'kafka-connect.yaml.j2') }}"
+  vars:
+    kc_name: debezium
+    connectors_image: '{{ debezium_connectors_image }}'
+
+- name: Deploy MSSQL Server Connector
+  k8s:
+    state: present
+    namespace: '{{ dbz_project }}'
+    resource_definition: "{{ lookup('template', 'kafka-connector-mssql.yaml.j2') }}"
+
+- name: Deploy Debezium UI Services
+  k8s:
+    state: present
+    namespace: '{{ dbz_project }}'
+    resource_definition: "{{ lookup('template', 'dbz-ui/debezium-ui-services.yaml.j2') }}"
+
+- name: Wait for Route
+  k8s_info:
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: dbz-ui
+    namespace: '{{ dbz_project }}'
+  register: dbz_ui_route
+  until: &gt;-
+    (dbz_ui_route.resources is defined)
+    and (dbz_ui_route.resources|length&gt;0)
+    and (dbz_ui_route.resources[0].spec.host is defined)
+
+- name: Deploy Debezium UI
+  k8s:
+    state: present
+    namespace: '{{ dbz_project }}'
+    resource_definition: "{{ lookup('template', 'dbz-ui/debezium-ui.yaml.j2') }}"
+  vars:
+      ui_public_host: '{{ item }}'
+  loop: "{{ dbz_ui_route | json_query('resources[*].spec.host') }}"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>To deploy the playbook, run the following in the shell</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook -i ${DEMO_HOME}/ansible/demo/inventory \
+    ${DEMO_HOME}/ansible/demo/main.yaml \
+    -e "ACTION=debezium_create"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>From the Developer Perspective, the elements appear and try to match them to the playbook logs.</p>
+</li>
+<li>
+<p>Wait for the dbz-ui to appear indicating the end of the playbook</p>
+</li>
+<li>
+<p>Search for the KafkaConnect for <code>debezium</code> as shown:</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/search-dbz-connect.png" alt="search dbz connect">
+</div>
+</div>
+</li>
+<li>
+<p>Review the yaml (see below for example from playbook)
+NOTE: You may need to wait a while until the connector is in a <code>ready</code> state before you see the status appear.  You can wait either on the Topology page or on the CR page</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Point out all the possible connectors that can be registered within this connect (for all the different databases)</p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/status-connectors.png" alt="status connectors"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Back in the Topology View, click on the link badge of the <code>dbz-ui</code> and show the visualization of the debezium connector:</p>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/dbz-ui-badge.png" alt="dbz ui badge">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/dbz-ui.png" alt="dbz ui">
+</div>
+</div>
+</li>
+<li>
+<p>Search for the <code>KafkaConnector</code> and click on the <code>debezium-connector</code></p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/search-dbz-connector.png" alt="search dbz connector"></span></p>
+</div>
+</li>
+<li>
+<p>Review the YAML (see below for example from playbook)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Point out the legacy topic we want to watch</p>
+<div class="listingblock">
+<div class="title"><a href="{github-repo}/{resources-repo}/build-resources.yaml" target="_blank" rel="noopener">build-resources.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: kafka.strimzi.io/v1alpha1
+kind: KafkaConnector
+metadata:
+  name: debezium-connector
+  labels:
+    strimzi.io/cluster: debezium
+spec:
+  class: io.debezium.connector.sqlserver.SqlServerConnector
+  tasksMax: 1
+  config:
+    database.hostname: "mssql-server-linux.{{ db_project }}.svc.cluster.local"
+    connector.class: "io.debezium.connector.sqlserver.SqlServerConnector"
+    database.port: "1433"
+    database.user: "sa"
+    database.password: "Password!"
+    database.dbname: "InternationalDB"
+    database.server.name: "mssql-server-linux"
+    table.whitelist: "dbo.Inventory"
+    transforms: Reroute
+    transforms.Reroute.type: "io.debezium.transforms.ByLogicalTableRouter"
+    transforms.Reroute.topic.regex: "(.*)Inventory(.*)"
+    transforms.Reroute.topic.replacement: "{{ cdc_topic }}"
+    database.history.kafka.bootstrap.servers: "demo-kafka-bootstrap:9092"
+    database.history.kafka.topic: "dbhistory.internationaldb"</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Now let&#8217;s watch that legacy topic that we see in the connector.  We&#8217;d expect there should be data there for the one row we added to the legacy database</p>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset1_terminal-4"></a>Terminal 4</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset1_terminal-4">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -n cdc-demo-dev -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic legacy-inventory-cdc --from-beginning</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>After a few moments, a blob of JSON should appear that looks something like the following (just unformatted):</p>
+<div class="listingblock">
+<div class="title"><a href="{github-repo}/{resources-repo}/build-resources.yaml" target="_blank" rel="noopener">build-resources.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+    "schema": {
+        "type": "struct",
+        "fields": [
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemId"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemName"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "Description"
+                    },
+                    {
+                        "type": "int32",
+                        "optional": false,
+                        "field": "Quantity"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Price"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Location"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Link"
+                    }
+                ],
+                "optional": true,
+                "name": "legacy_inventory_cdc.Value",
+                "field": "before"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemId"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "ItemName"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "Description"
+                    },
+                    {
+                        "type": "int32",
+                        "optional": false,
+                        "field": "Quantity"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Price"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Location"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "Link"
+                    }
+                ],
+                "optional": true,
+                "name": "legacy_inventory_cdc.Value",
+                "field": "after"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "version"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "connector"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "name"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "ts_ms"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "name": "io.debezium.data.Enum",
+                        "version": 1,
+                        "parameters": {
+                            "allowed": "true,last,false"
+                        },
+                        "default": "false",
+                        "field": "snapshot"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "db"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "schema"
+                    },
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "table"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "change_lsn"
+                    },
+                    {
+                        "type": "string",
+                        "optional": true,
+                        "field": "commit_lsn"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": true,
+                        "field": "event_serial_no"
+                    }
+                ],
+                "optional": false,
+                "name": "io.debezium.connector.sqlserver.Source",
+                "field": "source"
+            },
+            {
+                "type": "string",
+                "optional": false,
+                "field": "op"
+            },
+            {
+                "type": "int64",
+                "optional": true,
+                "field": "ts_ms"
+            },
+            {
+                "type": "struct",
+                "fields": [
+                    {
+                        "type": "string",
+                        "optional": false,
+                        "field": "id"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "total_order"
+                    },
+                    {
+                        "type": "int64",
+                        "optional": false,
+                        "field": "data_collection_order"
+                    }
+                ],
+                "optional": true,
+                "field": "transaction"
+            }
+        ],
+        "optional": false,
+        "name": "legacy_inventory_cdc.Envelope"
+    },
+    "payload": {
+        "before": null,
+        "after": {
+            "ItemId": "444437",
+            "ItemName": "Lytro Camera",
+            "Description": "Consumers who want to up their photography game are looking at newfangled cameras like the Lytro Field camera, designed to take photos with infinite focus, so you can decide later exactly where you want the focus of each image to be.",
+            "Quantity": 400,
+            "Price": "44.30",
+            "Location": "http://maps.google.com/?q=Tokyo",
+            "Link": "Tokyo"
+        },
+        "source": {
+            "version": "1.5.0.Beta1",
+            "connector": "sqlserver",
+            "name": "mssql-server-linux",
+            "ts_ms": 1615358908347,
+            "snapshot": "last",
+            "db": "InternationalDB",
+            "schema": "dbo",
+            "table": "Inventory",
+            "change_lsn": null,
+            "commit_lsn": "00000024:00000590:0003",
+            "event_serial_no": null
+        },
+        "op": "r",
+        "ts_ms": 1615358908347,
+        "transaction": null
+    }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Copy the JSON blob and paste it into an online JSON formatting service such as <a href="https://jsonformatter.org/">JSON Formatter</a></p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/json-formatter.png" alt="json formatter"></span></p>
+</div>
+</li>
+<li>
+<p>Use folding ability to point out the following parts of the message:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>schema</code></p>
+</li>
+<li>
+<p><code>payload</code></p>
+</li>
+<li>
+<p><code>before</code> and <code>after</code></p>
+</li>
+<li>
+<p><code>op</code></p>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/schema-payload.png" alt="schema payload"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="connect.html#examplekafkaconnect" class="query-params-link">Kafka Connect Introduction</a></span>
+  <span class="next"><a href="consumer-adaptor.html#deploylegacyconsumer" class="query-params-link">Deploy Legacy Consumer</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

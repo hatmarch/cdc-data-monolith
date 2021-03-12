@@ -6,7 +6,7 @@
     <title>Setup :: CDC Monolith Demo (Dev Mode)</title>
     <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/01-setup.html">
     <link rel="prev" href="index.html">
-    <link rel="next" href="02-walkthrough.html">
+    <link rel="next" href="walkthrough/index.html#setup">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -73,7 +73,7 @@
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="01-setup.html">1. Setup</a>
+    <a class="nav-link" href="01-setup.html">General Setup</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#prerequisite">Prerequisites</a>
@@ -88,13 +88,25 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="02-walkthrough.html">2. Walkthrough</a>
+    <a class="nav-link" href="walkthrough/index.html#setup">Demo Walkthrough</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-walkthrough.html#legacy">Intro to Legacy App</a>
+    <a class="nav-link" href="walkthrough/legacy.html#legacy">Intro to Legacy App</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-walkthrough.html#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+    <a class="nav-link" href="walkthrough/producer-consumer.html#producerconsumer">Kafka: Producers, Consumers, and Groups</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="walkthrough/strimzi.html#strimzi">Strimzi and AMQStreams Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="walkthrough/connect.html#examplekafkaconnect">Kafka Connect Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="walkthrough/legacy-cdc.html#cdc">Legacy App Change Data Capture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="walkthrough/consumer-adaptor.html#deploylegacyconsumer">Deploy Legacy Consumer</a>
   </li>
 </ul>
   </li>
@@ -171,7 +183,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">CDC Monolith Demo</a></li>
-    <li><a href="01-setup.html">1. Setup</a></li>
+    <li><a href="01-setup.html">General Setup</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/01-setup.adoc">Edit this Page</a></div>
@@ -212,17 +224,22 @@
 </li>
 <li>
 <p>Run the following command:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>NOTE: If you are not using <code>zsh</code> locally, you can omit the <code>-v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh</code> part of the <code>docker run</code> command below</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are not using <code>zsh</code> locally, you can omit the <code>-v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh</code> part of the <code>docker run</code> command below
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run -it -v ~/.kube:/home/jboss/.kube -v ~/.oh-my-zsh:/home/jboss/.oh-my-zsh -v $(pwd):/workspaces/cdc-data-monolith -w /workspaces/cdc-data-monolith quay.io/mhildenb/cdc-demo-shell /bin/zsh</code></pre>
 </div>
-</div>
-</li>
-</ul>
 </div>
 </li>
 <li>
@@ -243,13 +260,16 @@
 </li>
 <li>
 <p><code>-v</code> [optional] Run ansible playbooks in verbose mode</p>
+</li>
+<li>
+<p><code>-a</code> [optional] Provision everything.  When set it installs aspects of the demo that are normally installed as part of the demo</p>
+</li>
+</ul>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$DEMO_HOME/scripts/create-demo.sh -p $PROJECT_PREFIX</code></pre>
 </div>
-</div>
-</li>
-</ul>
 </div>
 </li>
 <li>
@@ -262,7 +282,7 @@ Finishing with return value of 0</pre>
 </div>
 </li>
 <li>
-<p>Once completed, you can now follow the instructions <a href="02-walkthrough.html" class="page">in this walkthrough</a></p>
+<p>Once completed, you can now follow the instructions <a href="walkthrough/index.html" class="page">in this walkthrough</a></p>
 </li>
 </ol>
 </div>
@@ -296,7 +316,7 @@ Finishing with return value of 0</pre>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="index.html" class="query-params-link">CDC Monolith Demo</a></span>
-  <span class="next"><a href="02-walkthrough.html" class="query-params-link">2. Walkthrough</a></span>
+  <span class="next"><a href="walkthrough/index.html#setup" class="query-params-link">Demo Walkthrough</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
