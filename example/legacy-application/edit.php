@@ -101,9 +101,9 @@ echo '
                 <input type="text" name="Description"  placeholder="Description" value="' . $inv["Description"] . '">
                 <label>Price</label>
                 <input type="text" name="Price"  placeholder="Price" value="' . $inv["Price"] . '">
-                <label>Price</label>
+                <label>Location</label>
                 <input type="text" name="Location"  placeholder="Location" value="' . $inv["Location"] . '">
-                <label>Price</label>
+                <label>Link</label>
                 <input type="text" name="Link"  placeholder="Link" value="' . $inv["Link"] . '">
                 <span class="help-block">Click Save to update the record.</span>
                 <button type="submit" name="submit" class="btn">Save</button>
