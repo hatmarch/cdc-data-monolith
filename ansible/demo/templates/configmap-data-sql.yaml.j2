@@ -54,8 +54,8 @@ data:
         @description [NVARCHAR](2560),
         @quantity INT,
         @price [NVARCHAR](50),
-        @location [NVARCHAR](256),
-        @link [NVARCHAR](256)
+        @link [NVARCHAR](256),
+        @location [NVARCHAR](256)
         AS
             BEGIN
             IF NOT EXISTS (SELECT ItemId FROM dbo.Inventory WHERE Inventory.ItemId=@itemId)
