@@ -46,7 +46,13 @@
         become: "{{ become_override | bool }}"
     when: ACTION == "provision" or ACTION == "consumer_create"
   
-
+  - name: Deploy Adminer (Database View/Debug)
+    include_tasks:
+      file: ./tasks/provision_adminer.yaml
+      apply:
+        become: "{{ become_override | bool }}"
+    when: ACTION == "provision" or ACTION == "adminer_create"
+  
   - name: Running Workload removal Tasks
     include_tasks:
       file: ./tasks/remove_workload.yaml

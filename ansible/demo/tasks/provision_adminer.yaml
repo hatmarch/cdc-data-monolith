@@ -1,0 +1,44 @@
+---
+- name: Create DB Namespace
+  k8s:
+    api_version: v1
+    kind: Namespace
+    name: '{{ db_project }}'
+    state: present
+
+- name: Check if Adminer has been Deployed
+  k8s_info:
+    kind: Pod
+    name: adminer
+    namespace: '{{ db_project }}'
+    api_version: v1
+  register: app_exists
+
+- name: Find the DB Service
+  k8s_info:
+    kind: Service
+    name: mssql-server-linux
+    namespace: '{{ db_project }}'
+    api_version: v1
+  register: mssql_service
+  until: >-
+    (mssql_service.resources is defined)
+    and (mssql_service.resources|length>0)
+  retries: 5
+  delay: 5
+
+- name: Set service name
+  set_fact:
+    mssql_service_name: "{{ mssql_service.resources[0].metadata.name }}"
+    mssql_port: "{{ mssql_service.resources[0].spec.ports[0].port }}"
+
+
+- name: Create Adminer pod
+  block:
+  - name: Deploy pod
+    shell: "oc run --port 8080 --env ADMINER_DEFAULT_SERVER={{ mssql_service_name }}:{{ mssql_port }} -n {{ db_project }} --image adminer adminer"
+  - name: Expose pod
+    shell: "oc expose pod/adminer -n {{ db_project }}"
+  - name: Expose adminer service
+    shell: "oc expose svc/adminer -n {{ db_project }}"
+  when: (app_exists.resources is undefined) or (app_exists.resources | length == 0)

@@ -43,7 +43,21 @@ oc exec -it demo-kafka-0 -n pass:[${KAFKA_PROJECT}] -- bin/kafka-console-consume
 [#mssql]
 == Connect and View MS SQL Database
 
-You can use adminer to connect to the mssql database.  Run this command from the VSCode terminal (assuming your current project is the project that houses the SQL Server)
+You can use adminer to connect to the mssql database.  You can either deploy adminer into the cluster (particularly when you want to show the internals of a db in a demo) or deploy it locally
+
+=== In cluster (via Playbook)
+
+Run the following command from the terminal:
+
+include::ROOT:partial$adminer-command-consoler.adoc[]
+
+NOTE: You can affect which namespace adminer is deployed to by changing the `db_project` environment variable (e.g. `-e "db_project=my-project"`).  Just bear in mind that it expects the `mssql-server-linux` database deployment to be in this namespace
+
+NOTE: Creating the demo using the `create-demo.sh` script and the `-a` flag will also provision adminer.
+
+=== Locally
+
+Run this command from the VSCode terminal (assuming your current project is the project that houses the SQL Server)
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
