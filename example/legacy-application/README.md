@@ -56,21 +56,28 @@ Some things to try:
 
 ## Building the Container
 
+Set the following variables (replace with values relevant to your needs):
+
+```
+IMAGE_NAME=quay.io/mhildenb/cdc-legacy-app
+IMAGE_TAG=1.3
+```
+
 From the root of this repo, run this command:
 
 ```
-docker build -t quay.io/mhildenb/cdc-legacy-app:1.0 -f .docker/Dockerfile .
+docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f .docker/Dockerfile .
 ```
 
 Then optionally push the container:
 
 ```
-docker push quay.io/mhildenb/cdc-legacy-app:1.0
+docker push ${IMAGE_NAME}:${IMAGE_TAG}
 ```
 
 And finally, optionally tag this as latest:
 
 ```
-docker tag quay.io/mhildenb/cdc-legacy-app:1.0 quay.io/mhildenb/cdc-legacy-app:latest
-docker push quay.io/mhildenb/cdc-legacy-app:latest
+docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
+docker push ${IMAGE_NAME}:latest
 ```
