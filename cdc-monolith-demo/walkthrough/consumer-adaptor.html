@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Demo Walkthrough :: CDC Monolith Demo (Dev Mode)</title>
+    <title>Demo Walkthrough :: CDC Monolith Demo</title>
     <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/walkthrough/consumer-adaptor.html">
     <link rel="prev" href="legacy-cdc.html#cdc">
     <link rel="next" href="../03-appendix.html#querysql">
@@ -18,7 +18,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
           src="../../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo (Dev Mode)</a>
+      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -187,8 +187,8 @@
     <li><a href="#deploylegacyconsumer">Deploy Legacy Consumer</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="file:///workspaces/cdc-data-monolith/documentation/modules/ROOT/pages/walkthrough/consumer-adaptor.adoc">Edit this Page</a></div>
-</div>
+  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/walkthrough/consumer-adaptor.adoc">Edit this Page</a></div>
+  </div>
   <div class="content">
 <article class="doc">
 <h1 class="page">Demo Walkthrough</h1>
@@ -326,72 +326,6 @@ data:
     org.mhildenb.cdcdemo.CatalogProxy/mp-rest/url=http://catalog.{{ coolstore_project }}.svc.cluster.local:8080</code></pre>
 </div>
 </div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="debeziumconnector"><a class="anchor" href="#debeziumconnector"></a>Enable Debezium Connector</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_configure_sql_database"><a class="anchor" href="#_configure_sql_database"></a>Configure SQL Database</h3>
-<div class="paragraph">
-<p>See last part of <code>ansible/demo/templates/configmap-data-sql.yaml.j2</code> and instructions <a href="https://debezium.io/documentation/reference/connectors/sqlserver.html#_enabling_cdc_on_the_sql_server_database">here</a></p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="demonstratedbz"><a class="anchor" href="#demonstratedbz"></a>Demonstrate Debezium</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Connect to database using Adminer per instructions <a href="../03-appendix.html#mssql" class="page">here</a></p>
-</li>
-<li>
-<p>In another terminal watch where the order events will go</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc exec -it demo-kafka-0 -- bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mssql-server-linux.dbo.Orders --from-beginning</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Go to adminer and create a new entry</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_generate_legacy_order_adaptor"><a class="anchor" href="#_generate_legacy_order_adaptor"></a>Generate legacy-order-adaptor</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_create_json_to_pojo"><a class="anchor" href="#_create_json_to_pojo"></a>Create JSON to POJO</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Start with some example <code>.json</code> generated from CDC event in <a href="#02-walkthrough.adoc#demonstratedbz" class="page unresolved">this section</a></p>
-</li>
-<li>
-<p>Navigate to <a href="http://www.jsonschema2pojo.org/">this site</a> and paste in the json per screenshot</p>
-<div class="imageblock">
-<div class="content">
-<img src="../_images/json2pojo.png" alt="json2pojo">
-</div>
-</div>
-</li>
-<li>
-<p>Click the link to download the zip file</p>
-</li>
-<li>
-<p>expand into the <code>functions</code> directory</p>
-</li>
-<li>
-<p>Update tests to show JSON to POJO working</p>
 </li>
 </ol>
 </div>

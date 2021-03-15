@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Appendix :: CDC Monolith Demo (Dev Mode)</title>
+    <title>Appendix :: CDC Monolith Demo</title>
     <link rel="canonical" href="https://hatmarch.github.io/cdc-data-monolith/cdc-monolith-demo/03-appendix.html">
     <link rel="prev" href="walkthrough/consumer-adaptor.html#deploylegacyconsumer">
     <link rel="next" href="04-troubleshooting.html#kafka">
@@ -18,7 +18,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
           src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo (Dev Mode)</a>
+      <a class="navbar-item" href="https://hatmarch.github.io/cdc-data-monolith">CDC Monolith Demo</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -187,8 +187,8 @@
     <li><a href="#querysql">Querying SQL Database</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="file:///workspaces/cdc-data-monolith/documentation/modules/ROOT/pages/03-appendix.adoc">Edit this Page</a></div>
-</div>
+  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/03-appendix.adoc">Edit this Page</a></div>
+  </div>
   <div class="content">
 <article class="doc">
 <h1 class="page">Appendix</h1>
@@ -341,6 +341,38 @@ Creating the demo using the <code>create-demo.sh</code> script and the <code>-a<
 <p><strong>Database</strong>: <code>InternationalDB</code></p>
 </li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dev"><a class="anchor" href="#dev"></a>Developing Legacy App Consumer</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_create_json_to_pojo"><a class="anchor" href="#_create_json_to_pojo"></a>Create JSON to POJO</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start with some example <code>.json</code> generated from CDC event in <a href="#02-walkthrough.adoc#demonstratedbz" class="page unresolved">this section</a></p>
+</li>
+<li>
+<p>Navigate to <a href="http://www.jsonschema2pojo.org/">this site</a> and paste in the json per screenshot</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/json2pojo.png" alt="json2pojo">
+</div>
+</div>
+</li>
+<li>
+<p>Click the link to download the zip file</p>
+</li>
+<li>
+<p>expand into the <code>functions</code> directory</p>
+</li>
+<li>
+<p>Update tests to show JSON to POJO working</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
