@@ -86,6 +86,20 @@ image::adminer.png[]
 * *Password*: `Password!`
 * *Database*: `InternationalDB`
 
+[#dev]
+== Developing Legacy App Consumer
+
+=== Create JSON to POJO
+
+. Start with some example `.json` generated from CDC event in xref:02-walkthrough.adoc#demonstratedbz[this section]
+. Navigate to link:http://www.jsonschema2pojo.org/[this site] and paste in the json per screenshot
++
+image::json2pojo.png[]
++
+. Click the link to download the zip file
+. expand into the `functions` directory
+. Update tests to show JSON to POJO working
+
 [#build]
 == Building the Legacy App Consumer
 
