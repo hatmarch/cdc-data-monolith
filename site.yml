@@ -2,7 +2,7 @@ runtime:
   cache_dir: ./.cache/antora
 
 site:
-  title: CDC Monolith Demo (Dev Mode)
+  title: CDC Monolith Demo 
   url: https://hatmarch.github.io/cdc-data-monolith
   start_page: cdc-monolith-demo::index.adoc
 
