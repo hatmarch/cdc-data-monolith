@@ -15,7 +15,7 @@ image:loaded-inventory.png[]
 . Go to the `{kafka-project}` project, Developer Perspective
 . First we will deploy the Strimzi-ified KafkaConnect and Debezium Connector for our application.  Show them briefly this playbook:
 +
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+.provision_debezium.yaml
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$provision_debezium.yaml[]
@@ -55,7 +55,7 @@ image:search-dbz-connector.png[]
 . Review the YAML (see below for example from playbook)
 ** Point out the legacy topic we want to watch
 +
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+.kafka-connector-mssql.yaml.j2
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$kafka-connector-mssql.yaml.j2[]
@@ -75,7 +75,7 @@ include::ROOT:partial$watch-cdc-topic-console.adoc[]
 +
 . After a few moments, a blob of JSON should appear that looks something like the following (just unformatted):
 +
-.link:{github-repo}/{resources-repo}/build-resources.yaml[build-resources.yaml^]
+.testCreateEvent-1.15.json
 [source,json,subs="+macros,attributes+"]
 ----
 include::ROOT:example$testCreateEvent-1.15.json[]

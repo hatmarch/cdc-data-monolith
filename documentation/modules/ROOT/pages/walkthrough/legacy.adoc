@@ -45,7 +45,7 @@ image::legacy-inventory-upload.png[]
 +
 . In the directory shown (`$DEMO_HOME/example`) choose the `inventory-initial.csv`
 +
-.link:{github-repo}/{resources-repo}/inventory-initial.csv[build-resources.yaml^]
+.inventory-initial
 [source,subs="+macros,attributes+"]
 ----
 include::ROOT:example$inventory-initial.csv[]
