@@ -187,8 +187,8 @@
     <li><a href="#cdc">Legacy App Change Data Capture</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/walkthrough/legacy-cdc.adoc">Edit this Page</a></div>
-  </div>
+  <div class="edit-this-page"><a href="file:///workspaces/cdc-data-monolith/documentation/modules/ROOT/pages/walkthrough/legacy-cdc.adoc">Edit this Page</a></div>
+</div>
   <div class="content">
 <article class="doc">
 <h1 class="page">Demo Walkthrough</h1>
@@ -217,7 +217,7 @@
 <li>
 <p>First we will deploy the Strimzi-ified KafkaConnect and Debezium Connector for our application.  Show them briefly this playbook:</p>
 <div class="listingblock">
-<div class="title"><a href="{github-repo}/{resources-repo}/build-resources.yaml" target="_blank" rel="noopener">build-resources.yaml</a></div>
+<div class="title">provision_debezium.yaml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
 - name: Create Namespace for Debezium Connectors
@@ -335,7 +335,7 @@ NOTE: You may need to wait a while until the connector is in a <code>ready</code
 <li>
 <p>Point out the legacy topic we want to watch</p>
 <div class="listingblock">
-<div class="title"><a href="{github-repo}/{resources-repo}/build-resources.yaml" target="_blank" rel="noopener">build-resources.yaml</a></div>
+<div class="title">kafka-connector-mssql.yaml.j2</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: kafka.strimzi.io/v1alpha1
 kind: KafkaConnector
@@ -391,7 +391,7 @@ spec:
 <li>
 <p>After a few moments, a blob of JSON should appear that looks something like the following (just unformatted):</p>
 <div class="listingblock">
-<div class="title"><a href="{github-repo}/{resources-repo}/build-resources.yaml" target="_blank" rel="noopener">build-resources.yaml</a></div>
+<div class="title">testCreateEvent-1.15.json</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
     "schema": {

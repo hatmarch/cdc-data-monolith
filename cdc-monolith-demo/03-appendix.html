@@ -187,8 +187,8 @@
     <li><a href="#querysql">Querying SQL Database</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/hatmarch/cdc-data-monolith/edit/master/documentation/modules/ROOT/pages/03-appendix.adoc">Edit this Page</a></div>
-  </div>
+  <div class="edit-this-page"><a href="file:///workspaces/cdc-data-monolith/documentation/modules/ROOT/pages/03-appendix.adoc">Edit this Page</a></div>
+</div>
   <div class="content">
 <article class="doc">
 <h1 class="page">Appendix</h1>
@@ -296,7 +296,7 @@ Creating the demo using the <code>create-demo.sh</code> script and the <code>-a<
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc port-forward svc/mssql-server-linux 1433:1433</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc port-forward svc/mssql-server-linux 1433:1433 -n $dev_prj</code></pre>
 </div>
 </div>
 <div class="paragraph">
