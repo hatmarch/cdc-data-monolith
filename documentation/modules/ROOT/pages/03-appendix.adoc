@@ -62,7 +62,7 @@ Run this command from the VSCode terminal (assuming your current project is the 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
-oc port-forward svc/mssql-server-linux 1433:1433
+oc port-forward svc/mssql-server-linux 1433:1433 -n $dev_prj
 ----
 
 Then, back on your host machine, run the following in a terminal
